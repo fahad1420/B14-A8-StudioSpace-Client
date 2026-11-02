@@ -67,12 +67,17 @@ Create a `.env.local` file in the root of `b14-a8-shoot-location-client`:
 
 ```env
 # Backend API Base URL
+# Local: http://localhost:5000
+# Production: https://studiospace-server.onrender.com (or leave empty "" to route through Next.js BFF proxy)
 NEXT_PUBLIC_API_URL=http://localhost:5000
+
+# Backend proxy destination used by next.config.mjs rewrites for same-site cookie forwarding
+BACKEND_API_URL=http://localhost:5000
 
 # Client Application URL
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-# Optional Image Hosting API Key (e.g. imgbb)
+# Optional ImgBB API Key for direct cloud photo uploads (free at https://api.imgbb.com/)
 NEXT_PUBLIC_IMGBB_API_KEY=
 ```
 
@@ -105,7 +110,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 6. Examiner Test Account
 
-For examiner review, the database includes a pre-seeded host and creator account:
+For examiner review, the database includes a verified host and creator account:
 
 - **Email:** `examiner@studiospace.com`
 - **Password:** `ExaminerPassword123!`
@@ -123,19 +128,27 @@ For examiner review, the database includes a pre-seeded host and creator account
 1. Push `b14-a8-shoot-location-client` to GitHub.
 2. Import project into Vercel Dashboard.
 3. Configure Environment Variables:
-   - `NEXT_PUBLIC_API_URL`: Your live backend URL (e.g. `https://studiospace-server.onrender.com`).
-   - `NEXT_PUBLIC_APP_URL`: Your Vercel frontend domain.
+   - `NEXT_PUBLIC_API_URL`: Your live backend URL (e.g. `https://studiospace-server.onrender.com` or empty `""` for BFF proxy).
+   - `BACKEND_API_URL`: `https://studiospace-server.onrender.com` (powers Next.js `/api/:path*` reverse-proxy rewrite).
+   - `NEXT_PUBLIC_APP_URL`: Your Vercel frontend domain (e.g. `https://<your-project>.vercel.app`).
+   - `NEXT_PUBLIC_IMGBB_API_KEY`: (Optional) Free API key from https://api.imgbb.com/ for direct photo uploads.
 4. Deploy with Framework Preset: `Next.js`.
 
-### Deploy to Render / Railway (Backend)
-1. Import `b14-a8-shoot-location-server` repository.
-2. Build command: `npm run build`
+### Deploy to Render (Backend)
+1. Import `b14-a8-shoot-location-server` repository into Render as a Web Service.
+2. Build command: `npm install && npm run build`
 3. Start command: `npm start`
 4. Set environment variables:
-   - `MONGODB_URI`: Your MongoDB Atlas cluster connection string.
-   - `FRONTEND_URL`: Your Vercel production domain.
-   - `JWT_SECRET`: Secure 32-character key.
+   - `NODE_ENV`: `production`
+   - `PORT`: `5000`
+   - `MONGODB_URI`: Your MongoDB Atlas cluster connection string (`mongodb+srv://...`).
+   - `MONGODB_DB_NAME`: `studiospace`
    - `BETTER_AUTH_SECRET`: Secure 32-character key.
+   - `JWT_SECRET`: Secure 32-character key.
+   - `BETTER_AUTH_URL`: Your Render backend URL (`https://<your-service>.onrender.com`).
+   - `FRONTEND_URL`: Your Vercel production domain (`https://<your-app>.vercel.app`).
+   - `GOOGLE_CLIENT_ID`: (Optional) Google OAuth Client ID from Google Cloud Console.
+   - `GOOGLE_CLIENT_SECRET`: (Optional) Google OAuth Client Secret from Google Cloud Console.
 
 ---
 

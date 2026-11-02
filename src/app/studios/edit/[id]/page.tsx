@@ -23,6 +23,7 @@ import {
   AlertCircle,
   ShieldCheck,
   ChevronLeft,
+  Upload,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -77,7 +78,52 @@ export default function EditStudioPage({
   const [customAmenity, setCustomAmenity] = useState("");
   const [overview, setOverview] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (PNG, JPG, WebP).");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image file size exceeds 5MB limit.");
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+      if (!imgbbKey) {
+        toast.info(
+          "Direct file upload requires an ImgBB API key (NEXT_PUBLIC_IMGBB_API_KEY in .env.local). Please paste any hosted image URL (e.g. Unsplash, ImgBB, Postimage) in the field below."
+        );
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data && data.success && data.data?.url) {
+        setImageUrl(data.data.url);
+        toast.success("Studio photo uploaded to ImgBB successfully!");
+      } else {
+        toast.error(data?.error?.message || "Failed to upload image to ImgBB.");
+      }
+    } catch {
+      toast.error("Failed to upload image. You can also paste an image URL directly.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   useEffect(() => {
     async function loadStudio() {
@@ -346,21 +392,51 @@ export default function EditStudioPage({
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Studio Photography</CardTitle>
+                <CardDescription className="text-xs">
+                  Upload an image to ImgBB cloud or specify a direct hosted photo URL
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="relative">
-                  <ImageIcon className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    type="url"
-                    required
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    className="pl-10"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                  <div>
+                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
+                      Upload File
+                    </label>
+                    <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-accent hover:bg-surface-secondary/50 transition-colors">
+                      <Upload className="w-6 h-6 text-accent mb-2" />
+                      <span className="text-xs font-semibold text-foreground">
+                        {isUploading ? "Uploading to ImgBB..." : "Select New Photo"}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground mt-0.5">PNG, JPG, WebP up to 5MB</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageFileChange}
+                        disabled={isUploading}
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
+                      Or Direct Image URL *
+                    </label>
+                    <div className="relative">
+                      <ImageIcon className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        type="url"
+                        required
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {imageUrl && (
-                  <div className="relative aspect-[16/9] w-full max-w-md rounded-xl overflow-hidden border border-border bg-black">
+                  <div className="relative aspect-[16/9] w-full max-w-md rounded-xl overflow-hidden border border-border bg-black mt-2">
                     <Image src={imageUrl} alt="Preview" fill className="object-cover" />
                   </div>
                 )}

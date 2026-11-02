@@ -1,7 +1,9 @@
 import { ApiResponse, Booking, BookingStatus, Studio, User } from "@/types";
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") || "http://localhost:5000";
+  process.env.NEXT_PUBLIC_API_URL !== undefined
+    ? process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")
+    : "http://localhost:5000";
 
 export async function apiClient<T = any>(
   endpoint: string,

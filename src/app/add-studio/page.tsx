@@ -103,28 +103,26 @@ export default function AddStudioPage() {
     setIsUploading(true);
     try {
       const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-      if (imgbbKey) {
-        const formData = new FormData();
-        formData.append("image", file);
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-          method: "POST",
-          body: formData,
-        });
-        const data = await res.json();
-        if (data.success) {
-          setImageUrl(data.data.url);
-          toast.success("Image uploaded successfully!");
-          return;
-        }
+      if (!imgbbKey) {
+        toast.info(
+          "Direct file upload requires an ImgBB API key (NEXT_PUBLIC_IMGBB_API_KEY in .env.local). Please paste any hosted image URL (e.g. Unsplash, ImgBB, Postimage) in the field below."
+        );
+        return;
       }
 
-      // Fallback: Read as data URL / preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImageUrl(reader.result as string);
-        toast.success("Studio photo loaded into preview!");
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data && data.success && data.data?.url) {
+        setImageUrl(data.data.url);
+        toast.success("Studio photo uploaded to ImgBB successfully!");
+      } else {
+        toast.error(data?.error?.message || "Failed to upload image to ImgBB.");
+      }
     } catch {
       toast.error("Failed to upload image. You can also paste an image URL directly.");
     } finally {

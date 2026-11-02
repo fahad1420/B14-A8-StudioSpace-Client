@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
+import { API_BASE_URL } from "@/lib/api";
 import { Mail, Lock, ArrowRight, Sparkles, Key } from "lucide-react";
 
 function LoginFormContent() {
@@ -48,18 +49,37 @@ function LoginFormContent() {
 
   const handleGoogleLogin = async () => {
     try {
+      setIsSubmitting(true);
       toast.info("Connecting to Google OAuth authentication...");
-      // Simulated Google OAuth response synchronization
-      await syncSocialLogin({
-        id: "google-creator-session-id",
-        name: "Google Creator",
-        email: "google.creator@studiospace.com",
-        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+
+      const callbackURL = `${window.location.origin}${redirectUrl.startsWith("/") ? redirectUrl : `/${redirectUrl}`}`;
+      const response = await fetch(`${API_BASE_URL}/api/auth/sign-in/social`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          provider: "google",
+          callbackURL,
+        }),
+        credentials: "include",
       });
-      toast.success("Signed in with Google successfully!");
-      router.push(redirectUrl);
-    } catch {
-      toast.error("Failed to authenticate with Google.");
+
+      const data = await response.json().catch(() => null);
+
+      if (data && data.url) {
+        // Authentic Google Cloud OAuth URL with client_id, PKCE & redirect_uri
+        window.location.href = data.url;
+        return;
+      }
+
+      // If Google provider is not enabled on server due to missing Google Cloud credentials
+      toast.error(
+        data?.message ||
+          "Google OAuth credentials (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET) are not configured on the server. Please check setup instructions in README."
+      );
+    } catch (err: any) {
+      toast.error(err.message || "Failed to initialize Google OAuth login.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
