@@ -9,16 +9,9 @@ export async function apiClient<T = any>(
 ): Promise<ApiResponse<T>> {
   const url = `${API_BASE_URL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
 
-  const defaultHeaders: Record<string, string> = {
+  const defaultHeaders: HeadersInit = {
     "Content-Type": "application/json",
   };
-
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("shoot_token");
-    if (token) {
-      defaultHeaders["Authorization"] = `Bearer ${token}`;
-    }
-  }
 
   const response = await fetch(url, {
     ...options,
@@ -26,7 +19,7 @@ export async function apiClient<T = any>(
       ...defaultHeaders,
       ...options.headers,
     },
-    credentials: "include", // Essential for HTTPOnly JWT session cookies!
+    credentials: "include", // Strictly authenticates via HTTPOnly JWT session cookies
   });
 
   let data: any;

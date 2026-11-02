@@ -50,16 +50,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await apiClient<{ user: User; token?: string }>("/api/auth/login", {
+      const response = await apiClient<{ user: User }>("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
 
       if (response && response.user) {
         setUser(response.user);
-        if (typeof window !== "undefined" && (response as any).token) {
-          localStorage.setItem("shoot_token", (response as any).token);
-        }
         return { success: true, message: response.message || "Logged in successfully" };
       }
       return { success: false, message: response.message || "Invalid credentials" };
@@ -100,9 +97,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       console.warn("Logout notification error:", error);
     } finally {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("shoot_token");
-      }
       setUser(null);
     }
   };
