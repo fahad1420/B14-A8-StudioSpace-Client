@@ -9,9 +9,16 @@ export async function apiClient<T = any>(
 ): Promise<ApiResponse<T>> {
   const url = `${API_BASE_URL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
 
-  const defaultHeaders: HeadersInit = {
+  const defaultHeaders: Record<string, string> = {
     "Content-Type": "application/json",
   };
+
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("shoot_token");
+    if (token) {
+      defaultHeaders["Authorization"] = `Bearer ${token}`;
+    }
+  }
 
   const response = await fetch(url, {
     ...options,
