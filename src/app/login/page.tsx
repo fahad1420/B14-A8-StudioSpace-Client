@@ -71,7 +71,6 @@ function LoginFormContent() {
         return;
       }
 
-      // If Google provider is not enabled on server due to missing Google Cloud credentials
       toast.error(
         data?.message ||
           "Google OAuth credentials (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET) are not configured on the server. Please check setup instructions in README."
@@ -90,32 +89,40 @@ function LoginFormContent() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 bg-surface-secondary/30">
+    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 bg-surface-secondary/30 relative">
       <div className="w-full max-w-md">
         <div className="text-center mb-8 flex flex-col items-center">
           <Logo size="lg" />
-          <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mt-3">
+          <p className="text-[10px] uppercase font-mono tracking-[0.28em] text-muted-foreground mt-3">
             Find Your Space. Create Your Story.
           </p>
         </div>
 
-        <Card className="border-border shadow-modal rounded-2xl bg-card">
-          <CardHeader className="text-center pb-4">
+        <Card className="border-border shadow-modal rounded-2xl bg-card relative overflow-hidden">
+          {/* Viewfinder Crop Marks */}
+          <div className="absolute top-2.5 left-2.5 pointer-events-none text-muted-foreground/30 font-mono text-[9px]">
+            ⌜ AUTH
+          </div>
+          <div className="absolute top-2.5 right-2.5 pointer-events-none text-muted-foreground/30 font-mono text-[9px]">
+            GATE ⌝
+          </div>
+
+          <CardHeader className="text-center pb-4 pt-6">
             <CardTitle className="font-serif text-2xl font-bold">Welcome Back</CardTitle>
-            <CardDescription className="text-xs">
+            <CardDescription className="text-xs font-mono">
               Sign in to manage your spaces, review bookings, or reserve new stages
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-4">
             {errorMessage && (
-              <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+              <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs font-mono">
                 {errorMessage}
               </div>
             )}
 
             {/* Quick Examiner Auto-Fill Pill for Evaluator */}
-            <div className="p-3 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-between font-mono">
               <div className="flex items-center gap-2 text-xs text-foreground">
                 <Key className="w-3.5 h-3.5 text-accent" />
                 <span className="font-medium">Examiner Demo Account</span>
@@ -132,18 +139,18 @@ function LoginFormContent() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email */}
               <div>
-                <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                  <Mail className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                   <Input
                     type="email"
                     required
                     placeholder="creator@studio.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 text-sm"
+                    className="pl-10 text-xs font-mono"
                   />
                 </div>
               </div>
@@ -151,26 +158,26 @@ function LoginFormContent() {
               {/* Password */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-foreground">
                     Password
                   </label>
                   <button
                     type="button"
                     onClick={() => toast.info("Password recovery is unavailable in demo environment.")}
-                    className="text-xs text-muted-foreground hover:text-accent transition-colors"
+                    className="text-xs text-muted-foreground hover:text-accent transition-colors font-mono"
                   >
-                    Forgot Password?
+                    Forgot?
                   </button>
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                  <Lock className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                   <Input
                     type="password"
                     required
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 text-sm"
+                    className="pl-10 text-xs font-mono"
                   />
                 </div>
               </div>
@@ -179,7 +186,7 @@ function LoginFormContent() {
                 type="submit"
                 variant="accent"
                 size="lg"
-                className="w-full mt-2 font-semibold tracking-wider uppercase text-xs rounded-xl shadow-hover"
+                className="w-full mt-2 font-mono font-bold tracking-wider uppercase text-xs rounded-xl shadow-hover"
                 isLoading={isSubmitting}
                 disabled={isSubmitting || !email || !password}
               >
@@ -192,8 +199,10 @@ function LoginFormContent() {
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border" />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground font-medium">Or continue with</span>
+              <div className="relative flex justify-center text-xs uppercase font-mono">
+                <span className="bg-card px-2 text-muted-foreground font-medium text-[10px] tracking-wider">
+                  Or continue with
+                </span>
               </div>
             </div>
 
@@ -203,7 +212,7 @@ function LoginFormContent() {
               variant="outline"
               size="lg"
               onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center gap-2.5 rounded-xl border-border hover:bg-surface-secondary text-foreground text-xs uppercase tracking-wider font-semibold"
+              className="w-full flex items-center justify-center gap-2.5 rounded-xl border-border hover:bg-surface-secondary text-foreground text-xs uppercase tracking-wider font-mono font-semibold"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -227,11 +236,16 @@ function LoginFormContent() {
             </Button>
           </CardContent>
 
-          <CardFooter className="justify-center border-t border-border/70 pt-4 text-xs text-muted-foreground">
-            <span>Don&apos;t have an account?</span>
-            <Link href="/register" className="text-accent font-semibold ml-1.5 hover:underline">
-              Create an Account
-            </Link>
+          <CardFooter className="justify-center border-t border-border/70 py-4">
+            <p className="text-xs text-muted-foreground font-sans">
+              Don&apos;t have an account?{" "}
+              <Link
+                href={`/register${redirectUrl !== "/" ? `?redirect=${redirectUrl}` : ""}`}
+                className="font-semibold text-accent hover:underline font-mono"
+              >
+                Create Account
+              </Link>
+            </p>
           </CardFooter>
         </Card>
       </div>
@@ -241,17 +255,7 @@ function LoginFormContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-[85vh] flex items-center justify-center">
-          <div className="w-full max-w-md p-8 bg-card rounded-2xl border border-border shadow-modal animate-pulse space-y-4">
-            <div className="h-8 w-1/2 mx-auto bg-surface-secondary rounded" />
-            <div className="h-10 bg-surface-secondary rounded" />
-            <div className="h-10 bg-surface-secondary rounded" />
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={<div className="min-h-[85vh] flex items-center justify-center">Loading...</div>}>
       <LoginFormContent />
     </Suspense>
   );

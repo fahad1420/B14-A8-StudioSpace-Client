@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Studio, StudioCategory } from "@/types";
 import { studioApi, miscApi } from "@/lib/api";
 import { StudioCard } from "@/components/studios/studio-card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/context/auth-context";
@@ -29,10 +28,10 @@ const CATEGORIES = [
 ];
 
 const SORT_OPTIONS = [
-  { label: "Newest First", value: "newest" },
-  { label: "Highest Rated", value: "rating" },
-  { label: "Price: Low to High", value: "price_asc" },
-  { label: "Price: High to Low", value: "price_desc" },
+  { label: "Newest Catalog Additions", value: "newest" },
+  { label: "Highest Rated Stages", value: "rating" },
+  { label: "Hourly Rate: Low to High", value: "price_asc" },
+  { label: "Hourly Rate: High to Low", value: "price_desc" },
 ];
 
 function StudiosListContent() {
@@ -139,18 +138,18 @@ function StudiosListContent() {
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Editorial Header Banner */}
-      <section className="bg-surface-secondary/70 border-b border-border py-12 lg:py-16">
+      <section className="bg-surface-secondary/70 border-b border-border py-14 lg:py-16 relative">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-accent mb-2">
+            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-2">
               <Grid3X3 className="w-3.5 h-3.5" />
-              <span>Global Studio Directory</span>
+              <span>PRODUCTION STAGE DIRECTORY // LIVE INVENTORY</span>
             </div>
             <h1 className="font-serif text-3xl sm:text-5xl font-bold text-foreground tracking-tight leading-tight mb-4">
               Explore Creative Production Stages
             </h1>
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Discover vetted photo lofts, acoustically treated voice suites, and industrial film stages. Book directly with studio hosts by the hour.
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-sans">
+              Discover verified photo lofts, acoustically treated voice suites, and soundproof cinema stages. Reserve verified facilities directly by the hour.
             </p>
           </div>
         </div>
@@ -158,9 +157,17 @@ function StudiosListContent() {
 
       {/* Filter and Search Bar Section */}
       <div className="container mx-auto px-4 sm:px-6 mt-8">
-        <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-subtle mb-10">
+        <div className="relative rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-subtle mb-10">
+          {/* Subtle Viewfinder Crop Marks */}
+          <div className="absolute top-2.5 left-2.5 pointer-events-none text-muted-foreground/40 font-mono text-[9px]">
+            ⌜ CONSOLE
+          </div>
+          <div className="absolute top-2.5 right-2.5 pointer-events-none text-muted-foreground/40 font-mono text-[9px]">
+            FILTERS ⌝
+          </div>
+
           {/* Top Row: Search Input + Location + Sort */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center pt-2">
             {/* Search by title / keyword */}
             <div className="md:col-span-5 relative">
               <Search className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
@@ -169,7 +176,7 @@ function StudiosListContent() {
                 placeholder="Search studios by title, cyc wall, gear..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full h-10 pl-10 pr-4 rounded-xl border border-input bg-surface text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent transition-colors"
+                className="w-full h-10 pl-10 pr-4 rounded-xl border border-input bg-surface text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent transition-colors font-sans"
               />
             </div>
 
@@ -181,7 +188,7 @@ function StudiosListContent() {
                 placeholder="Filter by city or neighborhood..."
                 value={locationTerm}
                 onChange={(e) => setLocationTerm(e.target.value)}
-                className="w-full h-10 pl-10 pr-4 rounded-xl border border-input bg-surface text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent transition-colors"
+                className="w-full h-10 pl-10 pr-4 rounded-xl border border-input bg-surface text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent transition-colors font-sans"
               />
             </div>
 
@@ -190,7 +197,8 @@ function StudiosListContent() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full h-10 px-3.5 rounded-xl border border-input bg-surface text-sm text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer transition-colors"
+                aria-label="Sort studios catalog"
+                className="w-full h-10 px-3.5 rounded-xl border border-input bg-surface text-xs font-mono text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer transition-colors"
               >
                 {SORT_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -211,7 +219,7 @@ function StudiosListContent() {
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-mono tracking-tight transition-all ${
                       isSelected
                         ? "bg-accent text-accent-foreground font-semibold shadow-sm"
                         : "bg-surface-secondary text-muted-foreground hover:text-foreground hover:bg-surface-tertiary"
@@ -225,14 +233,14 @@ function StudiosListContent() {
 
             {/* Price Range inputs & Clear action */}
             <div className="flex items-center gap-2.5">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
                 <DollarSign className="w-3.5 h-3.5" />
                 <input
                   type="number"
                   placeholder="Min"
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
-                  className="w-16 h-8 px-2 text-xs rounded-lg border border-input bg-surface text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="w-16 h-8 px-2 text-xs rounded-lg border border-input bg-surface text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent font-mono"
                 />
                 <span>-</span>
                 <input
@@ -240,7 +248,7 @@ function StudiosListContent() {
                   placeholder="Max"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
-                  className="w-16 h-8 px-2 text-xs rounded-lg border border-input bg-surface text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="w-16 h-8 px-2 text-xs rounded-lg border border-input bg-surface text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent font-mono"
                 />
                 <span className="text-[10px]">/hr</span>
               </div>
@@ -248,7 +256,7 @@ function StudiosListContent() {
               {hasActiveFilters && (
                 <button
                   onClick={handleClearFilters}
-                  className="inline-flex items-center gap-1 text-xs text-rose-500 hover:text-rose-600 font-medium ml-2 transition-colors"
+                  className="inline-flex items-center gap-1 text-xs font-mono text-rose-500 hover:text-rose-600 font-medium ml-2 transition-colors"
                   title="Reset all filters"
                 >
                   <RotateCcw className="w-3 h-3" />
@@ -260,11 +268,11 @@ function StudiosListContent() {
         </div>
 
         {/* Results Count Bar */}
-        <div className="flex items-center justify-between mb-6 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between mb-6 text-xs text-muted-foreground font-mono">
           <p>
-            Showing <span className="font-semibold text-foreground">{studios.length}</span>{" "}
-            creative {studios.length === 1 ? "space" : "spaces"}
-            {selectedCategory !== "All" && ` in ${selectedCategory}`}
+            SHOWING <span className="font-bold text-foreground">{studios.length}</span>{" "}
+            PRODUCTION {studios.length === 1 ? "STAGE" : "STAGES"}
+            {selectedCategory !== "All" && ` IN [ ${selectedCategory.toUpperCase()} ]`}
           </p>
         </div>
 
@@ -272,7 +280,7 @@ function StudiosListContent() {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="rounded-2xl border border-border p-4 space-y-4">
+              <div key={i} className="rounded-2xl border border-border p-5 space-y-4 bg-card">
                 <Skeleton className="aspect-[16/10] w-full rounded-xl" />
                 <Skeleton className="h-4 w-1/3" />
                 <Skeleton className="h-6 w-3/4" />
@@ -292,7 +300,7 @@ function StudiosListContent() {
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
               We couldn&apos;t find any studios matching your current filter combinations. Try loosening price filters, searching for a broader location, or resetting filters.
             </p>
-            <Button onClick={handleClearFilters} variant="accent">
+            <Button onClick={handleClearFilters} variant="accent" className="font-mono text-xs uppercase tracking-wider">
               Clear All Filters
             </Button>
           </div>

@@ -22,6 +22,7 @@ import {
   XCircle,
   AlertTriangle,
   ArrowRight,
+  Sparkles,
 } from "lucide-react";
 
 export default function MyBookingsPage() {
@@ -72,9 +73,9 @@ export default function MyBookingsPage() {
       case "Pending":
         return <Badge variant="warning">Pending Approval</Badge>;
       case "Confirmed":
-        return <Badge variant="success">Confirmed</Badge>;
+        return <Badge variant="success">Confirmed Slot</Badge>;
       case "Completed":
-        return <Badge variant="secondary">Completed</Badge>;
+        return <Badge variant="secondary">Wrapped</Badge>;
       case "Cancelled":
         return <Badge variant="destructive">Cancelled</Badge>;
       default:
@@ -86,16 +87,17 @@ export default function MyBookingsPage() {
     <ProtectedRoute>
       <div className="min-h-screen bg-background pb-24">
         {/* Header */}
-        <section className="bg-surface-secondary/70 border-b border-border py-12">
-          <div className="container mx-auto px-4 sm:px-6">
-            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-              Creator Reservations
-            </span>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mt-1">
+        <section className="bg-surface-secondary/70 border-b border-border py-14">
+          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>CREATOR RESERVATIONS // CALL SHEET ROSTER</span>
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
               My Production Bookings
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Track reserved studios, call dates, load-in hours, and download official invoices
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+              Track reserved studios, call dates, load-in hours, and download official PDF production invoices.
             </p>
           </div>
         </section>
@@ -104,7 +106,7 @@ export default function MyBookingsPage() {
           {isLoading ? (
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="rounded-2xl border border-border p-5 flex gap-5 items-center">
+                <div key={i} className="rounded-2xl border border-border p-5 flex gap-5 items-center bg-card">
                   <Skeleton className="w-32 h-24 rounded-xl shrink-0" />
                   <div className="flex-1 space-y-2">
                     <Skeleton className="h-5 w-1/3" />
@@ -120,11 +122,11 @@ export default function MyBookingsPage() {
               <h3 className="font-serif text-2xl font-bold text-foreground mb-2">
                 No Bookings Yet
               </h3>
-              <p className="text-sm text-muted-foreground mb-6">
+              <p className="text-sm text-muted-foreground mb-6 font-sans">
                 You haven&apos;t reserved any creative workspaces yet. Explore our curated photography and sound stages to book your next shoot.
               </p>
               <Link href="/studios">
-                <Button variant="accent" className="gap-2">
+                <Button variant="accent" className="gap-2 font-mono text-xs uppercase tracking-wider">
                   <span>Explore Studios</span>
                   <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -135,7 +137,7 @@ export default function MyBookingsPage() {
               {bookings.map((booking) => (
                 <div
                   key={booking._id}
-                  className="rounded-2xl border border-border bg-card p-5 shadow-subtle hover:shadow-card hover:border-accent/30 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-5"
+                  className="rounded-2xl border border-border bg-card p-5 shadow-subtle hover:shadow-card hover:border-accent/40 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-5"
                 >
                   {/* Studio image & specs */}
                   <div className="flex items-start sm:items-center gap-4 w-full md:w-auto">
@@ -151,7 +153,7 @@ export default function MyBookingsPage() {
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         {getStatusBadge(booking.status)}
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className="text-[10px] font-mono text-muted-foreground">
                           Host: {booking.hostName}
                         </span>
                       </div>
@@ -160,12 +162,12 @@ export default function MyBookingsPage() {
                         {booking.studioTitle}
                       </h3>
 
-                      <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <p className="text-xs text-muted-foreground flex items-center gap-1 font-sans">
                         <MapPin className="w-3.5 h-3.5 text-accent shrink-0" />
                         <span className="truncate max-w-xs">{booking.studioLocation}</span>
                       </p>
 
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground pt-1">
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground pt-1 font-mono">
                         <span className="flex items-center gap-1 font-medium text-foreground">
                           <Calendar className="w-3.5 h-3.5 text-accent" />
                           <span>{booking.bookingDate}</span>
@@ -185,12 +187,12 @@ export default function MyBookingsPage() {
                   <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto border-t md:border-t-0 pt-3 md:pt-0 border-border gap-3">
                     <div className="text-left md:text-right">
                       <div className="flex items-baseline gap-1">
-                        <span className="text-xs text-muted-foreground">Total:</span>
+                        <span className="text-[10px] font-mono text-muted-foreground">TOTAL:</span>
                         <span className="font-serif text-xl font-bold text-accent">
                           ${booking.totalAmount.toFixed(2)}
                         </span>
                       </div>
-                      <span className="text-[10px] text-muted-foreground block -mt-0.5">
+                      <span className="text-[10px] font-mono text-muted-foreground block -mt-0.5">
                         (${booking.rentalAmount} rental + ${booking.securityDeposit} deposit)
                       </span>
                     </div>
@@ -202,11 +204,11 @@ export default function MyBookingsPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => generateBookingInvoice(booking)}
-                          className="gap-1.5 text-xs rounded-lg"
+                          className="gap-1.5 text-xs rounded-lg font-mono"
                           title="Download official PDF invoice"
                         >
                           <Download className="w-3.5 h-3.5 text-accent" />
-                          <span>Invoice</span>
+                          <span>PDF Invoice</span>
                         </Button>
                       )}
 
@@ -216,7 +218,7 @@ export default function MyBookingsPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => setBookingToCancel(booking)}
-                          className="gap-1.5 text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10"
+                          className="gap-1.5 text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 font-mono"
                         >
                           <XCircle className="w-3.5 h-3.5" />
                           <span>Cancel</span>
@@ -235,38 +237,35 @@ export default function MyBookingsPage() {
           <Modal
             isOpen={!!bookingToCancel}
             onClose={() => setBookingToCancel(null)}
-            title="Cancel Studio Reservation"
+            title="Cancel Booking Request"
+            description="Are you sure you want to cancel this pending production session?"
             maxWidth="md"
           >
             <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
-                <div className="text-xs space-y-1">
-                  <p className="font-semibold text-sm">Cancel pending reservation?</p>
-                  <p>
-                    Are you sure you want to cancel your session for{" "}
-                    <strong>{bookingToCancel.studioTitle}</strong> on{" "}
-                    <strong>{bookingToCancel.bookingDate}</strong>?
-                  </p>
-                </div>
+              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-xs text-destructive flex items-start gap-2.5 font-mono">
+                <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>
+                  Canceling will release your reserved slot for {bookingToCancel.studioTitle} on{" "}
+                  {bookingToCancel.bookingDate}. This action cannot be undone.
+                </span>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2">
+              <div className="flex justify-end gap-3 pt-2">
                 <Button
                   variant="outline"
                   onClick={() => setBookingToCancel(null)}
                   disabled={isCancelling}
+                  className="font-mono text-xs uppercase"
                 >
-                  Keep Reservation
+                  Keep Booking
                 </Button>
-
                 <Button
                   variant="destructive"
                   onClick={confirmCancel}
                   isLoading={isCancelling}
-                  disabled={isCancelling}
+                  className="font-mono text-xs uppercase"
                 >
-                  Yes, Cancel Reservation
+                  Confirm Cancellation
                 </Button>
               </div>
             </div>

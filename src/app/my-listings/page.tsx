@@ -21,6 +21,7 @@ import {
   MapPin,
   DollarSign,
   AlertTriangle,
+  Sparkles,
 } from "lucide-react";
 
 export default function MyListingsPage() {
@@ -70,23 +71,24 @@ export default function MyListingsPage() {
     <ProtectedRoute>
       <div className="min-h-screen bg-background pb-24">
         {/* Header Banner */}
-        <section className="bg-surface-secondary/70 border-b border-border py-12">
+        <section className="bg-surface-secondary/70 border-b border-border py-14">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-                  Host Space Management
-                </span>
-                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mt-1">
+                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>STAGE MANAGEMENT // HOST WORKSPACE ROSTER</span>
+                </div>
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
                   My Studio Listings
                 </h1>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Manage active stages, update hourly pricing, and view rental profiles
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                  Manage active stages, update hourly rates, and audit facility profiles.
                 </p>
               </div>
 
               <Link href="/add-studio">
-                <Button variant="accent" className="gap-2 shadow-hover font-semibold uppercase tracking-wider text-xs">
+                <Button variant="accent" className="gap-2 shadow-hover font-mono font-semibold uppercase tracking-wider text-xs">
                   <PlusCircle className="w-4 h-4" />
                   <span>List New Studio</span>
                 </Button>
@@ -99,7 +101,7 @@ export default function MyListingsPage() {
           {isLoading ? (
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="rounded-2xl border border-border p-5 flex gap-5 items-center">
+                <div key={i} className="rounded-2xl border border-border p-5 flex gap-5 items-center bg-card">
                   <Skeleton className="w-32 h-24 rounded-xl shrink-0" />
                   <div className="flex-1 space-y-2">
                     <Skeleton className="h-5 w-1/3" />
@@ -115,11 +117,13 @@ export default function MyListingsPage() {
               <h3 className="font-serif text-2xl font-bold text-foreground mb-2">
                 No Active Studio Listings
               </h3>
-              <p className="text-sm text-muted-foreground mb-6">
-                You have not published any production spaces yet. Start earning hourly rental revenue by listing your studio.
+              <p className="text-sm text-muted-foreground mb-6 font-sans">
+                You have not published any production spaces yet. Start earning hourly rental revenue by listing your daylight loft or soundstage.
               </p>
               <Link href="/add-studio">
-                <Button variant="accent">List Your First Space</Button>
+                <Button variant="accent" className="font-mono text-xs uppercase tracking-wider">
+                  List Your First Space
+                </Button>
               </Link>
             </div>
           ) : (
@@ -127,7 +131,7 @@ export default function MyListingsPage() {
               {studios.map((studio) => (
                 <div
                   key={studio._id}
-                  className="rounded-2xl border border-border bg-card p-5 shadow-subtle hover:shadow-card hover:border-accent/30 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-5"
+                  className="rounded-2xl border border-border bg-card p-5 shadow-subtle hover:shadow-card hover:border-accent/40 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-5"
                 >
                   {/* Thumbnail & Core Info */}
                   <div className="flex items-center gap-4 w-full md:w-auto">
@@ -142,11 +146,11 @@ export default function MyListingsPage() {
 
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <Badge variant="accent" className="text-[10px] uppercase font-semibold">
+                        <Badge variant="accent" className="text-[10px] font-mono uppercase font-semibold">
                           {studio.category}
                         </Badge>
-                        <Badge variant="success" className="text-[10px] uppercase">
-                          Active
+                        <Badge variant="success" className="text-[10px] font-mono uppercase">
+                          Active Stage
                         </Badge>
                       </div>
 
@@ -154,13 +158,13 @@ export default function MyListingsPage() {
                         {studio.title}
                       </h3>
 
-                      <p className="text-xs text-muted-foreground flex items-center gap-1 truncate max-w-xs sm:max-w-md">
+                      <p className="text-xs text-muted-foreground flex items-center gap-1 truncate max-w-xs sm:max-w-md font-sans">
                         <MapPin className="w-3.5 h-3.5 text-accent shrink-0" />
                         <span>{studio.location}</span>
                       </p>
 
-                      <div className="flex items-baseline gap-1 text-xs pt-0.5">
-                        <span className="font-serif text-base font-bold text-foreground">
+                      <div className="flex items-baseline gap-1 text-xs pt-0.5 font-mono">
+                        <span className="font-serif text-lg font-bold text-foreground">
                           ${studio.hourlyRate}
                         </span>
                         <span className="text-muted-foreground">/ hr</span>
@@ -176,14 +180,14 @@ export default function MyListingsPage() {
                   {/* Action Buttons */}
                   <div className="flex items-center gap-2.5 w-full md:w-auto justify-end border-t md:border-t-0 pt-3 md:pt-0 border-border">
                     <Link href={`/studios/${studio._id}`} target="_blank">
-                      <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
+                      <Button variant="ghost" size="sm" className="gap-1.5 text-xs font-mono">
                         <ExternalLink className="w-3.5 h-3.5" />
-                        <span>View</span>
+                        <span>Preview</span>
                       </Button>
                     </Link>
 
                     <Link href={`/studios/edit/${studio._id}`}>
-                      <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+                      <Button variant="outline" size="sm" className="gap-1.5 text-xs font-mono">
                         <Edit className="w-3.5 h-3.5" />
                         <span>Edit</span>
                       </Button>
@@ -193,7 +197,7 @@ export default function MyListingsPage() {
                       variant="destructive"
                       size="sm"
                       onClick={() => setStudioToDelete(studio)}
-                      className="gap-1.5 text-xs"
+                      className="gap-1.5 text-xs font-mono"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Delete</span>
@@ -216,29 +220,28 @@ export default function MyListingsPage() {
             <div className="space-y-4">
               <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive flex items-start gap-3">
                 <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
-                <div className="text-xs space-y-1">
+                <div className="text-xs space-y-1 font-mono">
                   <p className="font-semibold text-sm">Warning: This action is permanent.</p>
                   <p>
-                    Are you sure you want to permanently delete{" "}
-                    <strong>&quot;{studioToDelete.title}&quot;</strong>? This workspace will be removed from marketplace discovery.
+                    Deleting &quot;{studioToDelete.title}&quot; will remove this stage from discovery and unpublish all calendar availability.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2">
+              <div className="flex justify-end gap-3 pt-2">
                 <Button
                   variant="outline"
                   onClick={() => setStudioToDelete(null)}
                   disabled={isDeleting}
+                  className="font-mono text-xs uppercase"
                 >
                   Cancel
                 </Button>
-
                 <Button
                   variant="destructive"
                   onClick={confirmDelete}
                   isLoading={isDeleting}
-                  disabled={isDeleting}
+                  className="font-mono text-xs uppercase"
                 >
                   Confirm Delete
                 </Button>

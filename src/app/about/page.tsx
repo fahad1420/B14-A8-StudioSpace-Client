@@ -13,17 +13,20 @@ export const metadata = {
 export default function AboutPage() {
   const values = [
     {
+      code: "PRINCIPLE // 01",
       title: "Creator-Centric Architecture",
       desc: "Built from the ground up for commercial photographers, indie cinematographers, podcasters, and sound designers who require exact technical specifications.",
       icon: Camera,
     },
     {
+      code: "PRINCIPLE // 02",
       title: "Honest & Transparent Pricing",
       desc: "Clear per-hour reservations without hidden facility surcharges or surprise load-in fees. Transparent security deposits refunded upon wrap inspection.",
       icon: Shield,
     },
     {
-      title: "Empowering Independent Stage Owners",
+      code: "PRINCIPLE // 03",
+      title: "Empowering Independent Owners",
       desc: "Studio hosts can monetize their physical real estate, fill dark days between commercial bookings, and connect with premier creative talent.",
       icon: Users,
     },
@@ -34,14 +37,14 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative bg-surface-secondary/70 border-b border-border py-20 lg:py-24 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 max-w-4xl text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs uppercase tracking-[0.2em] font-semibold mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-mono uppercase tracking-[0.24em] font-semibold mb-6">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Our Mission & Story</span>
+            <span>OUR MISSION &amp; STORY</span>
           </div>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-6">
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.14] mb-6">
             Democratizing Access to World-Class Creative Workspaces.
           </h1>
-          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto font-sans">
             StudioSpace is a peer-to-peer creative marketplace connecting directors, photographers, and audio engineers with professional production studios.
           </p>
         </div>
@@ -58,21 +61,32 @@ export default function AboutPage() {
                 fill
                 className="object-cover"
               />
+              <div className="absolute top-3 left-3 font-mono text-[9px] text-accent">
+                ⌜ STAGE ARCHIVE 01 ⌝
+              </div>
             </div>
 
             <div className="lg:col-span-6 space-y-5">
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-                The Inception
+              <span className="text-xs font-mono uppercase tracking-[0.24em] text-accent">
+                THE INCEPTION
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground leading-snug">
                 Why We Built StudioSpace
               </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
                 For decades, renting professional production stages meant navigating opaque price quotes, broker gatekeepers, and incomplete technical specs. Independent photographers and digital production crews wasted hours negotiating load-in hours, finding camlock power ratings, and guessing if natural light would hold.
               </p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
                 StudioSpace was engineered to solve this friction. By standardizing stage listings with verified ceiling heights, power drops, acoustic ratings, and transparent hourly rates, we give creators the freedom to focus entirely on visual storytelling.
               </p>
+              <div className="pt-2">
+                <Link href="/studios">
+                  <Button variant="accent" className="font-mono text-xs uppercase tracking-wider gap-2">
+                    <span>Explore Production Spaces</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -82,8 +96,8 @@ export default function AboutPage() {
       <section className="py-20 bg-surface-secondary/40 border-y border-border">
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
           <div className="text-center max-w-xl mx-auto mb-14">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              Core Principles
+            <span className="text-xs font-mono uppercase tracking-[0.24em] text-accent">
+              CORE PRINCIPLES
             </span>
             <h2 className="font-serif text-3xl font-bold text-foreground mt-2">
               What We Stand For
@@ -99,46 +113,24 @@ export default function AboutPage() {
                   className="rounded-2xl border border-border bg-card p-7 shadow-subtle flex flex-col justify-between"
                 >
                   <div>
-                    <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center text-accent mb-5">
-                      <Icon className="w-6 h-6" />
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center text-accent">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span className="font-mono text-[10px] text-accent font-semibold tracking-widest">
+                        {v.code}
+                      </span>
                     </div>
-                    <h3 className="font-serif text-xl font-bold text-foreground mb-3">
+                    <h3 className="font-serif text-lg font-bold text-foreground mb-2">
                       {v.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-muted-foreground leading-relaxed font-sans">
                       {v.desc}
                     </p>
                   </div>
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Box */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
-          <div className="rounded-3xl border border-border bg-gradient-to-br from-card via-surface-secondary to-card p-10 sm:p-14 text-center shadow-card space-y-6">
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
-              Ready to Book Your Next Production Space?
-            </h2>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Join thousands of filmmakers, photographers, and audio designers discovering exceptional spaces daily.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-              <Link href="/studios">
-                <Button variant="accent" size="lg" className="rounded-full gap-2">
-                  <span>Explore All Studios</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/add-studio">
-                <Button variant="outline" size="lg" className="rounded-full">
-                  Host Your Workspace
-                </Button>
-              </Link>
-            </div>
           </div>
         </div>
       </section>

@@ -23,6 +23,8 @@ import {
   ChevronLeft,
   Mail,
   User as UserIcon,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 
 export default function StudioDetailPage({
@@ -50,7 +52,7 @@ export default function StudioDetailPage({
           setStudio(res.data);
           setActiveImage(res.data.imageUrl);
         } else {
-          setError("Studio profile not found.");
+          setError("Studio profile not found in database.");
         }
       } catch (err: any) {
         setError(err.message || "Failed to load studio details.");
@@ -98,14 +100,14 @@ export default function StudioDetailPage({
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      toast.success("Studio link copied to clipboard!");
+      toast.success("Studio dispatch link copied to clipboard!");
     }
   };
 
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 sm:px-6 py-12 max-w-6xl space-y-8">
-        <Skeleton className="h-8 w-40 rounded-lg" />
+        <Skeleton className="h-8 w-44 rounded-lg" />
         <Skeleton className="aspect-[16/9] w-full rounded-2xl" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
@@ -137,35 +139,35 @@ export default function StudioDetailPage({
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Back button breadcrumb bar */}
-      <div className="container mx-auto px-4 sm:px-6 py-4 flex items-center justify-between text-xs text-muted-foreground border-b border-border/60">
+      {/* Back button breadcrumb bar with technical callouts */}
+      <div className="container mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between text-xs text-muted-foreground border-b border-border/70">
         <Link
           href="/studios"
-          className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors font-medium"
+          className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors font-mono tracking-tight"
         >
           <ChevronLeft className="w-4 h-4" />
-          <span>Back to Explore Studios</span>
+          <span>RETURN TO STAGE DIRECTORY</span>
         </Link>
 
         <div className="flex items-center gap-2">
           <button
             onClick={handleWishlistToggle}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium transition-colors ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-mono transition-colors ${
               isWishlisted
                 ? "bg-rose-500/10 text-rose-600 border-rose-500/30"
                 : "hover:bg-surface-secondary text-foreground"
             }`}
           >
             <Heart className={`w-3.5 h-3.5 ${isWishlisted ? "fill-rose-500 text-rose-500" : ""}`} />
-            <span>{isWishlisted ? "Saved" : "Save"}</span>
+            <span>{isWishlisted ? "SAVED" : "SAVE"}</span>
           </button>
 
           <button
             onClick={handleShare}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-medium hover:bg-surface-secondary text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-mono hover:bg-surface-secondary text-foreground transition-colors"
           >
             <Share2 className="w-3.5 h-3.5" />
-            <span>Share</span>
+            <span>SHARE</span>
           </button>
         </div>
       </div>
@@ -174,16 +176,19 @@ export default function StudioDetailPage({
         {/* Title Header */}
         <div className="mb-6">
           <div className="flex flex-wrap items-center gap-2.5 mb-2">
-            <Badge variant="accent" className="text-xs uppercase tracking-wider font-semibold">
+            <Badge variant="accent" className="text-[11px] font-mono uppercase tracking-wider font-semibold">
               {studio.category}
             </Badge>
-            <div className="flex items-center gap-1 text-xs font-semibold text-foreground bg-surface-secondary px-2.5 py-1 rounded-full border border-border">
+            <div className="flex items-center gap-1 text-xs font-mono font-semibold text-foreground bg-surface-secondary px-2.5 py-1 rounded-full border border-border">
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
               <span>{studio.rating ? Number(studio.rating).toFixed(1) : "5.0"}</span>
               <span className="text-muted-foreground font-normal">
                 ({studio.reviewCount || 0} reviews)
               </span>
             </div>
+            <span className="font-mono text-[10px] text-muted-foreground tracking-widest hidden sm:inline">
+              [ VERIFIED STAGE FACILITY ]
+            </span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
@@ -192,11 +197,11 @@ export default function StudioDetailPage({
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
             <MapPin className="w-4 h-4 text-accent shrink-0" />
-            <span>{studio.location}</span>
+            <span className="font-sans">{studio.location}</span>
           </div>
         </div>
 
-        {/* Gallery Visual Showcase */}
+        {/* Gallery Visual Showcase with Viewfinder Corners */}
         <div className="space-y-3 mb-12">
           {/* Main Selected Image */}
           <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-border bg-black shadow-card">
@@ -208,6 +213,17 @@ export default function StudioDetailPage({
               className="object-cover"
               sizes="(max-width: 1200px) 100vw, 1200px"
             />
+            {/* Viewfinder Corner Overlays */}
+            <div className="absolute top-4 left-4 z-10 pointer-events-none hidden sm:block">
+              <span className="font-mono text-[9px] tracking-[0.2em] text-white/60">
+                ⌜ STAGE VIEW // FRAME 01 ⌝
+              </span>
+            </div>
+            <div className="absolute bottom-4 right-4 z-10 pointer-events-none hidden sm:block">
+              <span className="font-mono text-[9px] tracking-widest text-accent/80">
+                ● LIVE PERSPECTIVE
+              </span>
+            </div>
           </div>
 
           {/* Thumbnails row if more than 1 image */}
@@ -235,11 +251,11 @@ export default function StudioDetailPage({
           {/* Left Column: Details & Amenities (8 cols) */}
           <div className="lg:col-span-8 space-y-10">
             {/* Quick Specs Pill Bar */}
-            <div className="flex flex-wrap items-center gap-6 p-5 rounded-2xl border border-border bg-surface-secondary/40 text-sm">
+            <div className="flex flex-wrap items-center gap-6 p-5 rounded-2xl border border-border bg-surface-secondary/50 text-sm font-mono text-xs">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-accent" />
                 <span>
-                  Max Capacity: <strong className="text-foreground">{studio.maxCapacity} people</strong>
+                  Max Capacity: <strong className="text-foreground">{studio.maxCapacity} crew</strong>
                 </span>
               </div>
               <div className="h-4 w-px bg-border hidden sm:block" />
@@ -252,44 +268,53 @@ export default function StudioDetailPage({
               <div className="h-4 w-px bg-border hidden sm:block" />
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-accent" />
-                <span>Instant Hourly Reservation</span>
+                <span className="text-foreground font-semibold">Instant Hourly Booking</span>
               </div>
             </div>
 
             {/* Detailed Overview */}
             <div>
+              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-accent mb-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>STAGE ARCHITECTURE</span>
+              </div>
               <h2 className="font-serif text-2xl font-bold text-foreground mb-4">
-                Space Overview & Technical Spec
+                Space Overview &amp; Technical Specifications
               </h2>
-              <div className="prose dark:prose-invert max-w-none text-muted-foreground leading-relaxed text-sm sm:text-base whitespace-pre-line">
+              <div className="prose dark:prose-invert max-w-none text-muted-foreground leading-relaxed text-sm sm:text-base whitespace-pre-line font-sans">
                 {studio.overview}
               </div>
             </div>
 
             {/* Amenities Grid */}
             <div>
+              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-accent mb-2">
+                <Zap className="w-3.5 h-3.5" />
+                <span>INVENTORY &amp; POWER</span>
+              </div>
               <h2 className="font-serif text-2xl font-bold text-foreground mb-4">
-                Amenities & Equipment Inventory
+                Amenities &amp; Production Gear
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                {studio.amenities && studio.amenities.map((amenity, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 p-3.5 rounded-xl border border-border bg-card shadow-subtle text-sm text-foreground"
-                  >
-                    <CheckCircle className="w-4 h-4 text-accent shrink-0" />
-                    <span>{amenity}</span>
-                  </div>
-                ))}
+                {studio.amenities &&
+                  studio.amenities.map((amenity, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 p-3.5 rounded-xl border border-border bg-card shadow-subtle text-xs sm:text-sm text-foreground"
+                    >
+                      <CheckCircle className="w-4 h-4 text-accent shrink-0" />
+                      <span>{amenity}</span>
+                    </div>
+                  ))}
               </div>
             </div>
 
             {/* Host Information Card */}
             <div>
               <h2 className="font-serif text-2xl font-bold text-foreground mb-4">
-                Meet Your Studio Host
+                Studio Host &amp; Facility Manager
               </h2>
-              <div className="rounded-2xl border border-border bg-surface-secondary/40 p-6 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+              <div className="rounded-2xl border border-border bg-surface-secondary/50 p-6 flex flex-col sm:flex-row items-center sm:items-start gap-5">
                 <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-accent bg-card shrink-0">
                   {studio.hostImage ? (
                     <Image
@@ -310,17 +335,17 @@ export default function StudioDetailPage({
                     <h3 className="font-serif text-lg font-bold text-foreground">
                       {studio.hostName || "Verified Studio Host"}
                     </h3>
-                    <Badge variant="secondary" className="text-[10px] w-fit mx-auto sm:mx-0">
-                      Verified Host
+                    <Badge variant="secondary" className="text-[10px] w-fit mx-auto sm:mx-0 font-mono">
+                      Verified Stage Host
                     </Badge>
                   </div>
 
-                  <p className="text-xs text-muted-foreground flex items-center justify-center sm:justify-start gap-1.5 mb-3">
+                  <p className="text-xs text-muted-foreground flex items-center justify-center sm:justify-start gap-1.5 mb-3 font-mono">
                     <Mail className="w-3.5 h-3.5 text-accent" />
                     <span>{studio.hostEmail}</span>
                   </p>
 
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-xs text-muted-foreground leading-relaxed font-sans">
                     Committed to seamless production support. Studio manager is accessible for stage walkthroughs, electrical camlock tie-ins, and flexible wrap inspections.
                   </p>
                 </div>
@@ -330,9 +355,9 @@ export default function StudioDetailPage({
             {/* Honest Reviews Section */}
             <div>
               <h2 className="font-serif text-2xl font-bold text-foreground mb-2">
-                Verified Production Reviews
+                Production Reviews
               </h2>
-              <p className="text-xs text-muted-foreground mb-6">
+              <p className="text-xs text-muted-foreground mb-6 font-mono">
                 Only verified creators who have completed booked sessions can submit reviews.
               </p>
 
@@ -355,7 +380,7 @@ export default function StudioDetailPage({
                   <h4 className="font-serif text-base font-semibold text-foreground mb-1">
                     No Written Reviews Yet
                   </h4>
-                  <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                  <p className="text-xs text-muted-foreground max-w-sm mx-auto font-sans">
                     Be among the premier creators to book this workspace and leave your review upon wrap.
                   </p>
                 </div>
@@ -369,40 +394,40 @@ export default function StudioDetailPage({
               {/* Hourly Pricing Header */}
               <div className="flex items-baseline justify-between border-b border-border/70 pb-4">
                 <div>
-                  <span className="text-xs text-muted-foreground block uppercase tracking-wider">
+                  <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
                     Rental Rate
                   </span>
                   <div className="flex items-baseline gap-1 mt-0.5">
                     <span className="font-serif text-3xl font-extrabold text-foreground">
                       ${studio.hourlyRate}
                     </span>
-                    <span className="text-sm text-muted-foreground">/ hour</span>
+                    <span className="text-xs font-mono text-muted-foreground">/ hour</span>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-xs text-muted-foreground block uppercase tracking-wider">
+                  <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
                     Deposit
                   </span>
-                  <span className="text-base font-semibold text-foreground">
+                  <span className="text-sm font-mono font-semibold text-foreground">
                     ${studio.securityDeposit}
                   </span>
                 </div>
               </div>
 
               {/* Booking Highlights */}
-              <div className="space-y-3 text-xs text-muted-foreground">
+              <div className="space-y-3 text-xs text-muted-foreground font-mono">
                 <div className="flex items-center justify-between">
                   <span>Minimum Session:</span>
-                  <span className="font-medium text-foreground">1 hour</span>
+                  <span className="font-semibold text-foreground">1 hour</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Capacity:</span>
-                  <span className="font-medium text-foreground">{studio.maxCapacity} people</span>
+                  <span>Max Crew Capacity:</span>
+                  <span className="font-semibold text-foreground">{studio.maxCapacity} people</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Cancellation:</span>
-                  <span className="font-medium text-foreground">Free while Pending</span>
+                  <span>Cancellation Policy:</span>
+                  <span className="font-semibold text-foreground">Free while Pending</span>
                 </div>
               </div>
 
@@ -411,13 +436,13 @@ export default function StudioDetailPage({
                 variant="accent"
                 size="lg"
                 onClick={() => setIsBookingOpen(true)}
-                className="w-full rounded-xl py-4 text-sm font-semibold tracking-wide uppercase shadow-hover"
+                className="w-full rounded-xl py-4 text-xs font-mono font-bold tracking-[0.16em] uppercase shadow-hover"
               >
-                Book Workspace Now
+                Reserve Workspace
               </Button>
 
-              <p className="text-[11px] text-center text-muted-foreground leading-tight">
-                No immediate credit card charge. Submitting reserves your requested slot with Pending status awaiting host confirmation.
+              <p className="text-[11px] text-center text-muted-foreground leading-tight font-sans">
+                No immediate payment required. Submitting creates a Pending reservation awaiting host schedule approval.
               </p>
             </div>
           </div>

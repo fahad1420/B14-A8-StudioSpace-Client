@@ -23,6 +23,7 @@ import {
   Upload,
   AlertCircle,
   ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 
 const CATEGORIES: StudioCategory[] = [
@@ -85,7 +86,7 @@ export default function AddStudioPage() {
     }
   };
 
-  // Image Upload handler (supports direct imgbb or simulated image hosting with instant preview)
+  // Image Upload handler
   const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -103,28 +104,26 @@ export default function AddStudioPage() {
     setIsUploading(true);
     try {
       const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-      if (!imgbbKey) {
-        toast.info(
-          "Direct file upload requires an ImgBB API key (NEXT_PUBLIC_IMGBB_API_KEY in .env.local). Please paste any hosted image URL (e.g. Unsplash, ImgBB, Postimage) in the field below."
-        );
-        return;
+      if (imgbbKey) {
+        const formData = new FormData();
+        formData.append("image", file);
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        if (data && data.data && data.data.url) {
+          setImageUrl(data.data.url);
+          toast.success("Studio photo uploaded to ImgBB successfully!");
+          return;
+        }
       }
 
-      const formData = new FormData();
-      formData.append("image", file);
-      const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data && data.success && data.data?.url) {
-        setImageUrl(data.data.url);
-        toast.success("Studio photo uploaded to ImgBB successfully!");
-      } else {
-        toast.error(data?.error?.message || "Failed to upload image to ImgBB.");
-      }
+      toast.info(
+        "Direct ImgBB API key is not configured in environment. Please provide a direct publicly hosted image URL below."
+      );
     } catch {
-      toast.error("Failed to upload image. You can also paste an image URL directly.");
+      toast.error("Failed to upload image. Please provide a direct image URL.");
     } finally {
       setIsUploading(false);
     }
@@ -134,37 +133,52 @@ export default function AddStudioPage() {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!title.trim() || !category || !hourlyRate || !location.trim() || !imageUrl.trim() || !overview.trim()) {
-      setErrorMessage("Please complete all required fields.");
+    if (!title.trim()) {
+      setErrorMessage("Studio title is required.");
       return;
     }
-
-    if (selectedAmenities.length === 0) {
-      setErrorMessage("Please select at least one amenity or equipment item.");
+    if (!hourlyRate || Number(hourlyRate) <= 0) {
+      setErrorMessage("Please specify a valid hourly rental rate.");
       return;
     }
-
-    if (overview.trim().length < 20) {
-      setErrorMessage("Overview must be at least 20 characters in length.");
+    if (!maxCapacity || Number(maxCapacity) <= 0) {
+      setErrorMessage("Please specify the maximum crew capacity.");
+      return;
+    }
+    if (!location.trim()) {
+      setErrorMessage("Studio location is required.");
+      return;
+    }
+    if (!imageUrl.trim()) {
+      setErrorMessage("Please provide a primary studio photo URL or upload an image.");
+      return;
+    }
+    if (imageUrl.startsWith("data:")) {
+      setErrorMessage(
+        "Embedded base64 preview data cannot be stored in production MongoDB. Please provide a direct hosted image URL (e.g. Unsplash, ImgBB, Cloudinary, AWS S3)."
+      );
+      return;
+    }
+    if (!overview.trim() || overview.trim().length < 20) {
+      setErrorMessage("Please provide a comprehensive space overview (at least 20 characters).");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const payload = {
+      const res = await studioApi.create({
         title: title.trim(),
         category,
         hourlyRate: Number(hourlyRate),
         securityDeposit: securityDeposit ? Number(securityDeposit) : 0,
-        maxCapacity: Number(maxCapacity) || 10,
+        maxCapacity: Number(maxCapacity),
         location: location.trim(),
         imageUrl: imageUrl.trim(),
         amenities: selectedAmenities,
         overview: overview.trim(),
-      };
+      });
 
-      const res = await studioApi.create(payload);
-      toast.success(res.message || "Studio space listed successfully!");
+      toast.success(res.message || "Studio published successfully!");
       router.push("/my-listings");
     } catch (err: any) {
       const msg = err.data?.message || err.message || "Failed to create studio listing.";
@@ -177,353 +191,353 @@ export default function AddStudioPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-surface-secondary/40 py-12 lg:py-16">
-        <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
-          {/* Header */}
-          <div className="mb-8">
-            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-              Host Onboarding
-            </span>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mt-1">
-              List Your Production Workspace
+      <div className="min-h-screen bg-background pb-24">
+        {/* Header Banner */}
+        <section className="bg-surface-secondary/70 border-b border-border py-14">
+          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>STAGE ONBOARDING // HOST DIRECTORY INTAKE</span>
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+              List Your Studio Space
             </h1>
-            <p className="text-sm text-muted-foreground mt-2">
-              Provide production crews with accurate stage specifications, gear inventories, and transparent hourly rates.
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+              Publish your daylight cyclorama, sound stage, podcast room, or music tracking suite to thousands of verified creative crews.
             </p>
           </div>
+        </section>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {errorMessage && (
-              <div className="p-4 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-sm flex items-center gap-3">
-                <AlertCircle className="w-5 h-5 shrink-0" />
-                <span>{errorMessage}</span>
-              </div>
-            )}
+        <div className="container mx-auto px-4 sm:px-6 mt-8 max-w-5xl">
+          {errorMessage && (
+            <div className="mb-6 flex items-start gap-3 p-4 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs leading-relaxed font-mono">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
 
-            {/* Read-Only Host Profile Section */}
-            <Card className="border-border rounded-2xl bg-card shadow-subtle">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Host Identity (Read-Only)</CardTitle>
-                <CardDescription className="text-xs">
-                  Derived securely from your verified authenticated session
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-medium text-muted-foreground uppercase mb-1">
-                    Host Full Name
-                  </label>
-                  <input
-                    type="text"
-                    disabled
-                    value={user?.name || ""}
-                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-surface-secondary text-foreground text-sm font-medium cursor-not-allowed opacity-80"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-muted-foreground uppercase mb-1">
-                    Host Verified Email
-                  </label>
-                  <input
-                    type="email"
-                    disabled
-                    value={user?.email || ""}
-                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-surface-secondary text-foreground text-sm font-medium cursor-not-allowed opacity-80"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Basic Studio Info */}
-            <Card className="border-border rounded-2xl bg-card shadow-subtle">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Studio Identity & Classification</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                    Studio Title *
-                  </label>
-                  <Input
-                    required
-                    placeholder="e.g. The Daylight Loft & Infinite Cyclorama"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Form Fields (8 cols) */}
+            <div className="lg:col-span-8 space-y-6">
+              {/* Studio Identity */}
+              <Card className="border-border rounded-2xl bg-card shadow-subtle">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-base font-serif font-bold">1. Studio Identity &amp; Classification</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
                   <div>
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                      Category *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                      Studio Title *
                     </label>
-                    <select
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value as StudioCategory)}
-                      className="w-full h-10 px-3.5 rounded-xl border border-input bg-surface text-sm text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
-                    >
-                      {CATEGORIES.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
+                    <Input
+                      required
+                      placeholder="e.g. The Daylight Loft & Infinite Cyclorama"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="font-sans"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                        Discipline / Category *
+                      </label>
+                      <select
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value as StudioCategory)}
+                        aria-label="Studio category"
+                        className="w-full h-10 px-3.5 rounded-xl border border-input bg-surface text-xs font-mono text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
+                      >
+                        {CATEGORIES.map((cat) => (
+                          <option key={cat} value={cat}>
+                            {cat}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                        Max Crew Capacity *
+                      </label>
+                      <div className="relative">
+                        <Users className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
+                        <Input
+                          type="number"
+                          required
+                          min={1}
+                          placeholder="e.g. 25"
+                          value={maxCapacity}
+                          onChange={(e) => setMaxCapacity(e.target.value ? Number(e.target.value) : "")}
+                          className="pl-10 font-mono"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                      Maximum Capacity (Crew + Talent) *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                      Physical Location / City &amp; Address *
                     </label>
                     <div className="relative">
-                      <Users className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                      <MapPin className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
+                      <Input
+                        required
+                        placeholder="e.g. 420 Industrial Ave, Arts District, Brooklyn, NY"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        className="pl-10 font-sans"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Pricing & Deposit */}
+              <Card className="border-border rounded-2xl bg-card shadow-subtle">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-base font-serif font-bold">2. Hourly Pricing &amp; Security</CardTitle>
+                  <CardDescription className="text-xs font-mono">
+                    Set your hourly stage rate and refundable security deposit
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                      Hourly Rental Rate ($ / hr) *
+                    </label>
+                    <div className="relative">
+                      <DollarSign className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                       <Input
                         type="number"
                         required
-                        min={1}
-                        placeholder="e.g. 25"
-                        value={maxCapacity}
-                        onChange={(e) => setMaxCapacity(e.target.value ? Number(e.target.value) : "")}
-                        className="pl-10"
+                        min={10}
+                        placeholder="e.g. 85"
+                        value={hourlyRate}
+                        onChange={(e) => setHourlyRate(e.target.value ? Number(e.target.value) : "")}
+                        className="pl-10 font-mono"
                       />
                     </div>
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                    Location / Physical Address *
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      required
-                      placeholder="e.g. 420 Industrial Ave, Arts District, Brooklyn, NY"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Pricing & Deposit */}
-            <Card className="border-border rounded-2xl bg-card shadow-subtle">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Hourly Pricing & Security</CardTitle>
-                <CardDescription className="text-xs">
-                  Set your base hourly rental rate and refundable security deposit
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                    Hourly Rental Rate ($ / hr) *
-                  </label>
-                  <div className="relative">
-                    <DollarSign className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      type="number"
-                      required
-                      min={10}
-                      placeholder="e.g. 85"
-                      value={hourlyRate}
-                      onChange={(e) => setHourlyRate(e.target.value ? Number(e.target.value) : "")}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                    Refundable Security Deposit ($)
-                  </label>
-                  <div className="relative">
-                    <ShieldCheck className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      type="number"
-                      min={0}
-                      placeholder="e.g. 150"
-                      value={securityDeposit}
-                      onChange={(e) => setSecurityDeposit(e.target.value ? Number(e.target.value) : "")}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Media & Photography */}
-            <Card className="border-border rounded-2xl bg-card shadow-subtle">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Studio Photography</CardTitle>
-                <CardDescription className="text-xs">
-                  Upload high-resolution photography or enter a direct image URL
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-                  <div>
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                      Upload File
-                    </label>
-                    <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-accent hover:bg-surface-secondary/50 transition-colors">
-                      <Upload className="w-6 h-6 text-accent mb-2" />
-                      <span className="text-xs font-semibold text-foreground">
-                        {isUploading ? "Processing..." : "Select Studio Photo"}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground mt-0.5">PNG, JPG, WebP up to 5MB</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleImageFileChange}
-                        disabled={isUploading}
-                      />
-                    </label>
-                  </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                      Or Direct Image URL *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                      Refundable Security Deposit ($)
                     </label>
                     <div className="relative">
-                      <ImageIcon className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                      <ShieldCheck className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                       <Input
-                        type="url"
-                        required
-                        placeholder="https://images.unsplash.com/..."
-                        value={imageUrl}
-                        onChange={(e) => setImageUrl(e.target.value)}
-                        className="pl-10"
+                        type="number"
+                        min={0}
+                        placeholder="e.g. 150"
+                        value={securityDeposit}
+                        onChange={(e) => setSecurityDeposit(e.target.value ? Number(e.target.value) : "")}
+                        className="pl-10 font-mono"
                       />
                     </div>
                   </div>
-                </div>
+                </CardContent>
+              </Card>
 
-                {/* Image Preview Box */}
-                {imageUrl && (
-                  <div className="mt-4">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                      Image Preview:
-                    </p>
-                    <div className="relative aspect-[16/9] w-full max-w-md rounded-xl overflow-hidden border border-border bg-black">
-                      <Image src={imageUrl} alt="Studio Preview" fill className="object-cover" />
+              {/* Media & Photography */}
+              <Card className="border-border rounded-2xl bg-card shadow-subtle">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-base font-serif font-bold">3. Studio Photography</CardTitle>
+                  <CardDescription className="text-xs font-mono">
+                    Upload via ImgBB cloud or enter a direct hosted image URL
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                        Upload File
+                      </label>
+                      <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-accent hover:bg-surface-secondary/50 transition-colors">
+                        <Upload className="w-6 h-6 text-accent mb-2" />
+                        <span className="text-xs font-mono font-semibold text-foreground">
+                          {isUploading ? "Uploading..." : "Select Studio Photo"}
+                        </span>
+                        <span className="text-[10px] font-mono text-muted-foreground mt-0.5">PNG, JPG, WebP up to 5MB</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleImageFileChange}
+                          disabled={isUploading}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                        Or Hosted Image URL *
+                      </label>
+                      <div className="relative">
+                        <ImageIcon className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
+                        <Input
+                          placeholder="https://images.unsplash.com/..."
+                          value={imageUrl}
+                          onChange={(e) => setImageUrl(e.target.value)}
+                          className="pl-10 font-mono text-xs"
+                        />
+                      </div>
+                      <p className="text-[10px] text-muted-foreground font-sans leading-tight">
+                        Direct public HTTPS links only. Pre-configured Unsplash and hosted URLs load with instant optimization.
+                      </p>
                     </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Amenities & Gear */}
-            <Card className="border-border rounded-2xl bg-card shadow-subtle">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Amenities & Stage Facilities</CardTitle>
-                <CardDescription className="text-xs">
-                  Select all provided amenities and production gear available to renters
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-                  {COMMON_AMENITIES.map((amenity) => {
-                    const isChecked = selectedAmenities.includes(amenity);
-                    return (
-                      <button
-                        type="button"
-                        key={amenity}
-                        onClick={() => toggleAmenity(amenity)}
-                        className={`flex items-center gap-2.5 p-3 rounded-xl border text-xs text-left transition-all ${
-                          isChecked
-                            ? "border-accent bg-accent/10 text-foreground font-semibold"
-                            : "border-border bg-surface-secondary/40 text-muted-foreground hover:bg-surface-secondary"
-                        }`}
-                      >
-                        <div
-                          className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${
-                            isChecked ? "bg-accent border-accent text-white" : "border-muted-foreground/40"
+              {/* Amenities Checklist */}
+              <Card className="border-border rounded-2xl bg-card shadow-subtle">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-base font-serif font-bold">4. Technical Equipment &amp; Amenities</CardTitle>
+                  <CardDescription className="text-xs font-mono">
+                    Select verified gear, power specs, and facilities available on stage
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {COMMON_AMENITIES.map((amenity) => {
+                      const isChecked = selectedAmenities.includes(amenity);
+                      return (
+                        <button
+                          type="button"
+                          key={amenity}
+                          onClick={() => toggleAmenity(amenity)}
+                          className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-left transition-all ${
+                            isChecked
+                              ? "border-accent bg-accent/10 text-foreground font-semibold"
+                              : "border-border bg-surface text-muted-foreground hover:border-accent/40"
                           }`}
                         >
-                          {isChecked && <Check className="w-3 h-3" />}
-                        </div>
-                        <span className="truncate">{amenity}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                          <div
+                            className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${
+                              isChecked
+                                ? "bg-accent border-accent text-accent-foreground"
+                                : "border-muted-foreground/40"
+                            }`}
+                          >
+                            {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                          <span className="text-xs truncate font-mono">{amenity}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
 
-                {/* Add Custom Amenity Tag */}
-                <div className="flex items-center gap-2 pt-2">
-                  <Input
-                    placeholder="Add custom amenity or gear (e.g. Arri Alexa Mini LF package)..."
-                    value={customAmenity}
-                    onChange={(e) => setCustomAmenity(e.target.value)}
-                    className="text-xs h-9"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleAddCustomAmenity();
-                      }
-                    }}
+                  {/* Add Custom Amenity */}
+                  <div className="flex gap-2 pt-2">
+                    <Input
+                      placeholder="Add custom gear, lighting, or facility..."
+                      value={customAmenity}
+                      onChange={(e) => setCustomAmenity(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddCustomAmenity();
+                        }
+                      }}
+                      className="text-xs font-mono"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleAddCustomAmenity}
+                      className="shrink-0 font-mono text-xs"
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Add
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Overview & Rules */}
+              <Card className="border-border rounded-2xl bg-card shadow-subtle">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-base font-serif font-bold">5. Space Overview &amp; Production Specs</CardTitle>
+                  <CardDescription className="text-xs font-mono">
+                    Provide detailed dimensions, ceiling heights, electrical drops, load-in guidelines, and noise policies
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <textarea
+                    required
+                    rows={5}
+                    placeholder="Describe your studio layout, cyclorama dimensions, ceiling grid height, power distro, noise isolation rating, and load-in elevator specs..."
+                    value={overview}
+                    onChange={(e) => setOverview(e.target.value)}
+                    className="w-full p-4 rounded-xl border border-input bg-surface text-xs leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent font-sans"
                   />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleAddCustomAmenity}
-                    className="shrink-0 h-9"
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add
-                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Submit CTA */}
+              <div className="flex justify-end pt-4">
+                <Button
+                  type="submit"
+                  variant="accent"
+                  size="lg"
+                  isLoading={isSubmitting}
+                  className="rounded-xl px-8 py-4 font-mono font-bold uppercase tracking-wider text-xs gap-2 shadow-hover"
+                >
+                  <span>Publish Studio Space</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Live Preview Card (4 cols) */}
+            <div className="lg:col-span-4 sticky top-24">
+              <div className="space-y-3">
+                <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground block">
+                  LIVE CALL SHEET PREVIEW
+                </span>
+
+                <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-card">
+                  <div className="relative aspect-[16/10] w-full bg-surface-secondary">
+                    {imageUrl ? (
+                      <Image src={imageUrl} alt="Preview" fill className="object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/60 p-4 text-center">
+                        <ImageIcon className="w-8 h-8 mb-1 text-accent/60" />
+                        <span className="text-xs font-mono">Photo Preview Frame</span>
+                      </div>
+                    )}
+                    <div className="absolute top-3 left-3">
+                      <div className="px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-white font-mono text-[9.5px] uppercase">
+                        {category}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-5 space-y-3">
+                    <h4 className="font-serif font-bold text-base text-foreground line-clamp-1">
+                      {title || "Untitled Studio Workspace"}
+                    </h4>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 font-sans">
+                      <MapPin className="w-3.5 h-3.5 text-accent shrink-0" />
+                      <span className="truncate">{location || "Location not specified"}</span>
+                    </p>
+                    <div className="pt-3 border-t border-border flex items-baseline justify-between font-mono">
+                      <div>
+                        <span className="font-serif text-xl font-bold text-foreground">
+                          ${hourlyRate || "0"}
+                        </span>
+                        <span className="text-xs text-muted-foreground">/ hr</span>
+                      </div>
+                      <span className="text-[11px] text-muted-foreground">
+                        Max {maxCapacity || "0"} crew
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Detailed Overview */}
-            <Card className="border-border rounded-2xl bg-card shadow-subtle">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Detailed Stage Overview</CardTitle>
-                <CardDescription className="text-xs">
-                  Describe power distribution, ceiling heights, acoustics, daylight orientation, and load-in access
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <textarea
-                  required
-                  rows={5}
-                  placeholder="Provide comprehensive details about stage dimensions, cyc wall dimensions, electrical capabilities, soundproofing ratings, and proximity to loading bays..."
-                  value={overview}
-                  onChange={(e) => setOverview(e.target.value)}
-                  className="w-full p-4 rounded-xl border border-input bg-surface text-sm text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent"
-                />
-                <p className="text-[11px] text-muted-foreground mt-1">
-                  Minimum 20 characters ({overview.length}/20)
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Submit Action */}
-            <div className="flex items-center justify-end gap-4 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push("/my-listings")}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
-
-              <Button
-                type="submit"
-                variant="accent"
-                size="lg"
-                className="gap-2 font-semibold uppercase tracking-wider text-xs px-8 shadow-hover"
-                isLoading={isSubmitting}
-                disabled={isSubmitting}
-              >
-                <span>Publish Studio Listing</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              </div>
             </div>
           </form>
         </div>

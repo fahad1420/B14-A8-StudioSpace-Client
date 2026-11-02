@@ -41,6 +41,10 @@ const config: Config = {
           foreground: "hsl(var(--accent-foreground))",
           light: "hsl(var(--accent-light))",
         },
+        olive: {
+          DEFAULT: "hsl(var(--olive))",
+          light: "hsl(var(--olive-light))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -55,8 +59,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ["var(--font-serif)", "Playfair Display", "Georgia", "serif"],
-        sans: ["var(--font-sans)", "Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        serif: ["Cinzel", "Playfair Display", "Didot", "Georgia", "serif"],
+        sans: ["Plus Jakarta Sans", "Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        mono: ["JetBrains Mono", "SFMono-Regular", "Menlo", "monospace"],
+        editorial: ["Cinzel", "Playfair Display", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -66,8 +72,9 @@ const config: Config = {
       boxShadow: {
         subtle: "0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02)",
         card: "0 4px 20px -2px rgba(0, 0, 0, 0.05)",
-        hover: "0 10px 30px -5px rgba(0, 0, 0, 0.08)",
-        modal: "0 20px 40px -10px rgba(0, 0, 0, 0.15)",
+        hover: "0 12px 32px -4px rgba(0, 0, 0, 0.09)",
+        modal: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        cinematic: "0 20px 40px -15px rgba(184, 135, 70, 0.15)",
       },
     },
   },

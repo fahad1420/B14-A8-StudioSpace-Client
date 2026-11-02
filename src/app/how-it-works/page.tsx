@@ -23,24 +23,28 @@ export default function HowItWorksPage() {
   const creatorSteps = [
     {
       num: "01",
+      code: "DISCOVERY & SPECS",
       title: "Discover & Filter Vetted Spaces",
-      desc: "Search by production category (Photo Studio, Sound Stage, Podcast Lounge, Music Suite, Workshop), target location, and hourly budget. Every profile showcases high-resolution photography, ceiling clear heights, and gear inventory.",
+      desc: "Search by production discipline (Photo Studio, Sound Stage, Podcast Lounge, Music Suite, Workshop), target location, and hourly budget. Every profile showcases high-resolution photography, ceiling clear heights, and gear inventory.",
       icon: Search,
     },
     {
       num: "02",
+      code: "FACILITY AUDIT",
       title: "Inspect Technical Inventories",
       desc: "Verify camlock 3-phase power ratings, cyclorama dimensions, acoustic isolation coefficients (NC ratings), makeup vanity counts, and loading dock access before booking.",
       icon: Sliders,
     },
     {
       num: "03",
+      code: "HOURLY CALCULATION",
       title: "Select Exact Production Hours",
       desc: "Specify your call date, load-in time, and wrap time. The reservation engine automatically computes exact duration, rental fees, and refundable security deposits.",
       icon: Clock,
     },
     {
       num: "04",
+      code: "CALL SHEET DISPATCH",
       title: "Submit Instant Request",
       desc: "Your reservation is protected against double-booking conflicts. Studio hosts review and confirm your shoot, issuing an official booking confirmation and accounting invoice.",
       icon: ShieldCheck,
@@ -50,18 +54,21 @@ export default function HowItWorksPage() {
   const hostSteps = [
     {
       num: "01",
+      code: "STAGE PROFILE",
       title: "Create Your Studio Profile",
       desc: "Publish your stage specifications, photo gallery, available strobe/lighting equipment, and amenities with custom hourly pricing and security deposit policies.",
       icon: Building,
     },
     {
       num: "02",
+      code: "DISPATCH INTAKE",
       title: "Receive & Approve Requests",
       desc: "Review incoming production inquiries with full creator information, crew notes, and requested time slots right inside your Host Dashboard.",
       icon: Calendar,
     },
     {
       num: "03",
+      code: "WRAP & PAYOUT",
       title: "Host & Inspect Load-Out",
       desc: "Welcome verified creators to your facility. Mark sessions completed upon wrap inspection to release deposits and earn hourly rental payouts.",
       icon: CheckCircle2,
@@ -71,17 +78,17 @@ export default function HowItWorksPage() {
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <section className="bg-surface-secondary/70 border-b border-border py-20 text-center">
+      <section className="bg-surface-secondary/70 border-b border-border py-20 text-center relative">
         <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs uppercase tracking-[0.2em] font-semibold mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-mono uppercase tracking-[0.24em] font-semibold mb-6">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Platform Guide</span>
+            <span>PLATFORM PROTOCOL &amp; DISPATCH</span>
           </div>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-6">
-            How StudioSpace Works
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.14] mb-6">
+            How StudioSpace Operates
           </h1>
-          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            From initial discovery to load-out wrap, explore how our peer-to-peer marketplace streamlines creative workspace reservations.
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto font-sans">
+            From preliminary treatment to final wrap, explore how our peer-to-peer marketplace streamlines creative workspace bookings.
           </p>
         </div>
       </section>
@@ -90,11 +97,11 @@ export default function HowItWorksPage() {
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
           <div className="mb-14">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              Creator Workflow
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mt-2">
-              For Directors, Photographers & Crews
+            <div className="text-xs font-mono uppercase tracking-[0.24em] text-accent mb-2">
+              CREATOR WORKFLOW PROTOCOL
+            </div>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
+              For Directors, Photographers &amp; Crews
             </h2>
           </div>
 
@@ -104,22 +111,21 @@ export default function HowItWorksPage() {
               return (
                 <div
                   key={step.num}
-                  className="rounded-2xl border border-border bg-card p-8 shadow-subtle hover:border-accent/40 transition-all flex flex-col justify-between"
+                  className="rounded-2xl border border-border bg-card p-7 shadow-subtle hover:shadow-card hover:border-accent/40 transition-all flex flex-col justify-between"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center text-accent">
-                        <Icon className="w-6 h-6" />
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center text-accent">
+                        <Icon className="w-5 h-5" />
                       </div>
-                      <span className="font-serif text-3xl font-extrabold text-muted-foreground/30">
-                        {step.num}
+                      <span className="font-mono text-xs font-bold text-accent tracking-widest">
+                        {step.num} // {step.code}
                       </span>
                     </div>
-
-                    <h3 className="font-serif text-xl font-bold text-foreground mb-3">
+                    <h3 className="font-serif text-xl font-bold text-foreground mb-2">
                       {step.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
                       {step.desc}
                     </p>
                   </div>
@@ -127,18 +133,27 @@ export default function HowItWorksPage() {
               );
             })}
           </div>
+
+          <div className="mt-12 text-center">
+            <Link href="/studios">
+              <Button variant="accent" size="lg" className="rounded-full px-8 py-4 font-mono text-xs uppercase tracking-wider font-semibold gap-2 shadow-hover">
+                <span>Browse Production Stages</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* For Hosts */}
-      <section className="py-20 bg-surface-secondary/40 border-y border-border">
+      <section className="py-20 bg-surface-secondary/40 border-t border-border">
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
           <div className="mb-14">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              Host Workflow
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mt-2">
-              For Studio Owners & Stage Managers
+            <div className="text-xs font-mono uppercase tracking-[0.24em] text-accent mb-2">
+              HOST OPERATIONS PROTOCOL
+            </div>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
+              For Studio Owners &amp; Stage Managers
             </h2>
           </div>
 
@@ -148,22 +163,21 @@ export default function HowItWorksPage() {
               return (
                 <div
                   key={step.num}
-                  className="rounded-2xl border border-border bg-card p-7 shadow-subtle flex flex-col justify-between"
+                  className="rounded-2xl border border-border bg-card p-7 shadow-subtle hover:shadow-card hover:border-accent/40 transition-all flex flex-col justify-between"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-5">
-                      <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center text-accent">
-                        <Icon className="w-6 h-6" />
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center text-accent">
+                        <Icon className="w-5 h-5" />
                       </div>
-                      <span className="font-serif text-3xl font-extrabold text-muted-foreground/30">
+                      <span className="font-mono text-xs font-bold text-accent tracking-widest">
                         {step.num}
                       </span>
                     </div>
-
                     <h3 className="font-serif text-lg font-bold text-foreground mb-2">
                       {step.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
                       {step.desc}
                     </p>
                   </div>
@@ -171,22 +185,11 @@ export default function HowItWorksPage() {
               );
             })}
           </div>
-        </div>
-      </section>
 
-      {/* Bottom CTA */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 max-w-3xl text-center space-y-6">
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
-            Start Your Next Production with StudioSpace
-          </h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Browse hundreds of photo lofts, infinite cycloramas, podcast stages, and recording rooms today.
-          </p>
-          <div className="pt-2 flex items-center justify-center gap-4">
-            <Link href="/studios">
-              <Button variant="accent" size="lg" className="rounded-full gap-2">
-                <span>Explore Studios</span>
+          <div className="mt-12 text-center">
+            <Link href="/add-studio">
+              <Button variant="outline" size="lg" className="rounded-full px-8 py-4 font-mono text-xs uppercase tracking-wider font-semibold gap-2">
+                <span>List Your Studio Facility</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>

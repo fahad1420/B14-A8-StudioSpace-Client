@@ -24,6 +24,7 @@ import {
   ShieldCheck,
   ChevronLeft,
   Upload,
+  Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -98,28 +99,26 @@ export default function EditStudioPage({
     setIsUploading(true);
     try {
       const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-      if (!imgbbKey) {
-        toast.info(
-          "Direct file upload requires an ImgBB API key (NEXT_PUBLIC_IMGBB_API_KEY in .env.local). Please paste any hosted image URL (e.g. Unsplash, ImgBB, Postimage) in the field below."
-        );
-        return;
+      if (imgbbKey) {
+        const formData = new FormData();
+        formData.append("image", file);
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        if (data && data.data && data.data.url) {
+          setImageUrl(data.data.url);
+          toast.success("Studio photo uploaded to ImgBB successfully!");
+          return;
+        }
       }
 
-      const formData = new FormData();
-      formData.append("image", file);
-      const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data && data.success && data.data?.url) {
-        setImageUrl(data.data.url);
-        toast.success("Studio photo uploaded to ImgBB successfully!");
-      } else {
-        toast.error(data?.error?.message || "Failed to upload image to ImgBB.");
-      }
+      toast.info(
+        "Direct ImgBB API key is not configured in environment. Please provide a direct publicly hosted image URL below."
+      );
     } catch {
-      toast.error("Failed to upload image. You can also paste an image URL directly.");
+      toast.error("Failed to upload image. Please provide a direct image URL.");
     } finally {
       setIsUploading(false);
     }
@@ -136,15 +135,17 @@ export default function EditStudioPage({
           setTitle(s.title);
           setCategory(s.category);
           setHourlyRate(s.hourlyRate);
-          setSecurityDeposit(s.securityDeposit);
-          setMaxCapacity(s.maxCapacity);
+          setSecurityDeposit(s.securityDeposit || 0);
+          setMaxCapacity(s.maxCapacity || 10);
           setLocation(s.location);
           setImageUrl(s.imageUrl);
           setSelectedAmenities(s.amenities || []);
           setOverview(s.overview);
+        } else {
+          setErrorMessage("Studio not found in database.");
         }
       } catch (err: any) {
-        setErrorMessage("Failed to load studio details.");
+        setErrorMessage(err.message || "Failed to load studio profile.");
       } finally {
         setIsLoading(false);
       }
@@ -224,11 +225,15 @@ export default function EditStudioPage({
             <div>
               <Link
                 href="/my-listings"
-                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground font-medium mb-2"
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground font-mono mb-2"
               >
                 <ChevronLeft className="w-4 h-4" />
-                <span>Back to My Listings</span>
+                <span>RETURN TO MY LISTINGS</span>
               </Link>
+              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1 block">
+                <Sparkles className="w-3.5 h-3.5 inline mr-1" />
+                <span>SPECIFICATION UPDATE</span>
+              </div>
               <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
                 Edit Studio Listing
               </h1>
@@ -237,7 +242,7 @@ export default function EditStudioPage({
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {errorMessage && (
-              <div className="p-4 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-sm flex items-center gap-3">
+              <div className="p-4 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs flex items-center gap-3 font-mono">
                 <AlertCircle className="w-5 h-5 shrink-0" />
                 <span>{errorMessage}</span>
               </div>
@@ -246,32 +251,32 @@ export default function EditStudioPage({
             {/* Read-Only Host Profile Section */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Host Identity (Read-Only)</CardTitle>
-                <CardDescription className="text-xs">
-                  Ownership is verified on the backend before applying any updates
+                <CardTitle className="text-base font-serif font-bold">Host Identity Verification</CardTitle>
+                <CardDescription className="text-xs font-mono">
+                  Stage ownership is verified on the backend before applying any updates
                 </CardDescription>
               </CardHeader>
               <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground uppercase mb-1">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1">
                     Host Full Name
                   </label>
                   <input
                     type="text"
                     disabled
                     value={studio?.hostName || user?.name || ""}
-                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-surface-secondary text-foreground text-sm font-medium cursor-not-allowed opacity-80"
+                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-surface-secondary text-foreground text-xs font-mono cursor-not-allowed opacity-80"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground uppercase mb-1">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1">
                     Host Verified Email
                   </label>
                   <input
                     type="email"
                     disabled
                     value={studio?.hostEmail || user?.email || ""}
-                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-surface-secondary text-foreground text-sm font-medium cursor-not-allowed opacity-80"
+                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-surface-secondary text-foreground text-xs font-mono cursor-not-allowed opacity-80"
                   />
                 </div>
               </CardContent>
@@ -280,29 +285,31 @@ export default function EditStudioPage({
             {/* Studio Identity */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Studio Identity & Classification</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">1. Studio Identity &amp; Classification</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
                     Studio Title *
                   </label>
                   <Input
                     required
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    className="font-sans"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
                       Category *
                     </label>
                     <select
                       value={category}
                       onChange={(e) => setCategory(e.target.value as StudioCategory)}
-                      className="w-full h-10 px-3.5 rounded-xl border border-input bg-surface text-sm text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
+                      aria-label="Studio category"
+                      className="w-full h-10 px-3.5 rounded-xl border border-input bg-surface text-xs font-mono text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
                     >
                       {CATEGORIES.map((cat) => (
                         <option key={cat} value={cat}>
@@ -313,101 +320,98 @@ export default function EditStudioPage({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                      Maximum Capacity *
+                    <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                      Max Crew Capacity *
                     </label>
                     <div className="relative">
-                      <Users className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                      <Users className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                       <Input
                         type="number"
                         required
                         min={1}
                         value={maxCapacity}
                         onChange={(e) => setMaxCapacity(e.target.value ? Number(e.target.value) : "")}
-                        className="pl-10"
+                        className="pl-10 font-mono"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
                     Location / Physical Address *
                   </label>
                   <div className="relative">
-                    <MapPin className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                    <MapPin className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                     <Input
                       required
                       value={location}
                       onChange={(e) => setLocation(e.target.value)}
-                      className="pl-10"
+                      className="pl-10 font-sans"
                     />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Pricing */}
+            {/* Pricing & Deposit */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Hourly Pricing & Deposit</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">2. Hourly Pricing &amp; Security</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
                     Hourly Rental Rate ($ / hr) *
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                    <DollarSign className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                     <Input
                       type="number"
                       required
                       min={10}
                       value={hourlyRate}
                       onChange={(e) => setHourlyRate(e.target.value ? Number(e.target.value) : "")}
-                      className="pl-10"
+                      className="pl-10 font-mono"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                    Security Deposit ($)
+                  <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                    Refundable Security Deposit ($)
                   </label>
                   <div className="relative">
-                    <ShieldCheck className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                    <ShieldCheck className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                     <Input
                       type="number"
                       min={0}
                       value={securityDeposit}
                       onChange={(e) => setSecurityDeposit(e.target.value ? Number(e.target.value) : "")}
-                      className="pl-10"
+                      className="pl-10 font-mono"
                     />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Image */}
+            {/* Media & Photography */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Studio Photography</CardTitle>
-                <CardDescription className="text-xs">
-                  Upload an image to ImgBB cloud or specify a direct hosted photo URL
-                </CardDescription>
+                <CardTitle className="text-base font-serif font-bold">3. Studio Photography</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                   <div>
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-                      Upload File
+                    <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+                      Upload New File
                     </label>
                     <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-accent hover:bg-surface-secondary/50 transition-colors">
                       <Upload className="w-6 h-6 text-accent mb-2" />
-                      <span className="text-xs font-semibold text-foreground">
-                        {isUploading ? "Uploading to ImgBB..." : "Select New Photo"}
+                      <span className="text-xs font-mono font-semibold text-foreground">
+                        {isUploading ? "Uploading..." : "Replace Studio Photo"}
                       </span>
-                      <span className="text-[10px] text-muted-foreground mt-0.5">PNG, JPG, WebP up to 5MB</span>
+                      <span className="text-[10px] font-mono text-muted-foreground mt-0.5">PNG, JPG, WebP up to 5MB</span>
                       <input
                         type="file"
                         accept="image/*"
@@ -418,38 +422,30 @@ export default function EditStudioPage({
                     </label>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
+                  <div className="space-y-2">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
                       Or Direct Image URL *
                     </label>
                     <div className="relative">
-                      <ImageIcon className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+                      <ImageIcon className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
                       <Input
-                        type="url"
-                        required
                         value={imageUrl}
                         onChange={(e) => setImageUrl(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 font-mono text-xs"
                       />
                     </div>
                   </div>
                 </div>
-
-                {imageUrl && (
-                  <div className="relative aspect-[16/9] w-full max-w-md rounded-xl overflow-hidden border border-border bg-black mt-2">
-                    <Image src={imageUrl} alt="Preview" fill className="object-cover" />
-                  </div>
-                )}
               </CardContent>
             </Card>
 
-            {/* Amenities */}
+            {/* Amenities Checklist */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Amenities & Stage Facilities</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">4. Technical Equipment &amp; Amenities</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {COMMON_AMENITIES.map((amenity) => {
                     const isChecked = selectedAmenities.includes(amenity);
                     return (
@@ -457,38 +453,46 @@ export default function EditStudioPage({
                         type="button"
                         key={amenity}
                         onClick={() => toggleAmenity(amenity)}
-                        className={`flex items-center gap-2.5 p-3 rounded-xl border text-xs text-left transition-all ${
+                        className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-left transition-all ${
                           isChecked
                             ? "border-accent bg-accent/10 text-foreground font-semibold"
-                            : "border-border bg-surface-secondary/40 text-muted-foreground hover:bg-surface-secondary"
+                            : "border-border bg-surface text-muted-foreground hover:border-accent/40"
                         }`}
                       >
                         <div
                           className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${
-                            isChecked ? "bg-accent border-accent text-white" : "border-muted-foreground/40"
+                            isChecked
+                              ? "bg-accent border-accent text-accent-foreground"
+                              : "border-muted-foreground/40"
                           }`}
                         >
-                          {isChecked && <Check className="w-3 h-3" />}
+                          {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
                         </div>
-                        <span className="truncate">{amenity}</span>
+                        <span className="text-xs truncate font-mono">{amenity}</span>
                       </button>
                     );
                   })}
                 </div>
 
-                <div className="flex items-center gap-2 pt-2">
+                <div className="flex gap-2 pt-2">
                   <Input
-                    placeholder="Add custom amenity..."
+                    placeholder="Add custom gear, lighting, or facility..."
                     value={customAmenity}
                     onChange={(e) => setCustomAmenity(e.target.value)}
-                    className="text-xs h-9"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddCustomAmenity();
+                      }
+                    }}
+                    className="text-xs font-mono"
                   />
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={handleAddCustomAmenity}
-                    className="shrink-0 h-9"
+                    className="shrink-0 font-mono text-xs"
                   >
                     <Plus className="w-4 h-4 mr-1" />
                     Add
@@ -497,10 +501,10 @@ export default function EditStudioPage({
               </CardContent>
             </Card>
 
-            {/* Overview */}
+            {/* Overview & Rules */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Detailed Overview</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">5. Space Overview &amp; Production Specs</CardTitle>
               </CardHeader>
               <CardContent>
                 <textarea
@@ -508,31 +512,26 @@ export default function EditStudioPage({
                   rows={5}
                   value={overview}
                   onChange={(e) => setOverview(e.target.value)}
-                  className="w-full p-4 rounded-xl border border-input bg-surface text-sm text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent"
+                  className="w-full p-4 rounded-xl border border-input bg-surface text-xs leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent font-sans"
                 />
               </CardContent>
             </Card>
 
-            {/* Actions */}
-            <div className="flex items-center justify-end gap-4 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push("/my-listings")}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
-
+            {/* Submit & Cancel */}
+            <div className="flex items-center justify-end gap-3 pt-4">
+              <Link href="/my-listings">
+                <Button variant="outline" type="button" className="font-mono text-xs uppercase">
+                  Cancel
+                </Button>
+              </Link>
               <Button
                 type="submit"
                 variant="accent"
                 size="lg"
-                className="gap-2 font-semibold uppercase tracking-wider text-xs px-8 shadow-hover"
                 isLoading={isSubmitting}
-                disabled={isSubmitting}
+                className="font-mono text-xs font-bold uppercase tracking-wider gap-2 shadow-hover"
               >
-                <span>Save Changes</span>
+                <span>Save Stage Changes</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </div>

@@ -25,6 +25,7 @@ import {
   AlertCircle,
   Shield,
   Layers,
+  Sparkles,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -108,42 +109,43 @@ export default function DashboardPage() {
     <ProtectedRoute>
       <div className="min-h-screen bg-background pb-24">
         {/* Header Banner */}
-        <section className="bg-surface-secondary/70 border-b border-border py-12">
+        <section className="bg-surface-secondary/70 border-b border-border py-14">
           <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-                  Creative Workspace Operations
-                </span>
-                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mt-1">
-                  Workspace Dashboard
+                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>OPERATIONS COMMAND CONSOLE</span>
+                </div>
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+                  Studio Operations
                 </h1>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Welcome back, <strong className="text-foreground">{user?.name}</strong>. Monitor incoming shoots and reserved spaces.
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                  Welcome back, <strong className="text-foreground">{user?.name}</strong>. Monitor reserved stages, incoming call sheets, and gear schedules.
                 </p>
               </div>
 
               {/* View Switcher Tabs */}
-              <div className="flex items-center gap-2 p-1.5 rounded-xl border border-border bg-card shadow-subtle w-fit">
+              <div className="flex items-center gap-2 p-1.5 rounded-xl border border-border bg-card shadow-subtle w-fit font-mono text-xs">
                 <button
                   onClick={() => setActiveTab("creator")}
-                  className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                     activeTab === "creator"
                       ? "bg-accent text-accent-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  Creator View ({myBookings.length})
+                  Creator Schedule ({myBookings.length})
                 </button>
                 <button
                   onClick={() => setActiveTab("host")}
-                  className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                     activeTab === "host"
                       ? "bg-accent text-accent-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  Host Operations ({myStudios.length} Spaces)
+                  Host Operations ({myStudios.length} Stages)
                 </button>
               </div>
             </div>
@@ -167,8 +169,8 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle flex items-center justify-between">
                   <div>
-                    <span className="text-xs text-muted-foreground block uppercase font-medium">
-                      Active Reservations
+                    <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
+                      Confirmed Shoots
                     </span>
                     <span className="font-serif text-3xl font-bold text-foreground">
                       {confirmedCreatorReservations.length}
@@ -181,8 +183,8 @@ export default function DashboardPage() {
 
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle flex items-center justify-between">
                   <div>
-                    <span className="text-xs text-muted-foreground block uppercase font-medium">
-                      Pending Requests
+                    <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
+                      Pending Approvals
                     </span>
                     <span className="font-serif text-3xl font-bold text-amber-500">
                       {pendingCreatorReservations.length}
@@ -195,8 +197,8 @@ export default function DashboardPage() {
 
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle flex items-center justify-between">
                   <div>
-                    <span className="text-xs text-muted-foreground block uppercase font-medium">
-                      Saved Studios
+                    <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
+                      Wishlisted Studios
                     </span>
                     <span className="font-serif text-3xl font-bold text-foreground">
                       {savedStudios.length}
@@ -211,25 +213,30 @@ export default function DashboardPage() {
               {/* Creator Upcoming Bookings */}
               <div className="rounded-2xl border border-border bg-card p-6 shadow-subtle">
                 <div className="flex items-center justify-between mb-5">
-                  <h3 className="font-serif text-xl font-bold text-foreground">
-                    My Upcoming Shoot Sessions
-                  </h3>
+                  <div>
+                    <h3 className="font-serif text-xl font-bold text-foreground">
+                      My Scheduled Production Sessions
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5 font-mono">
+                      Real-time stage booking confirmations and call times
+                    </p>
+                  </div>
                   <Link href="/my-bookings">
-                    <Button variant="ghost" size="sm" className="text-xs gap-1">
-                      <span>View Full History</span>
+                    <Button variant="ghost" size="sm" className="text-xs font-mono gap-1">
+                      <span>Full Roster</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Button>
                   </Link>
                 </div>
 
                 {myBookings.length === 0 ? (
-                  <div className="text-center py-10 border border-dashed border-border rounded-xl">
-                    <p className="text-xs text-muted-foreground mb-3">
-                      No active workspace reservations found.
+                  <div className="text-center py-12 border border-dashed border-border rounded-xl">
+                    <p className="text-xs text-muted-foreground mb-3 font-mono">
+                      No active production reservations found in system.
                     </p>
                     <Link href="/studios">
-                      <Button variant="accent" size="sm">
-                        Discover Studios
+                      <Button variant="accent" size="sm" className="font-mono text-xs uppercase tracking-wider">
+                        Explore Studios
                       </Button>
                     </Link>
                   </div>
@@ -253,14 +260,14 @@ export default function DashboardPage() {
                             <h4 className="font-serif font-bold text-sm text-foreground line-clamp-1">
                               {b.studioTitle}
                             </h4>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-xs text-muted-foreground font-mono">
                               {b.bookingDate} ({b.startTime} - {b.endTime})
                             </p>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between sm:justify-end gap-3">
-                          <span className="font-serif font-bold text-sm text-accent">
+                        <div className="flex items-center justify-between sm:justify-end gap-3 font-mono">
+                          <span className="font-serif font-bold text-base text-accent">
                             ${b.totalAmount.toFixed(2)}
                           </span>
                           <Badge
@@ -307,7 +314,7 @@ export default function DashboardPage() {
                         <h4 className="font-serif font-bold text-xs text-foreground truncate">
                           {s.title}
                         </h4>
-                        <div className="flex items-center justify-between text-[11px] text-muted-foreground mt-1">
+                        <div className="flex items-center justify-between text-[11px] text-muted-foreground mt-1 font-mono">
                           <span>{s.category}</span>
                           <span className="font-semibold text-accent">${s.hourlyRate}/hr</span>
                         </div>
@@ -323,7 +330,7 @@ export default function DashboardPage() {
               {/* Host Metrics Bar */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle">
-                  <span className="text-xs text-muted-foreground block uppercase font-medium">
+                  <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
                     Published Stages
                   </span>
                   <span className="font-serif text-3xl font-bold text-foreground">
@@ -332,7 +339,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle">
-                  <span className="text-xs text-muted-foreground block uppercase font-medium">
+                  <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
                     Pending Inquiries
                   </span>
                   <span className="font-serif text-3xl font-bold text-amber-500">
@@ -341,7 +348,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle">
-                  <span className="text-xs text-muted-foreground block uppercase font-medium">
+                  <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
                     Confirmed Shoots
                   </span>
                   <span className="font-serif text-3xl font-bold text-emerald-600">
@@ -350,7 +357,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle">
-                  <span className="text-xs text-muted-foreground block uppercase font-medium">
+                  <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
                     Completed Wraps
                   </span>
                   <span className="font-serif text-3xl font-bold text-foreground">
@@ -359,28 +366,28 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Incoming Booking Requests (Section 17 Workflow) */}
+              {/* Incoming Booking Requests */}
               <div className="rounded-2xl border border-border bg-card p-6 shadow-subtle">
                 <div className="flex items-center justify-between mb-5">
                   <div>
                     <h3 className="font-serif text-xl font-bold text-foreground">
-                      Incoming Booking Requests
+                      Incoming Call Sheet Requests
                     </h3>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground font-mono">
                       Confirm pending slots, complete finished shoots, or reject schedule conflicts
                     </p>
                   </div>
                   <Link href="/add-studio">
-                    <Button variant="outline" size="sm" className="gap-1.5 text-xs">
+                    <Button variant="outline" size="sm" className="gap-1.5 text-xs font-mono uppercase tracking-wider">
                       <PlusCircle className="w-3.5 h-3.5 text-accent" />
-                      <span>Add Space</span>
+                      <span>List Space</span>
                     </Button>
                   </Link>
                 </div>
 
                 {hostBookings.length === 0 ? (
                   <div className="text-center py-12 border border-dashed border-border rounded-xl">
-                    <p className="text-xs text-muted-foreground mb-3">
+                    <p className="text-xs text-muted-foreground mb-3 font-mono">
                       No incoming booking requests yet. Once creators discover your spaces, reservations will populate here.
                     </p>
                   </div>
@@ -406,7 +413,7 @@ export default function DashboardPage() {
                             >
                               {b.status}
                             </Badge>
-                            <span className="text-xs font-semibold text-foreground">
+                            <span className="text-xs font-mono text-foreground">
                               Creator: {b.creatorName} ({b.creatorEmail})
                             </span>
                           </div>
@@ -415,7 +422,7 @@ export default function DashboardPage() {
                             {b.studioTitle}
                           </h4>
 
-                          <p className="text-xs text-muted-foreground flex items-center gap-2">
+                          <p className="text-xs text-muted-foreground flex items-center gap-2 font-mono">
                             <Calendar className="w-3.5 h-3.5 text-accent" />
                             <span>
                               {b.bookingDate} | {b.startTime} - {b.endTime} ({b.duration} hrs)
@@ -432,7 +439,7 @@ export default function DashboardPage() {
                         {/* Financial Snapshot & Host Status Transitions */}
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full md:w-auto justify-end border-t md:border-t-0 pt-3 md:pt-0 border-border">
                           <div className="text-left sm:text-right">
-                            <span className="text-xs text-muted-foreground block">Payout Total:</span>
+                            <span className="text-[10px] font-mono text-muted-foreground block uppercase">Rental Total:</span>
                             <span className="font-serif text-lg font-bold text-accent">
                               ${b.totalAmount.toFixed(2)}
                             </span>
@@ -447,21 +454,20 @@ export default function DashboardPage() {
                                   size="sm"
                                   disabled={processingId === b._id}
                                   onClick={() => handleUpdateStatus(b._id, "Confirmed")}
-                                  className="text-xs gap-1"
+                                  className="text-xs font-mono gap-1"
                                 >
                                   <CheckCircle className="w-3.5 h-3.5" />
                                   <span>Confirm</span>
                                 </Button>
-
                                 <Button
-                                  variant="ghost"
+                                  variant="destructive"
                                   size="sm"
                                   disabled={processingId === b._id}
                                   onClick={() => handleUpdateStatus(b._id, "Cancelled")}
-                                  className="text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10"
+                                  className="text-xs font-mono gap-1"
                                 >
                                   <XCircle className="w-3.5 h-3.5" />
-                                  <span>Decline</span>
+                                  <span>Reject</span>
                                 </Button>
                               </>
                             )}
@@ -472,10 +478,10 @@ export default function DashboardPage() {
                                 size="sm"
                                 disabled={processingId === b._id}
                                 onClick={() => handleUpdateStatus(b._id, "Completed")}
-                                className="text-xs gap-1 text-emerald-600 border-emerald-500/30 hover:bg-emerald-500/10"
+                                className="text-xs font-mono gap-1 text-emerald-600 border-emerald-500/30 hover:bg-emerald-500/10"
                               >
                                 <CheckCircle className="w-3.5 h-3.5" />
-                                <span>Mark Completed</span>
+                                <span>Mark Wrapped</span>
                               </Button>
                             )}
                           </div>
@@ -484,41 +490,6 @@ export default function DashboardPage() {
                     ))}
                   </div>
                 )}
-              </div>
-
-              {/* Host's Listed Studios */}
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-subtle">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-serif text-xl font-bold text-foreground">
-                    My Studio Listings ({myStudios.length})
-                  </h3>
-                  <Link href="/my-listings">
-                    <Button variant="ghost" size="sm" className="text-xs gap-1">
-                      <span>Manage All</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </Link>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {myStudios.map((s) => (
-                    <div
-                      key={s._id}
-                      className="p-3.5 rounded-xl border border-border bg-surface-secondary/40 space-y-2"
-                    >
-                      <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden bg-black">
-                        <Image src={s.imageUrl} alt={s.title} fill className="object-cover" />
-                      </div>
-                      <h4 className="font-serif font-bold text-sm text-foreground truncate">
-                        {s.title}
-                      </h4>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{s.category}</span>
-                        <span className="font-semibold text-foreground">${s.hourlyRate}/hr</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
           )}

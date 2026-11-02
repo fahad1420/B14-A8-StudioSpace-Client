@@ -1,74 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* #FFFFFF */
-    --foreground: 0 0% 10%; /* #191919 */
+    /* Creative Editorial Luxury - Light Mode (Warm Ivory & Champagne Bronze) */
+    --background: 38 28% 97%; /* #FAF7F2 Warm Ivory */
+    --foreground: 240 6% 10%; /* #18181B Rich Noir Charcoal */
 
-    --surface: 0 0% 100%;
-    --surface-secondary: 60 5% 96%; /* #F7F7F5 */
-    --surface-tertiary: 40 10% 93%; /* #ECEAE5 */
+    --surface: 38 30% 99%; /* #FDFCFA Crisp Surface */
+    --surface-secondary: 38 20% 93%; /* #F1ECE4 Warm Linen */
+    --surface-tertiary: 38 16% 88%; /* #E5DFD4 Muted Stone */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card: 38 30% 99%;
+    --card-foreground: 240 6% 10%;
 
-    --primary: 0 0% 10%; /* Rich Noir */
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 0 0% 20%;
+    --primary: 240 6% 10%; /* Rich Noir */
+    --primary-foreground: 38 28% 97%;
+    --primary-hover: 240 5% 20%;
 
-    --secondary: 60 5% 96%;
-    --secondary-foreground: 0 0% 15%;
+    --secondary: 38 20% 93%;
+    --secondary-foreground: 240 6% 14%;
 
-    --muted: 60 5% 96%;
-    --muted-foreground: 0 0% 47%; /* #777777 */
+    --muted: 38 18% 92%;
+    --muted-foreground: 240 4% 44%; /* #6E6E75 */
 
-    --accent: 32 37% 53%; /* #B58A5A Warm Bronze */
+    --accent: 36 50% 50%; /* #C28B3D Champagne Bronze */
     --accent-foreground: 0 0% 100%;
-    --accent-light: 35 45% 94%;
+    --accent-light: 36 40% 92%; /* #F5ECE0 */
 
-    --destructive: 0 84% 60%;
+    --olive: 91 16% 36%; /* #556247 Muted Production Olive */
+    --olive-light: 91 18% 92%;
+
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 9% 91%; /* #EAE8E4 */
-    --input: 40 9% 91%;
-    --ring: 32 37% 53%;
+    --border: 38 14% 87%; /* #E2DCD3 Warm Hairline Border */
+    --input: 38 14% 87%;
+    --ring: 36 50% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 60 3% 6%; /* #0F0F0E */
-    --foreground: 60 5% 95%; /* #F4F4F2 */
+    /* Creative Editorial Luxury - Dark Mode (Deep Charcoal Noir & Muted Champagne) */
+    --background: 240 6% 7%; /* #111113 Deep Obsidian Charcoal */
+    --foreground: 38 20% 95%; /* #F5F3EE Warm White */
 
-    --surface: 60 3% 8%; /* #141412 */
-    --surface-secondary: 60 3% 10%; /* #181816 */
-    --surface-tertiary: 60 3% 14%; /* #222220 */
+    --surface: 240 6% 9%; /* #161619 */
+    --surface-secondary: 240 6% 12%; /* #1E1E22 */
+    --surface-tertiary: 240 6% 16%; /* #28282D */
 
-    --card: 60 3% 8%;
-    --card-foreground: 60 5% 95%;
+    --card: 240 6% 9%;
+    --card-foreground: 38 20% 95%;
 
-    --primary: 60 5% 95%;
-    --primary-foreground: 60 3% 6%;
-    --primary-hover: 60 5% 85%;
+    --primary: 38 20% 95%;
+    --primary-foreground: 240 6% 7%;
+    --primary-hover: 38 20% 88%;
 
-    --secondary: 60 3% 12%;
-    --secondary-foreground: 60 5% 95%;
+    --secondary: 240 6% 13%;
+    --secondary-foreground: 38 20% 95%;
 
-    --muted: 60 3% 14%;
-    --muted-foreground: 60 2% 62%; /* #A0A09C */
+    --muted: 240 6% 13%;
+    --muted-foreground: 240 4% 60%; /* #9696A0 */
 
-    --accent: 32 46% 61%; /* #C89F6E Soft Bronze */
-    --accent-foreground: 60 3% 6%;
-    --accent-light: 32 25% 18%;
+    --accent: 36 54% 58%; /* #D49D4F Warm Champagne Bronze */
+    --accent-foreground: 240 6% 7%;
+    --accent-light: 36 30% 18%;
 
-    --destructive: 0 62% 30%;
+    --olive: 91 20% 48%; /* #7A8C66 Muted Olive Dark */
+    --olive-light: 91 15% 15%;
+
+    --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 60 3% 16%; /* #262624 */
-    --input: 60 3% 16%;
-    --ring: 32 46% 61%;
+    --border: 240 6% 16%; /* #28282E Architectural Dark Border */
+    --input: 240 6% 16%;
+    --ring: 36 54% 58%;
   }
 }
 
@@ -77,67 +87,145 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-accent/20 selection:text-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-accent/25 selection:text-foreground;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
-  h1, h2, h3 {
+  h1, h2, h3, h4 {
     @apply tracking-tight;
   }
 }
 
-/* Custom Swiper Styles for Minimal Luxury Slider */
+/* Custom Editorial Film & Viewfinder Utilities */
+.film-grain {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.dark .film-grain {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Editorial Serif & Mono Font Classes */
+.font-editorial-title {
+  font-family: "Cinzel", "Playfair Display", "Didot", "Georgia", serif;
+  letter-spacing: -0.015em;
+}
+
+.font-editorial-body {
+  font-family: "Plus Jakarta Sans", "Inter", -apple-system, sans-serif;
+}
+
+.font-editorial-mono {
+  font-family: "JetBrains Mono", "SFMono-Regular", "Menlo", monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Film Crop Marks Corner Decorators */
+.crop-corner-tl {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 10px;
+  height: 10px;
+  border-top: 1.5px solid currentColor;
+  border-left: 1.5px solid currentColor;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.crop-corner-tr {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.crop-corner-bl {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 1.5px solid currentColor;
+  border-left: 1.5px solid currentColor;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.crop-corner-br {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Custom Swiper Styles for Editorial Slider */
 .swiper-pagination-bullet {
   background: hsl(var(--foreground)) !important;
-  opacity: 0.3 !important;
-  transition: all 0.3s ease !important;
-  width: 8px !important;
-  height: 8px !important;
+  opacity: 0.25 !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  width: 7px !important;
+  height: 7px !important;
 }
 
 .swiper-pagination-bullet-active {
-  opacity: 1 !important;
-  width: 28px !important;
-  border-radius: 4px !important;
   background: hsl(var(--accent)) !important;
+  opacity: 1 !important;
+  width: 32px !important;
+  border-radius: 9999px !important;
 }
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: hsl(var(--foreground)) !important;
+  color: #FFFFFF !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(12px) !important;
   width: 44px !important;
   height: 44px !important;
-  background: hsl(var(--background) / 0.8) !important;
-  backdrop-filter: blur(8px) !important;
-  border: 1px solid hsl(var(--border)) !important;
-  border-radius: 50% !important;
-  transition: all 0.2s ease !important;
-}
-
-.swiper-button-next:after,
-.swiper-button-prev:after {
-  font-size: 16px !important;
-  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  transition: all 0.25s ease !important;
 }
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  background: hsl(var(--background)) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  transform: scale(1.05);
+  background: hsl(var(--accent)) !important;
+  border-color: hsl(var(--accent)) !important;
+  transform: scale(1.06);
 }
 
-/* Smooth custom scrollbars */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+/* Custom Scrollbar for Luxury Aesthetics */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
 }
+
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: hsl(var(--background));
 }
+
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
+  background: hsl(var(--muted-foreground) / 0.3);
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: hsl(var(--accent) / 0.6);
 }

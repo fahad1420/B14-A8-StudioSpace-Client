@@ -16,6 +16,7 @@ import {
   CalendarCheck,
   LogOut,
   ChevronDown,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -78,15 +79,15 @@ export function Navbar() {
     <header
       className={`sticky top-0 z-40 w-full transition-all duration-300 ${
         isScrolled
-          ? "bg-background/90 backdrop-blur-md border-b border-border shadow-subtle py-3.5"
-          : "bg-background/95 backdrop-blur-sm border-b border-border/50 py-4"
+          ? "bg-background/90 backdrop-blur-md border-b border-border shadow-subtle py-3"
+          : "bg-background/95 backdrop-blur-sm border-b border-border/60 py-3.5"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
         {/* Left: Brand Logo */}
         <Logo size="md" />
 
-        {/* Center: Desktop Navigation Links */}
+        {/* Center: Desktop Navigation Links with Editorial Tracking */}
         <nav className="hidden md:flex items-center gap-1 lg:gap-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -94,13 +95,13 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-3.5 py-2 text-sm font-medium transition-colors rounded-md ${
+                className={`relative px-3.5 py-1.5 text-xs uppercase tracking-[0.14em] font-medium transition-colors rounded-md ${
                   isActive
                     ? "text-accent font-semibold"
                     : "text-foreground/80 hover:text-foreground hover:bg-surface-secondary"
                 }`}
               >
-                {link.label}
+                <span>{link.label}</span>
                 {isActive && (
                   <span className="absolute bottom-0 left-3.5 right-3.5 h-[2px] bg-accent rounded-full animate-in fade-in duration-200" />
                 )}
@@ -124,28 +125,33 @@ export function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2.5 p-1.5 pl-2 rounded-full border border-border bg-surface-secondary/60 hover:bg-surface-secondary hover:border-accent/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent/50"
+                className="flex items-center gap-2.5 p-1 pl-2 pr-3 rounded-full border border-border bg-surface-secondary/80 hover:bg-surface-secondary hover:border-accent/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent/40"
                 aria-expanded={dropdownOpen}
                 aria-label="User navigation menu"
               >
-                <div className="relative w-8 h-8 rounded-full overflow-hidden bg-accent/20 border border-border flex items-center justify-center">
+                <div className="relative w-7 h-7 rounded-full overflow-hidden bg-accent/20 border border-accent/40 flex items-center justify-center">
                   {user.image ? (
                     <Image
                       src={user.image}
                       alt={user.name}
                       fill
                       className="object-cover"
-                      sizes="32px"
+                      sizes="28px"
                     />
                   ) : (
-                    <UserIcon className="w-4 h-4 text-accent" />
+                    <UserIcon className="w-3.5 h-3.5 text-accent" />
                   )}
                 </div>
-                <span className="text-sm font-medium text-foreground max-w-[120px] truncate">
-                  {user.name}
-                </span>
+                <div className="flex flex-col text-left">
+                  <span className="text-xs font-semibold text-foreground max-w-[110px] truncate leading-tight">
+                    {user.name}
+                  </span>
+                  <span className="text-[9px] font-mono tracking-wider text-muted-foreground uppercase leading-none">
+                    {user.role || "Creator"}
+                  </span>
+                </div>
                 <ChevronDown
-                  className={`w-4 h-4 text-muted-foreground mr-1 transition-transform duration-200 ${
+                  className={`w-3.5 h-3.5 text-muted-foreground ml-0.5 transition-transform duration-200 ${
                     dropdownOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -153,31 +159,32 @@ export function Navbar() {
 
               {/* Dropdown Menu */}
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-border bg-card p-1.5 shadow-modal text-card-foreground animate-in zoom-in-95 fade-in duration-150 z-50">
+                <div className="absolute right-0 mt-2 w-60 rounded-xl border border-border bg-card p-1.5 shadow-modal text-card-foreground animate-in zoom-in-95 fade-in duration-150 z-50">
                   <div className="px-3 py-2 border-b border-border/70 mb-1">
-                    <p className="text-xs text-muted-foreground">Signed in as</p>
-                    <p className="text-sm font-semibold truncate text-foreground">{user.email}</p>
+                    <p className="text-[10px] uppercase font-mono tracking-widest text-muted-foreground">Call Sheet Identity</p>
+                    <p className="text-sm font-semibold truncate text-foreground">{user.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                   </div>
 
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-2.5 px-3 py-2 text-sm rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
                   >
                     <LayoutDashboard className="w-4 h-4 text-accent" />
-                    <span>Dashboard</span>
+                    <span>Dashboard Console</span>
                   </Link>
 
                   <Link
                     href="/add-studio"
-                    className="flex items-center gap-2.5 px-3 py-2 text-sm rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
                   >
                     <PlusCircle className="w-4 h-4 text-accent" />
-                    <span>Add New Studio</span>
+                    <span>List New Studio</span>
                   </Link>
 
                   <Link
                     href="/my-listings"
-                    className="flex items-center gap-2.5 px-3 py-2 text-sm rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
                   >
                     <Building className="w-4 h-4 text-accent" />
                     <span>My Studio Listings</span>
@@ -185,7 +192,7 @@ export function Navbar() {
 
                   <Link
                     href="/my-bookings"
-                    className="flex items-center gap-2.5 px-3 py-2 text-sm rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
                   >
                     <CalendarCheck className="w-4 h-4 text-accent" />
                     <span>My Bookings</span>
@@ -195,7 +202,7 @@ export function Navbar() {
 
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm rounded-lg text-rose-600 hover:bg-rose-500/10 transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg text-rose-600 hover:bg-rose-500/10 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>Sign Out</span>
@@ -207,12 +214,12 @@ export function Navbar() {
             // Unauthenticated Buttons
             <div className="flex items-center gap-2">
               <Link href="/login">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="text-xs uppercase tracking-wider font-semibold">
                   Login
                 </Button>
               </Link>
               <Link href="/register">
-                <Button variant="accent" size="sm">
+                <Button variant="accent" size="sm" className="text-xs uppercase tracking-wider font-semibold shadow-subtle">
                   Register
                 </Button>
               </Link>
@@ -243,7 +250,7 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3 py-2.5 text-base font-medium rounded-lg ${
+                  className={`px-3 py-2.5 text-xs uppercase tracking-[0.14em] font-medium rounded-lg ${
                     isActive
                       ? "bg-accent/10 text-accent font-semibold"
                       : "text-foreground hover:bg-surface-secondary"
@@ -255,81 +262,62 @@ export function Navbar() {
             })}
           </nav>
 
-          <div className="h-px bg-border my-3" />
-
-          {isAuthenticated && user ? (
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-3 px-3 py-2 bg-surface-secondary rounded-lg mb-2">
-                <div className="relative w-9 h-9 rounded-full overflow-hidden bg-accent/20 border border-border flex items-center justify-center">
-                  {user.image ? (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      fill
-                      className="object-cover"
-                      sizes="36px"
-                    />
-                  ) : (
-                    <UserIcon className="w-4 h-4 text-accent" />
-                  )}
+          <div className="pt-3 border-t border-border flex flex-col gap-2">
+            {isAuthenticated && user ? (
+              <>
+                <div className="px-3 py-2 rounded-lg bg-surface-secondary/70 mb-2">
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Signed in as</p>
+                  <p className="text-sm font-semibold text-foreground">{user.name}</p>
+                  <p className="text-xs text-muted-foreground">{user.email}</p>
                 </div>
-                <div className="flex flex-col overflow-hidden">
-                  <span className="text-sm font-semibold text-foreground truncate">{user.name}</span>
-                  <span className="text-xs text-muted-foreground truncate">{user.email}</span>
-                </div>
+                <Link href="/dashboard" className="w-full">
+                  <Button variant="outline" className="w-full justify-start gap-2 text-xs uppercase tracking-wider">
+                    <LayoutDashboard className="w-4 h-4 text-accent" />
+                    <span>Dashboard Console</span>
+                  </Button>
+                </Link>
+                <Link href="/add-studio" className="w-full">
+                  <Button variant="outline" className="w-full justify-start gap-2 text-xs uppercase tracking-wider">
+                    <PlusCircle className="w-4 h-4 text-accent" />
+                    <span>List New Studio</span>
+                  </Button>
+                </Link>
+                <Link href="/my-listings" className="w-full">
+                  <Button variant="outline" className="w-full justify-start gap-2 text-xs uppercase tracking-wider">
+                    <Building className="w-4 h-4 text-accent" />
+                    <span>My Studio Listings</span>
+                  </Button>
+                </Link>
+                <Link href="/my-bookings" className="w-full">
+                  <Button variant="outline" className="w-full justify-start gap-2 text-xs uppercase tracking-wider">
+                    <CalendarCheck className="w-4 h-4 text-accent" />
+                    <span>My Bookings</span>
+                  </Button>
+                </Link>
+                <Button
+                  onClick={handleLogout}
+                  variant="destructive"
+                  className="w-full justify-start gap-2 text-xs uppercase tracking-wider mt-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </Button>
+              </>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                <Link href="/login">
+                  <Button variant="outline" className="w-full text-xs uppercase tracking-wider font-semibold">
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/register">
+                  <Button variant="accent" className="w-full text-xs uppercase tracking-wider font-semibold">
+                    Register
+                  </Button>
+                </Link>
               </div>
-
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-surface-secondary text-foreground"
-              >
-                <LayoutDashboard className="w-4 h-4 text-accent" />
-                <span>Dashboard</span>
-              </Link>
-              <Link
-                href="/add-studio"
-                className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-surface-secondary text-foreground"
-              >
-                <PlusCircle className="w-4 h-4 text-accent" />
-                <span>Add New Studio</span>
-              </Link>
-              <Link
-                href="/my-listings"
-                className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-surface-secondary text-foreground"
-              >
-                <Building className="w-4 h-4 text-accent" />
-                <span>My Studio Listings</span>
-              </Link>
-              <Link
-                href="/my-bookings"
-                className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-surface-secondary text-foreground"
-              >
-                <CalendarCheck className="w-4 h-4 text-accent" />
-                <span>My Bookings</span>
-              </Link>
-
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-rose-600 hover:bg-rose-500/10 text-left mt-2"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Sign Out</span>
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <Link href="/login" className="w-full">
-                <Button variant="outline" className="w-full">
-                  Login
-                </Button>
-              </Link>
-              <Link href="/register" className="w-full">
-                <Button variant="accent" className="w-full">
-                  Register
-                </Button>
-              </Link>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </header>

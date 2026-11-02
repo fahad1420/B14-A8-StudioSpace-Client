@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { bookingApi } from "@/lib/api";
 import { useAuth } from "@/context/auth-context";
 import { toast } from "sonner";
-import { Calendar, Clock, ShieldCheck, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Calendar, Clock, AlertCircle, CheckCircle2, FileText, Sparkles } from "lucide-react";
 
 interface BookingModalProps {
   studio: Studio;
@@ -64,12 +64,12 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
     }
 
     if (isOwnStudio) {
-      setErrorMessage("You cannot book your own studio listing.");
+      setErrorMessage("You are registered as the host of this workspace. Hosts cannot rent their own listings.");
       return;
     }
 
     if (duration <= 0) {
-      setErrorMessage("End time must be later than start time.");
+      setErrorMessage("Wrap time must be later than load-in start time.");
       return;
     }
 
@@ -77,7 +77,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
     today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(`${bookingDate}T00:00:00`);
     if (selectedDate < today) {
-      setErrorMessage("Booking date cannot be in the past.");
+      setErrorMessage("Production call date cannot be in the past.");
       return;
     }
 
@@ -91,7 +91,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
         notes: notes.trim() || undefined,
       });
 
-      toast.success(res.message || "Reservation request created with Pending status!");
+      toast.success(res.message || "Production call sheet submitted with Pending status!");
       onClose();
       router.push("/my-bookings");
     } catch (err: any) {
@@ -107,20 +107,20 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Reserve Studio Workspace"
+      title="Production Call Sheet Reservation"
       description={`Hourly production session at ${studio.title}`}
       maxWidth="lg"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {errorMessage && (
-          <div className="flex items-start gap-2.5 p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs leading-relaxed">
+          <div className="flex items-start gap-2.5 p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs leading-relaxed font-mono">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {isOwnStudio && (
-          <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 text-amber-600 text-xs">
+          <div className="flex items-start gap-2 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-mono">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>You are the registered host of this workspace. Hosts cannot rent their own listings.</span>
           </div>
@@ -128,18 +128,18 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
 
         {/* 1. Date Selection */}
         <div>
-          <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
+          <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-2">
             1. Production Call Date
           </label>
           <div className="relative">
-            <Calendar className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+            <Calendar className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
             <input
               type="date"
               required
               min={new Date().toISOString().split("T")[0]}
               value={bookingDate}
               onChange={(e) => setBookingDate(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 rounded-xl border border-input bg-surface text-sm text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
+              className="w-full h-10 pl-10 pr-4 rounded-xl border border-input bg-surface text-sm font-mono text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
             />
           </div>
         </div>
@@ -147,33 +147,33 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
         {/* 2. Start & End Time Selection */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
+            <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-2">
               2. Load-In Time
             </label>
             <div className="relative">
-              <Clock className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+              <Clock className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
               <input
                 type="time"
                 required
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="w-full h-10 pl-10 pr-3 rounded-xl border border-input bg-surface text-sm text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
+                className="w-full h-10 pl-10 pr-3 rounded-xl border border-input bg-surface text-sm font-mono text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
+            <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-2">
               3. Wrap Time
             </label>
             <div className="relative">
-              <Clock className="absolute left-3.5 top-3 w-4 h-4 text-muted-foreground" />
+              <Clock className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
               <input
                 type="time"
                 required
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
-                className="w-full h-10 pl-10 pr-3 rounded-xl border border-input bg-surface text-sm text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
+                className="w-full h-10 pl-10 pr-3 rounded-xl border border-input bg-surface text-sm font-mono text-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent cursor-pointer"
               />
             </div>
           </div>
@@ -181,22 +181,22 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
 
         {/* Optional Notes for Host */}
         <div>
-          <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
-            Production Notes (Optional)
+          <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
+            Special Production Notes &amp; Gear Needs (Optional)
           </label>
           <textarea
             rows={2}
-            placeholder="Tell the host about your crew size, gear load, or special lighting needs..."
+            placeholder="Specify crew size, lighting packages, electrical draw, or sound isolation needs..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full p-3 rounded-xl border border-input bg-surface text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent"
+            className="w-full p-3 rounded-xl border border-input bg-surface text-xs font-sans text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent"
           />
         </div>
 
         {/* 3. Real-Time Price Calculation Breakdown */}
-        <div className="rounded-xl border border-border bg-surface-secondary/60 p-4 space-y-2 text-sm">
+        <div className="rounded-xl border border-border bg-surface-secondary/70 p-4 space-y-2 text-xs font-mono">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span>Calculated Duration:</span>
+            <span>Session Interval:</span>
             <span className="font-semibold text-foreground">
               {duration > 0 ? `${duration} hour${duration === 1 ? "" : "s"}` : "Invalid interval"}
             </span>
@@ -204,13 +204,13 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
 
           <div className="flex items-center justify-between text-muted-foreground">
             <span>
-              Rental Amount (${studio.hourlyRate} × {duration} hrs):
+              Stage Rental (${studio.hourlyRate} × {duration} hrs):
             </span>
             <span className="font-semibold text-foreground">${rentalAmount.toFixed(2)}</span>
           </div>
 
           <div className="flex items-center justify-between text-muted-foreground">
-            <span>Refundable Security Deposit:</span>
+            <span>Refundable Facility Deposit:</span>
             <span className="font-semibold text-foreground">${securityDeposit.toFixed(2)}</span>
           </div>
 
@@ -220,14 +220,14 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
             <span>Total Payable:</span>
             <span className="text-accent">${totalAmount.toFixed(2)}</span>
           </div>
-          <p className="text-[11px] text-muted-foreground leading-tight pt-1">
-            * Security deposit is fully refunded following load-out inspection. Initial reservation status is set to Pending awaiting host approval.
+          <p className="text-[10px] text-muted-foreground font-sans leading-tight pt-1">
+            * Security deposit is released following load-out inspection. The booking is submitted with Pending status awaiting host confirmation.
           </p>
         </div>
 
         {/* Buttons */}
         <div className="flex items-center justify-end gap-3 pt-2">
-          <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
+          <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting} className="font-mono text-xs uppercase">
             Cancel
           </Button>
 
@@ -236,10 +236,10 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
             variant="accent"
             isLoading={isSubmitting}
             disabled={isSubmitting || duration <= 0 || !!isOwnStudio}
-            className="gap-2"
+            className="gap-2 font-mono text-xs uppercase tracking-wider font-semibold"
           >
             <CheckCircle2 className="w-4 h-4" />
-            <span>Confirm & Request Booking</span>
+            <span>Submit Call Sheet</span>
           </Button>
         </div>
       </form>
