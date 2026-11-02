@@ -23,7 +23,7 @@ export function Footer() {
     setIsSubmitting(true);
     try {
       const res = await miscApi.subscribeNewsletter(email);
-      toast.success(res.message || "Thank you for subscribing to Shoot Location!");
+      toast.success(res.message || "Thank you for subscribing to StudioSpace!");
       setEmail("");
     } catch (err: any) {
       toast.error(err.message || "Could not complete subscription. Please try again.");
@@ -56,7 +56,7 @@ export function Footer() {
           <div className="lg:col-span-2 flex flex-col space-y-4 pr-0 lg:pr-6">
             <Logo size="lg" showTagline />
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm pt-2">
-              Shoot Location is the premium peer-to-peer workspace marketplace engineered for photographers, filmmakers, podcasters, and sound designers. Discover and rent professional creative stages with verified facilities and flexible hourly booking.
+              StudioSpace is the premium peer-to-peer workspace marketplace engineered for photographers, filmmakers, podcasters, and sound designers. Discover and rent professional creative stages with verified facilities and flexible hourly booking.
             </p>
             {/* Social Icons (with real current X logo) */}
             <div className="flex items-center gap-3 pt-3">
@@ -176,7 +176,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-border/80 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
-          <p>© {new Date().getFullYear()} SHOOT LOCATION. All rights reserved. Peer-to-Peer Creative Studio Marketplace.</p>
+          <p>© {new Date().getFullYear()} STUDIOSPACE. All rights reserved. Peer-to-Peer Creative Studio Marketplace.</p>
           <div className="flex items-center gap-6">
             <span className="hover:text-foreground cursor-pointer transition-colors">Privacy Policy</span>
             <span className="hover:text-foreground cursor-pointer transition-colors">Terms of Rental</span>

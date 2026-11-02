@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Award, Shield, Users, Camera } from "lucide-react";
 
 export const metadata = {
-  title: "About Us | SHOOT LOCATION",
+  title: "About Us | StudioSpace",
   description:
-    "Learn about the mission, creators, and studio hosts powering Shoot Location, the premier peer-to-peer creative space rental marketplace.",
+    "Learn about the mission, creators, and studio hosts powering StudioSpace, the premier peer-to-peer creative space rental marketplace.",
 };
 
 export default function AboutPage() {
@@ -42,7 +42,7 @@ export default function AboutPage() {
             Democratizing Access to World-Class Creative Workspaces.
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Shoot Location is a peer-to-peer creative marketplace connecting directors, photographers, and audio engineers with professional production studios.
+            StudioSpace is a peer-to-peer creative marketplace connecting directors, photographers, and audio engineers with professional production studios.
           </p>
         </div>
       </section>
@@ -65,13 +65,13 @@ export default function AboutPage() {
                 The Inception
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground leading-snug">
-                Why We Built Shoot Location
+                Why We Built StudioSpace
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 For decades, renting professional production stages meant navigating opaque price quotes, broker gatekeepers, and incomplete technical specs. Independent photographers and digital production crews wasted hours negotiating load-in hours, finding camlock power ratings, and guessing if natural light would hold.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Shoot Location was engineered to solve this friction. By standardizing stage listings with verified ceiling heights, power drops, acoustic ratings, and transparent hourly rates, we give creators the freedom to focus entirely on visual storytelling.
+                StudioSpace was engineered to solve this friction. By standardizing stage listings with verified ceiling heights, power drops, acoustic ratings, and transparent hourly rates, we give creators the freedom to focus entirely on visual storytelling.
               </p>
             </div>
           </div>

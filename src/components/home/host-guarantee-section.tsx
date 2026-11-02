@@ -40,7 +40,7 @@ export function HostGuaranteeSection() {
               Built by Production Crews. Engineered for Creators.
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Finding the right stage shouldn&apos;t require dozens of back-and-forth emails, vague equipment checklists, or surprise utility fees. Shoot Location standardizes the creative rental experience so you can focus on making art.
+              Finding the right stage shouldn&apos;t require dozens of back-and-forth emails, vague equipment checklists, or surprise utility fees. StudioSpace standardizes the creative rental experience so you can focus on making art.
             </p>
             <div className="pt-2">
               <Link href="/add-studio">

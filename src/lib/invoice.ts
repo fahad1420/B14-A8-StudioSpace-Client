@@ -13,7 +13,7 @@ export function generateBookingInvoice(booking: Booking) {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
   doc.setTextColor(25, 25, 25);
-  doc.text("SHOOT LOCATION", 20, 25);
+  doc.text("STUDIOSPACE", 20, 25);
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
@@ -124,12 +124,12 @@ export function generateBookingInvoice(booking: Booking) {
   doc.setFontSize(8);
   doc.setTextColor(140, 140, 140);
   doc.text(
-    "Thank you for creating with Shoot Location. Please retain this invoice for your production accounting.",
+    "Thank you for creating with StudioSpace. Please retain this invoice for your production accounting.",
     20,
     270
   );
-  doc.text("Shoot Location — Peer-to-Peer Creative Studio Marketplace", 20, 275);
+  doc.text("StudioSpace — Peer-to-Peer Creative Studio Marketplace", 20, 275);
 
   // Trigger download
-  doc.save(`ShootLocation_Invoice_${booking._id.substring(booking._id.length - 8).toUpperCase()}.pdf`);
+  doc.save(`StudioSpace_Invoice_${booking._id.substring(booking._id.length - 8).toUpperCase()}.pdf`);
 }

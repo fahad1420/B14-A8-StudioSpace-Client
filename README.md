@@ -1,16 +1,16 @@
-# B14-A8 | Shoot Location
+# B14-A8 | StudioSpace
 ### Find Your Space. Create Your Story.
-**Brand:** SHOOT LOCATION  
+**Brand:** STUDIOSPACE  
 **Repository:** `b14-a8-shoot-location-client`  
-**Live Application URL:** https://shoot-location.vercel.app  
-**Backend API URL:** https://shoot-location-server.onrender.com  
+**Live Application URL:** https://studiospace.vercel.app  
+**Backend API URL:** https://studiospace-server.onrender.com  
 
 ---
 
 ## 1. Project Overview
-**Shoot Location** is a peer-to-peer creative studio and production space rental marketplace engineered specifically for photographers, cinematographers, content creators, podcasters, sound engineers, and creative production crews.
+**StudioSpace** is a peer-to-peer creative studio and production space rental marketplace engineered specifically for photographers, cinematographers, content creators, podcasters, sound engineers, and creative production crews.
 
-Unlike generic booking platforms or hotel reservation clones, Shoot Location centers entirely around creative-industry workflows: hourly workspace reservations, transparent security deposit accounting, verified studio equipment checklists, soundproofing ratings (NC ratings), camlock 3-phase power drop specifications, corner cycloramas, and conflict-free reservation scheduling.
+Unlike generic booking platforms or hotel reservation clones, StudioSpace centers entirely around creative-industry workflows: hourly workspace reservations, transparent security deposit accounting, verified studio equipment checklists, soundproofing ratings (NC ratings), camlock 3-phase power drop specifications, corner cycloramas, and conflict-free reservation scheduling.
 
 ---
 
@@ -107,7 +107,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 For examiner review, the database includes a pre-seeded host and creator account:
 
-- **Email:** `examiner@shootlocation.com`
+- **Email:** `examiner@studiospace.com`
 - **Password:** `ExaminerPassword123!`
 - **Capabilities:**
   - Pre-seeded owner of active creative studio listings.
@@ -123,7 +123,7 @@ For examiner review, the database includes a pre-seeded host and creator account
 1. Push `b14-a8-shoot-location-client` to GitHub.
 2. Import project into Vercel Dashboard.
 3. Configure Environment Variables:
-   - `NEXT_PUBLIC_API_URL`: Your live backend URL (e.g. `https://shoot-location-server.onrender.com`).
+   - `NEXT_PUBLIC_API_URL`: Your live backend URL (e.g. `https://studiospace-server.onrender.com`).
    - `NEXT_PUBLIC_APP_URL`: Your Vercel frontend domain.
 4. Deploy with Framework Preset: `Next.js`.
 

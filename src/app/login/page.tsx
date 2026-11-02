@@ -31,7 +31,7 @@ function LoginFormContent() {
     try {
       const res = await login(email.trim(), password);
       if (res.success) {
-        toast.success("Welcome back to Shoot Location!");
+        toast.success("Welcome back to StudioSpace!");
         router.push(redirectUrl);
       } else {
         setErrorMessage(res.message || "Invalid credentials.");
@@ -53,7 +53,7 @@ function LoginFormContent() {
       await syncSocialLogin({
         id: "google-creator-session-id",
         name: "Google Creator",
-        email: "google.creator@shootlocation.com",
+        email: "google.creator@studiospace.com",
         image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
       });
       toast.success("Signed in with Google successfully!");
@@ -64,7 +64,7 @@ function LoginFormContent() {
   };
 
   const fillExaminerCredentials = () => {
-    setEmail("examiner@shootlocation.com");
+    setEmail("examiner@studiospace.com");
     setPassword("ExaminerPassword123!");
     toast.info("Filled examiner test credentials.");
   };
@@ -163,7 +163,7 @@ function LoginFormContent() {
                 isLoading={isSubmitting}
                 disabled={isSubmitting || !email || !password}
               >
-                <span>Sign In to Shoot Location</span>
+                <span>Sign In to StudioSpace</span>
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </form>

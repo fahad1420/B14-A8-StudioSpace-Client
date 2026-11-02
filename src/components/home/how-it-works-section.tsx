@@ -42,7 +42,7 @@ export function HowItWorksSection() {
             Frictionless Rental Workflow
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mt-2 mb-4">
-            How Shoot Location Works
+            How StudioSpace Works
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
             From initial creative concept to final wrap, our booking architecture is tailored exclusively to the realities of commercial and independent production.

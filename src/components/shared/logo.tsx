@@ -24,7 +24,7 @@ export function Logo({ className = "", size = "md", showTagline = false }: LogoP
     <Link
       href="/"
       className={`inline-flex items-center gap-2.5 group transition-opacity hover:opacity-95 ${className}`}
-      aria-label="Shoot Location Home"
+      aria-label="StudioSpace Home"
     >
       {/* Custom Vector Production Frame + Aperture Pin */}
       <div
@@ -91,8 +91,8 @@ export function Logo({ className = "", size = "md", showTagline = false }: LogoP
 
       <div className="flex flex-col">
         <div className={`font-serif font-bold uppercase text-foreground ${textSizes[size]} flex items-center`}>
-          <span>SHOOT</span>
-          <span className="text-accent ml-1 font-sans font-medium">LOCATION</span>
+          <span>STUDIO</span>
+          <span className="text-accent ml-0.5 font-sans font-light tracking-widest text-[0.9em]">SPACE</span>
         </div>
         {showTagline && (
           <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground -mt-0.5">

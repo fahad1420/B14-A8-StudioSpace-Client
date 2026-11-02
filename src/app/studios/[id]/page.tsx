@@ -93,7 +93,7 @@ export default function StudioDetailPage({
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: studio?.title || "Shoot Location Studio",
+        title: studio?.title || "StudioSpace Studio",
         url: window.location.href,
       });
     } else {

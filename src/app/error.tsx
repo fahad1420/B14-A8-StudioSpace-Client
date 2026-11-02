@@ -12,7 +12,7 @@ export default function ErrorBoundary({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Shoot Location client runtime error:", error);
+    console.error("StudioSpace client runtime error:", error);
   }, [error]);
 
   return (

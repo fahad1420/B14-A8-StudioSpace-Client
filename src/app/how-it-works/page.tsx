@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "How It Works | SHOOT LOCATION",
+  title: "How It Works | StudioSpace",
   description:
-    "Learn how Shoot Location connects creative directors and production teams with premier photo studios, film stages, and recording suites.",
+    "Learn how StudioSpace connects creative directors and production teams with premier photo studios, film stages, and recording suites.",
 };
 
 export default function HowItWorksPage() {
@@ -78,7 +78,7 @@ export default function HowItWorksPage() {
             <span>Platform Guide</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-6">
-            How Shoot Location Works
+            How StudioSpace Works
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
             From initial discovery to load-out wrap, explore how our peer-to-peer marketplace streamlines creative workspace reservations.
@@ -178,7 +178,7 @@ export default function HowItWorksPage() {
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 max-w-3xl text-center space-y-6">
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
-            Start Your Next Production with Shoot Location
+            Start Your Next Production with StudioSpace
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
             Browse hundreds of photo lofts, infinite cycloramas, podcast stages, and recording rooms today.
