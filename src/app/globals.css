@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 0 0% 10%; /* #191919 */
+
+    --surface: 0 0% 100%;
+    --surface-secondary: 60 5% 96%; /* #F7F7F5 */
+    --surface-tertiary: 40 10% 93%; /* #ECEAE5 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --primary: 0 0% 10%; /* Rich Noir */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 0 0% 20%;
+
+    --secondary: 60 5% 96%;
+    --secondary-foreground: 0 0% 15%;
+
+    --muted: 60 5% 96%;
+    --muted-foreground: 0 0% 47%; /* #777777 */
+
+    --accent: 32 37% 53%; /* #B58A5A Warm Bronze */
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 35 45% 94%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 9% 91%; /* #EAE8E4 */
+    --input: 40 9% 91%;
+    --ring: 32 37% 53%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 60 3% 6%; /* #0F0F0E */
+    --foreground: 60 5% 95%; /* #F4F4F2 */
+
+    --surface: 60 3% 8%; /* #141412 */
+    --surface-secondary: 60 3% 10%; /* #181816 */
+    --surface-tertiary: 60 3% 14%; /* #222220 */
+
+    --card: 60 3% 8%;
+    --card-foreground: 60 5% 95%;
+
+    --primary: 60 5% 95%;
+    --primary-foreground: 60 3% 6%;
+    --primary-hover: 60 5% 85%;
+
+    --secondary: 60 3% 12%;
+    --secondary-foreground: 60 5% 95%;
+
+    --muted: 60 3% 14%;
+    --muted-foreground: 60 2% 62%; /* #A0A09C */
+
+    --accent: 32 46% 61%; /* #C89F6E Soft Bronze */
+    --accent-foreground: 60 3% 6%;
+    --accent-light: 32 25% 18%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 60 3% 16%; /* #262624 */
+    --input: 60 3% 16%;
+    --ring: 32 46% 61%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-accent/20 selection:text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  h1, h2, h3 {
+    @apply tracking-tight;
+  }
+}
+
+/* Custom Swiper Styles for Minimal Luxury Slider */
+.swiper-pagination-bullet {
+  background: hsl(var(--foreground)) !important;
+  opacity: 0.3 !important;
+  transition: all 0.3s ease !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  width: 28px !important;
+  border-radius: 4px !important;
+  background: hsl(var(--accent)) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: hsl(var(--foreground)) !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: hsl(var(--background) / 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 50% !important;
+  transition: all 0.2s ease !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: hsl(var(--background)) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  transform: scale(1.05);
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
