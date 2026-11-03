@@ -2,8 +2,8 @@
 ### Find Your Space. Create Your Story.
 **Brand:** STUDIOSPACE  
 **Repository:** `b14-a8-shoot-location-client`  
-**Live Application URL:** https://studiospace.vercel.app  
-**Backend API URL:** https://studiospace-server.onrender.com  
+**Live Application URL:** https://thestudiospace.vercel.app  
+**Backend API URL:** https://studiospace-api-4vhn.onrender.com  
 
 ---
 
