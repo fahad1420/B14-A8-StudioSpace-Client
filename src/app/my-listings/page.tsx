@@ -75,15 +75,15 @@ export default function MyListingsPage() {
           <div className="container mx-auto px-4 sm:px-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1.5">
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent mb-1.5">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>STAGE MANAGEMENT // HOST WORKSPACE ROSTER</span>
+                  <span>Studio Management</span>
                 </div>
                 <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
                   My Studio Listings
                 </h1>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  Manage active stages, update hourly rates, and audit facility profiles.
+                  Manage your studio listings, update details and rates, or add new spaces.
                 </p>
               </div>
 
@@ -118,7 +118,7 @@ export default function MyListingsPage() {
                 No Active Studio Listings
               </h3>
               <p className="text-sm text-muted-foreground mb-6 font-sans">
-                You have not published any production spaces yet. Start earning hourly rental revenue by listing your daylight loft or soundstage.
+                You have not listed any studios yet. Start earning by sharing your creative workspace with photographers, filmmakers, and creators.
               </p>
               <Link href="/add-studio">
                 <Button variant="accent" className="font-mono text-xs uppercase tracking-wider">
@@ -150,7 +150,7 @@ export default function MyListingsPage() {
                           {studio.category}
                         </Badge>
                         <Badge variant="success" className="text-[10px] font-mono uppercase">
-                          Active Stage
+                          Active
                         </Badge>
                       </div>
 
@@ -223,7 +223,7 @@ export default function MyListingsPage() {
                 <div className="text-xs space-y-1 font-mono">
                   <p className="font-semibold text-sm">Warning: This action is permanent.</p>
                   <p>
-                    Deleting &quot;{studioToDelete.title}&quot; will remove this stage from discovery and unpublish all calendar availability.
+                    Deleting &quot;{studioToDelete.title}&quot; will permanently remove this listing from the directory and cancel any unscheduled requests.
                   </p>
                 </div>
               </div>

@@ -99,18 +99,10 @@ function LoginFormContent() {
         </div>
 
         <Card className="border-border shadow-modal rounded-2xl bg-card relative overflow-hidden">
-          {/* Viewfinder Crop Marks */}
-          <div className="absolute top-2.5 left-2.5 pointer-events-none text-muted-foreground/30 font-mono text-[9px]">
-            ⌜ AUTH
-          </div>
-          <div className="absolute top-2.5 right-2.5 pointer-events-none text-muted-foreground/30 font-mono text-[9px]">
-            GATE ⌝
-          </div>
-
           <CardHeader className="text-center pb-4 pt-6">
             <CardTitle className="font-serif text-2xl font-bold">Welcome Back</CardTitle>
-            <CardDescription className="text-xs font-mono">
-              Sign in to manage your spaces, review bookings, or reserve new stages
+            <CardDescription className="text-xs">
+              Sign in to manage your spaces, review bookings, or explore studios
             </CardDescription>
           </CardHeader>
 

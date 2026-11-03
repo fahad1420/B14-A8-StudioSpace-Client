@@ -37,8 +37,8 @@ const CATEGORIES: StudioCategory[] = [
 const COMMON_AMENITIES = [
   "18ft Corner Cyclorama",
   "Diffused Daylight Windows",
-  "Acoustically Soundproofed (NC-25)",
-  "400A Camlock 3-Phase Power",
+  "Acoustic Soundproofing",
+  "Dedicated 3-Phase Power",
   "Pre-Rigged Overhead Lighting Grid",
   "Chroma Key Green Screen",
   "Shure SM7B Broadcast Mics",
@@ -47,7 +47,7 @@ const COMMON_AMENITIES = [
   "Wardrobe Racks & Steamer",
   "High-Speed Fiber WiFi (1 Gbps)",
   "Private Green Room & Lounge",
-  "Drive-In Elephant Door Loading",
+  "Ground-Level Drive-In Loading",
   "Air Conditioning & Silent HVAC",
   "Refreshment & Coffee Bar",
 ];
@@ -195,15 +195,15 @@ export default function AddStudioPage() {
         {/* Header Banner */}
         <section className="bg-surface-secondary/70 border-b border-border py-14">
           <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1.5">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent mb-1.5">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>STAGE ONBOARDING // HOST DIRECTORY INTAKE</span>
+              <span>Host a Space</span>
             </div>
             <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
               List Your Studio Space
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Publish your daylight cyclorama, sound stage, podcast room, or music tracking suite to thousands of verified creative crews.
+              List your daylight studio, sound stage, podcast lounge, or creative space for rent to creators.
             </p>
           </div>
         </section>
@@ -222,7 +222,7 @@ export default function AddStudioPage() {
               {/* Studio Identity */}
               <Card className="border-border rounded-2xl bg-card shadow-subtle">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base font-serif font-bold">1. Studio Identity &amp; Classification</CardTitle>
+                  <CardTitle className="text-base font-serif font-bold">1. Studio Details</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -297,9 +297,9 @@ export default function AddStudioPage() {
               {/* Pricing & Deposit */}
               <Card className="border-border rounded-2xl bg-card shadow-subtle">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base font-serif font-bold">2. Hourly Pricing &amp; Security</CardTitle>
+                  <CardTitle className="text-base font-serif font-bold">2. Pricing &amp; Security Deposit</CardTitle>
                   <CardDescription className="text-xs font-mono">
-                    Set your hourly stage rate and refundable security deposit
+                    Set your hourly rental rate and refundable security deposit
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -345,7 +345,7 @@ export default function AddStudioPage() {
                 <CardHeader className="pb-4">
                   <CardTitle className="text-base font-serif font-bold">3. Studio Photography</CardTitle>
                   <CardDescription className="text-xs font-mono">
-                    Upload via ImgBB cloud or enter a direct hosted image URL
+                    Upload an image or enter a direct hosted image URL
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -394,9 +394,9 @@ export default function AddStudioPage() {
               {/* Amenities Checklist */}
               <Card className="border-border rounded-2xl bg-card shadow-subtle">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base font-serif font-bold">4. Technical Equipment &amp; Amenities</CardTitle>
+                  <CardTitle className="text-base font-serif font-bold">4. Amenities &amp; Included Equipment</CardTitle>
                   <CardDescription className="text-xs font-mono">
-                    Select verified gear, power specs, and facilities available on stage
+                    Select equipment, gear, and amenities available on-site
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -460,16 +460,16 @@ export default function AddStudioPage() {
               {/* Overview & Rules */}
               <Card className="border-border rounded-2xl bg-card shadow-subtle">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base font-serif font-bold">5. Space Overview &amp; Production Specs</CardTitle>
+                  <CardTitle className="text-base font-serif font-bold">5. Space Overview &amp; Guidelines</CardTitle>
                   <CardDescription className="text-xs font-mono">
-                    Provide detailed dimensions, ceiling heights, electrical drops, load-in guidelines, and noise policies
+                    Describe your studio layout, dimensions, access guidelines, and house rules
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <textarea
                     required
                     rows={5}
-                    placeholder="Describe your studio layout, cyclorama dimensions, ceiling grid height, power distro, noise isolation rating, and load-in elevator specs..."
+                    placeholder="Describe your studio layout, dimensions, ceiling height, gear access, and house rules..."
                     value={overview}
                     onChange={(e) => setOverview(e.target.value)}
                     className="w-full p-4 rounded-xl border border-input bg-surface text-xs leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent font-sans"
@@ -496,7 +496,7 @@ export default function AddStudioPage() {
             <div className="lg:col-span-4 sticky top-24">
               <div className="space-y-3">
                 <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground block">
-                  LIVE CALL SHEET PREVIEW
+                  LISTING PREVIEW
                 </span>
 
                 <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-card">
@@ -506,7 +506,7 @@ export default function AddStudioPage() {
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/60 p-4 text-center">
                         <ImageIcon className="w-8 h-8 mb-1 text-accent/60" />
-                        <span className="text-xs font-mono">Photo Preview Frame</span>
+                        <span className="text-xs font-mono">Studio Photo Preview</span>
                       </div>
                     )}
                     <div className="absolute top-3 left-3">
@@ -532,7 +532,7 @@ export default function AddStudioPage() {
                         <span className="text-xs text-muted-foreground">/ hr</span>
                       </div>
                       <span className="text-[11px] text-muted-foreground">
-                        Max {maxCapacity || "0"} crew
+                        Max {maxCapacity || "0"} guests
                       </span>
                     </div>
                   </div>

@@ -39,8 +39,8 @@ const CATEGORIES: StudioCategory[] = [
 const COMMON_AMENITIES = [
   "18ft Corner Cyclorama",
   "Diffused Daylight Windows",
-  "Acoustically Soundproofed (NC-25)",
-  "400A Camlock 3-Phase Power",
+  "Acoustic Soundproofing",
+  "Dedicated 3-Phase Power",
   "Pre-Rigged Overhead Lighting Grid",
   "Chroma Key Green Screen",
   "Shure SM7B Broadcast Mics",
@@ -49,7 +49,7 @@ const COMMON_AMENITIES = [
   "Wardrobe Racks & Steamer",
   "High-Speed Fiber WiFi (1 Gbps)",
   "Private Green Room & Lounge",
-  "Drive-In Elephant Door Loading",
+  "Ground-Level Drive-In Loading",
   "Air Conditioning & Silent HVAC",
   "Refreshment & Coffee Bar",
 ];
@@ -225,15 +225,11 @@ export default function EditStudioPage({
             <div>
               <Link
                 href="/my-listings"
-                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground font-mono mb-2"
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground font-medium mb-2"
               >
                 <ChevronLeft className="w-4 h-4" />
-                <span>RETURN TO MY LISTINGS</span>
+                <span>Back to My Studios</span>
               </Link>
-              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1 block">
-                <Sparkles className="w-3.5 h-3.5 inline mr-1" />
-                <span>SPECIFICATION UPDATE</span>
-              </div>
               <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
                 Edit Studio Listing
               </h1>
@@ -251,9 +247,9 @@ export default function EditStudioPage({
             {/* Read-Only Host Profile Section */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-serif font-bold">Host Identity Verification</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">Host Account</CardTitle>
                 <CardDescription className="text-xs font-mono">
-                  Stage ownership is verified on the backend before applying any updates
+                  Updates are associated with your registered host profile
                 </CardDescription>
               </CardHeader>
               <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -270,7 +266,7 @@ export default function EditStudioPage({
                 </div>
                 <div>
                   <label className="block text-xs font-mono uppercase tracking-wider text-muted-foreground mb-1">
-                    Host Verified Email
+                    Host Email
                   </label>
                   <input
                     type="email"
@@ -285,7 +281,7 @@ export default function EditStudioPage({
             {/* Studio Identity */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-base font-serif font-bold">1. Studio Identity &amp; Classification</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">1. Studio Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -357,7 +353,7 @@ export default function EditStudioPage({
             {/* Pricing & Deposit */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-base font-serif font-bold">2. Hourly Pricing &amp; Security</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">2. Pricing &amp; Security Deposit</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -442,7 +438,7 @@ export default function EditStudioPage({
             {/* Amenities Checklist */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-base font-serif font-bold">4. Technical Equipment &amp; Amenities</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">4. Amenities &amp; Included Equipment</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -504,7 +500,7 @@ export default function EditStudioPage({
             {/* Overview & Rules */}
             <Card className="border-border rounded-2xl bg-card shadow-subtle">
               <CardHeader className="pb-4">
-                <CardTitle className="text-base font-serif font-bold">5. Space Overview &amp; Production Specs</CardTitle>
+                <CardTitle className="text-base font-serif font-bold">5. Space Overview &amp; Guidelines</CardTitle>
               </CardHeader>
               <CardContent>
                 <textarea
@@ -531,7 +527,7 @@ export default function EditStudioPage({
                 isLoading={isSubmitting}
                 className="font-mono text-xs font-bold uppercase tracking-wider gap-2 shadow-hover"
               >
-                <span>Save Stage Changes</span>
+                <span>Save Changes</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </div>

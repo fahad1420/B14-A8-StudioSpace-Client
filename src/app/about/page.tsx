@@ -13,21 +13,21 @@ export const metadata = {
 export default function AboutPage() {
   const values = [
     {
-      code: "PRINCIPLE // 01",
-      title: "Creator-Centric Architecture",
-      desc: "Built from the ground up for commercial photographers, indie cinematographers, podcasters, and sound designers who require exact technical specifications.",
+      code: "01",
+      title: "Creator-Centric Experience",
+      desc: "Built for photographers, filmmakers, podcasters, and creative teams who need exact space dimensions and clear amenity details.",
       icon: Camera,
     },
     {
-      code: "PRINCIPLE // 02",
-      title: "Honest & Transparent Pricing",
-      desc: "Clear per-hour reservations without hidden facility surcharges or surprise load-in fees. Transparent security deposits refunded upon wrap inspection.",
+      code: "02",
+      title: "Transparent Hourly Rates",
+      desc: "Clear per-hour rates with no hidden platform fees. Refundable security deposits are handled transparently upon booking completion.",
       icon: Shield,
     },
     {
-      code: "PRINCIPLE // 03",
-      title: "Empowering Independent Owners",
-      desc: "Studio hosts can monetize their physical real estate, fill dark days between commercial bookings, and connect with premier creative talent.",
+      code: "03",
+      title: "Supporting Independent Hosts",
+      desc: "Studio hosts can monetize their creative spaces, fill available calendar dates, and connect with respectful creative professionals.",
       icon: Users,
     },
   ];
@@ -37,15 +37,15 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative bg-surface-secondary/70 border-b border-border py-20 lg:py-24 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 max-w-4xl text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-mono uppercase tracking-[0.24em] font-semibold mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-semibold uppercase tracking-wider mb-6">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>OUR MISSION &amp; STORY</span>
+            <span>Our Mission &amp; Story</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.14] mb-6">
-            Democratizing Access to World-Class Creative Workspaces.
+            Connecting Creators with Inspiring Spaces.
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto font-sans">
-            StudioSpace is a peer-to-peer creative marketplace connecting directors, photographers, and audio engineers with professional production studios.
+            StudioSpace is a peer-to-peer creative studio marketplace connecting photographers, filmmakers, and audio creators with professional creative workspaces.
           </p>
         </div>
       </section>
@@ -61,28 +61,25 @@ export default function AboutPage() {
                 fill
                 className="object-cover"
               />
-              <div className="absolute top-3 left-3 font-mono text-[9px] text-accent">
-                ⌜ STAGE ARCHIVE 01 ⌝
-              </div>
             </div>
 
             <div className="lg:col-span-6 space-y-5">
-              <span className="text-xs font-mono uppercase tracking-[0.24em] text-accent">
-                THE INCEPTION
+              <span className="text-xs font-semibold uppercase tracking-wider text-accent">
+                Our Story
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground leading-snug">
                 Why We Built StudioSpace
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
-                For decades, renting professional production stages meant navigating opaque price quotes, broker gatekeepers, and incomplete technical specs. Independent photographers and digital production crews wasted hours negotiating load-in hours, finding camlock power ratings, and guessing if natural light would hold.
+                Finding and booking creative production spaces has historically meant dealing with opaque pricing, slow back-and-forth emails, and missing technical details. Photographers and production crews spent hours confirming basic details like ceiling heights, lighting equipment, or load-in access.
               </p>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
-                StudioSpace was engineered to solve this friction. By standardizing stage listings with verified ceiling heights, power drops, acoustic ratings, and transparent hourly rates, we give creators the freedom to focus entirely on visual storytelling.
+                StudioSpace simplifies the entire process. By providing standardized studio listings with clear specs, photos, equipment lists, and upfront hourly rates, creators can book with confidence and focus on their creative work.
               </p>
               <div className="pt-2">
                 <Link href="/studios">
                   <Button variant="accent" className="font-mono text-xs uppercase tracking-wider gap-2">
-                    <span>Explore Production Spaces</span>
+                    <span>Explore Studios</span>
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
@@ -96,8 +93,8 @@ export default function AboutPage() {
       <section className="py-20 bg-surface-secondary/40 border-y border-border">
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
           <div className="text-center max-w-xl mx-auto mb-14">
-            <span className="text-xs font-mono uppercase tracking-[0.24em] text-accent">
-              CORE PRINCIPLES
+            <span className="text-xs font-semibold uppercase tracking-wider text-accent">
+              Our Values
             </span>
             <h2 className="font-serif text-3xl font-bold text-foreground mt-2">
               What We Stand For
@@ -117,7 +114,7 @@ export default function AboutPage() {
                       <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center text-accent">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="font-mono text-[10px] text-accent font-semibold tracking-widest">
+                      <span className="font-mono text-xs text-accent font-semibold tracking-widest">
                         {v.code}
                       </span>
                     </div>

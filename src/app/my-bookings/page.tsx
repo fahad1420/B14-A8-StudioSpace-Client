@@ -71,11 +71,11 @@ export default function MyBookingsPage() {
   const getStatusBadge = (status: BookingStatus) => {
     switch (status) {
       case "Pending":
-        return <Badge variant="warning">Pending Approval</Badge>;
+        return <Badge variant="warning">Pending</Badge>;
       case "Confirmed":
-        return <Badge variant="success">Confirmed Slot</Badge>;
+        return <Badge variant="success">Confirmed</Badge>;
       case "Completed":
-        return <Badge variant="secondary">Wrapped</Badge>;
+        return <Badge variant="secondary">Completed</Badge>;
       case "Cancelled":
         return <Badge variant="destructive">Cancelled</Badge>;
       default:
@@ -89,15 +89,15 @@ export default function MyBookingsPage() {
         {/* Header */}
         <section className="bg-surface-secondary/70 border-b border-border py-14">
           <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1.5">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent mb-1.5">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>CREATOR RESERVATIONS // CALL SHEET ROSTER</span>
+              <span>Reservations</span>
             </div>
             <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
-              My Production Bookings
+              My Bookings
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Track reserved studios, call dates, load-in hours, and download official PDF production invoices.
+              Manage your studio reservations, check booking statuses, and download official PDF invoices.
             </p>
           </div>
         </section>
@@ -123,7 +123,7 @@ export default function MyBookingsPage() {
                 No Bookings Yet
               </h3>
               <p className="text-sm text-muted-foreground mb-6 font-sans">
-                You haven&apos;t reserved any creative workspaces yet. Explore our curated photography and sound stages to book your next shoot.
+                You haven&apos;t reserved any creative workspaces yet. Explore available creative spaces to reserve your next session.
               </p>
               <Link href="/studios">
                 <Button variant="accent" className="gap-2 font-mono text-xs uppercase tracking-wider">
@@ -238,7 +238,7 @@ export default function MyBookingsPage() {
             isOpen={!!bookingToCancel}
             onClose={() => setBookingToCancel(null)}
             title="Cancel Booking Request"
-            description="Are you sure you want to cancel this pending production session?"
+            description="Are you sure you want to cancel this reservation request?"
             maxWidth="md"
           >
             <div className="space-y-4">

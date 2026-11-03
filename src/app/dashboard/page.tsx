@@ -113,15 +113,15 @@ export default function DashboardPage() {
           <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div>
-                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-1.5">
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent mb-1.5">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>OPERATIONS COMMAND CONSOLE</span>
+                  <span>Overview</span>
                 </div>
                 <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
-                  Studio Operations
+                  Dashboard
                 </h1>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  Welcome back, <strong className="text-foreground">{user?.name}</strong>. Monitor reserved stages, incoming call sheets, and gear schedules.
+                  Welcome back, <strong className="text-foreground">{user?.name}</strong>. Manage your bookings, studio listings, and incoming requests.
                 </p>
               </div>
 
@@ -135,7 +135,7 @@ export default function DashboardPage() {
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  Creator Schedule ({myBookings.length})
+                  My Bookings ({myBookings.length})
                 </button>
                 <button
                   onClick={() => setActiveTab("host")}
@@ -145,7 +145,7 @@ export default function DashboardPage() {
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  Host Operations ({myStudios.length} Stages)
+                  Host Hub ({myStudios.length} Studios)
                 </button>
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function DashboardPage() {
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
-                      Confirmed Shoots
+                      Confirmed Bookings
                     </span>
                     <span className="font-serif text-3xl font-bold text-foreground">
                       {confirmedCreatorReservations.length}
@@ -184,7 +184,7 @@ export default function DashboardPage() {
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
-                      Pending Approvals
+                      Pending Requests
                     </span>
                     <span className="font-serif text-3xl font-bold text-amber-500">
                       {pendingCreatorReservations.length}
@@ -198,7 +198,7 @@ export default function DashboardPage() {
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
-                      Wishlisted Studios
+                      Saved Studios
                     </span>
                     <span className="font-serif text-3xl font-bold text-foreground">
                       {savedStudios.length}
@@ -215,15 +215,15 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between mb-5">
                   <div>
                     <h3 className="font-serif text-xl font-bold text-foreground">
-                      My Scheduled Production Sessions
+                      Upcoming Bookings
                     </h3>
-                    <p className="text-xs text-muted-foreground mt-0.5 font-mono">
-                      Real-time stage booking confirmations and call times
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Your confirmed sessions and pending reservation requests
                     </p>
                   </div>
                   <Link href="/my-bookings">
                     <Button variant="ghost" size="sm" className="text-xs font-mono gap-1">
-                      <span>Full Roster</span>
+                      <span>View All</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Button>
                   </Link>
@@ -231,8 +231,8 @@ export default function DashboardPage() {
 
                 {myBookings.length === 0 ? (
                   <div className="text-center py-12 border border-dashed border-border rounded-xl">
-                    <p className="text-xs text-muted-foreground mb-3 font-mono">
-                      No active production reservations found in system.
+                    <p className="text-xs text-muted-foreground mb-3">
+                      No active bookings found.
                     </p>
                     <Link href="/studios">
                       <Button variant="accent" size="sm" className="font-mono text-xs uppercase tracking-wider">
@@ -331,7 +331,7 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle">
                   <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
-                    Published Stages
+                    My Studios
                   </span>
                   <span className="font-serif text-3xl font-bold text-foreground">
                     {myStudios.length}
@@ -340,7 +340,7 @@ export default function DashboardPage() {
 
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle">
                   <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
-                    Pending Inquiries
+                    Pending Requests
                   </span>
                   <span className="font-serif text-3xl font-bold text-amber-500">
                     {pendingHostRequests.length}
@@ -349,7 +349,7 @@ export default function DashboardPage() {
 
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle">
                   <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
-                    Confirmed Shoots
+                    Confirmed Bookings
                   </span>
                   <span className="font-serif text-3xl font-bold text-emerald-600">
                     {confirmedHostShoots.length}
@@ -358,7 +358,7 @@ export default function DashboardPage() {
 
                 <div className="rounded-2xl border border-border bg-card p-5 shadow-subtle">
                   <span className="text-[10px] font-mono text-muted-foreground block uppercase tracking-wider">
-                    Completed Wraps
+                    Completed
                   </span>
                   <span className="font-serif text-3xl font-bold text-foreground">
                     {completedHostShoots.length}
@@ -371,10 +371,10 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between mb-5">
                   <div>
                     <h3 className="font-serif text-xl font-bold text-foreground">
-                      Incoming Call Sheet Requests
+                      Incoming Booking Requests
                     </h3>
-                    <p className="text-xs text-muted-foreground font-mono">
-                      Confirm pending slots, complete finished shoots, or reject schedule conflicts
+                    <p className="text-xs text-muted-foreground">
+                      Review requests from creators, confirm dates, or decline conflicts
                     </p>
                   </div>
                   <Link href="/add-studio">
@@ -467,7 +467,7 @@ export default function DashboardPage() {
                                   className="text-xs font-mono gap-1"
                                 >
                                   <XCircle className="w-3.5 h-3.5" />
-                                  <span>Reject</span>
+                                  <span>Decline</span>
                                 </Button>
                               </>
                             )}
@@ -481,7 +481,7 @@ export default function DashboardPage() {
                                 className="text-xs font-mono gap-1 text-emerald-600 border-emerald-500/30 hover:bg-emerald-500/10"
                               >
                                 <CheckCircle className="w-3.5 h-3.5" />
-                                <span>Mark Wrapped</span>
+                                <span>Mark Completed</span>
                               </Button>
                             )}
                           </div>

@@ -69,7 +69,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
     }
 
     if (duration <= 0) {
-      setErrorMessage("Wrap time must be later than load-in start time.");
+      setErrorMessage("End time must be later than start time.");
       return;
     }
 
@@ -77,7 +77,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
     today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(`${bookingDate}T00:00:00`);
     if (selectedDate < today) {
-      setErrorMessage("Production call date cannot be in the past.");
+      setErrorMessage("Booking date cannot be in the past.");
       return;
     }
 
@@ -91,7 +91,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
         notes: notes.trim() || undefined,
       });
 
-      toast.success(res.message || "Production call sheet submitted with Pending status!");
+      toast.success(res.message || "Booking request submitted with Pending status!");
       onClose();
       router.push("/my-bookings");
     } catch (err: any) {
@@ -107,8 +107,8 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Production Call Sheet Reservation"
-      description={`Hourly production session at ${studio.title}`}
+      title="Request Studio Reservation"
+      description={`Hourly rental at ${studio.title}`}
       maxWidth="lg"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -129,7 +129,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
         {/* 1. Date Selection */}
         <div>
           <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-2">
-            1. Production Call Date
+            1. Reservation Date
           </label>
           <div className="relative">
             <Calendar className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
@@ -148,7 +148,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-2">
-              2. Load-In Time
+              2. Start Time
             </label>
             <div className="relative">
               <Clock className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
@@ -164,7 +164,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
 
           <div>
             <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-2">
-              3. Wrap Time
+              3. End Time
             </label>
             <div className="relative">
               <Clock className="absolute left-3.5 top-3 w-4 h-4 text-accent" />
@@ -182,11 +182,11 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
         {/* Optional Notes for Host */}
         <div>
           <label className="block text-xs font-mono uppercase tracking-wider text-foreground mb-1.5">
-            Special Production Notes &amp; Gear Needs (Optional)
+            Notes for Host (Optional)
           </label>
           <textarea
             rows={2}
-            placeholder="Specify crew size, lighting packages, electrical draw, or sound isolation needs..."
+            placeholder="Share project details, crew size, or special requirements..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             className="w-full p-3 rounded-xl border border-input bg-surface text-xs font-sans text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1.5 focus:ring-accent focus:border-accent"
@@ -196,32 +196,32 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
         {/* 3. Real-Time Price Calculation Breakdown */}
         <div className="rounded-xl border border-border bg-surface-secondary/70 p-4 space-y-2 text-xs font-mono">
           <div className="flex items-center justify-between text-muted-foreground">
-            <span>Session Interval:</span>
+            <span>Session Duration:</span>
             <span className="font-semibold text-foreground">
-              {duration > 0 ? `${duration} hour${duration === 1 ? "" : "s"}` : "Invalid interval"}
+              {duration > 0 ? `${duration} hour${duration === 1 ? "" : "s"}` : "Invalid duration"}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-muted-foreground">
             <span>
-              Stage Rental (${studio.hourlyRate} × {duration} hrs):
+              Studio Rental (${studio.hourlyRate} × {duration} hrs):
             </span>
             <span className="font-semibold text-foreground">${rentalAmount.toFixed(2)}</span>
           </div>
 
           <div className="flex items-center justify-between text-muted-foreground">
-            <span>Refundable Facility Deposit:</span>
+            <span>Refundable Security Deposit:</span>
             <span className="font-semibold text-foreground">${securityDeposit.toFixed(2)}</span>
           </div>
 
           <div className="h-px bg-border my-2" />
 
           <div className="flex items-center justify-between font-serif text-lg font-bold text-foreground">
-            <span>Total Payable:</span>
+            <span>Estimated Total:</span>
             <span className="text-accent">${totalAmount.toFixed(2)}</span>
           </div>
           <p className="text-[10px] text-muted-foreground font-sans leading-tight pt-1">
-            * Security deposit is released following load-out inspection. The booking is submitted with Pending status awaiting host confirmation.
+            * Security deposit is refundable upon checkout. Submitting sends a Pending request to the host for approval.
           </p>
         </div>
 
@@ -239,7 +239,7 @@ export function BookingModal({ studio, isOpen, onClose }: BookingModalProps) {
             className="gap-2 font-mono text-xs uppercase tracking-wider font-semibold"
           >
             <CheckCircle2 className="w-4 h-4" />
-            <span>Submit Call Sheet</span>
+            <span>Send Booking Request</span>
           </Button>
         </div>
       </form>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { miscApi } from "@/lib/api";
 import { toast } from "sonner";
-import { ArrowRight, Instagram, Youtube, Linkedin, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, Instagram, Youtube, Linkedin } from "lucide-react";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -23,7 +23,7 @@ export function Footer() {
     setIsSubmitting(true);
     try {
       const res = await miscApi.subscribeNewsletter(email);
-      toast.success(res.message || "Thank you for subscribing to StudioSpace Dispatch!");
+      toast.success(res.message || "Thank you for subscribing to StudioSpace updates!");
       setEmail("");
     } catch (err: any) {
       toast.error(err.message || "Could not complete subscription. Please try again.");
@@ -40,37 +40,34 @@ export function Footer() {
     { label: "Art Workshops", href: "/studios?category=Workshop" },
   ];
 
-  const quickLinks = [
+  const exploreLinks = [
     { label: "Explore Studios", href: "/studios" },
     { label: "How It Works", href: "/how-it-works" },
+    { label: "List Your Space", href: "/add-studio" },
     { label: "About Us", href: "/about" },
-    { label: "Host Your Space", href: "/add-studio" },
-    { label: "Operations Dashboard", href: "/dashboard" },
+    { label: "Dashboard", href: "/dashboard" },
   ];
 
-  const standards = [
-    { label: "Acoustic Standards (NC-25)", href: "/how-it-works" },
-    { label: "Camlock Power Specifications", href: "/how-it-works" },
-    { label: "Conflict-Free DB Engine", href: "/about" },
-    { label: "Direct Host Walkthrough", href: "/about" },
+  const supportLinks = [
+    { label: "About Us", href: "/about" },
+    { label: "How It Works", href: "/how-it-works" },
+    { label: "Contact Support", href: "mailto:support@studiospace.com" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
   ];
 
   return (
-    <footer className="w-full bg-surface-secondary/70 border-t border-border mt-auto">
-      {/* Top Editorial Dispatch Bar */}
-      <div className="border-b border-border/60 bg-surface-secondary">
+    <footer className="w-full bg-surface-secondary/60 border-t border-border mt-auto">
+      {/* Newsletter Section */}
+      <div className="border-b border-border/60">
         <div className="container mx-auto px-4 sm:px-6 py-10 lg:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             <div className="lg:col-span-7">
-              <span className="text-[10px] font-mono uppercase tracking-[0.26em] text-accent flex items-center gap-2 mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>STUDIOSPACE DISPATCH // PRODUCTION INTELLIGENCE</span>
-              </span>
-              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">
-                Stay tuned for premier stage openings &amp; creative gear alerts.
+              <h3 className="font-serif text-2xl font-bold text-foreground">
+                Stay updated on new studio spaces
               </h3>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-xl">
-                Weekly curated studio drops, daylight loft availability, and production technical bulletins delivered directly to your inbox.
+              <p className="text-sm text-muted-foreground mt-1 max-w-lg">
+                Receive occasional updates about new creative spaces, daylight lofts, and platform features.
               </p>
             </div>
 
@@ -78,20 +75,20 @@ export function Footer() {
               <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2.5">
                 <Input
                   type="email"
-                  placeholder="Enter producer or filmmaker email..."
+                  placeholder="Enter your email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-card text-foreground placeholder:text-muted-foreground/60 border-border h-11 text-xs"
+                  className="bg-card text-foreground placeholder:text-muted-foreground/60 border-border h-11 text-sm"
                   required
                 />
                 <Button
                   type="submit"
                   disabled={isSubmitting}
                   variant="accent"
-                  className="h-11 px-6 rounded-lg text-xs uppercase tracking-wider font-semibold shrink-0 gap-2"
+                  className="h-11 px-6 rounded-lg text-xs font-semibold shrink-0 gap-2 uppercase tracking-wider"
                 >
-                  <span>{isSubmitting ? "Connecting..." : "Subscribe"}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>{isSubmitting ? "Subscribing..." : "Subscribe"}</span>
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </form>
             </div>
@@ -100,20 +97,19 @@ export function Footer() {
       </div>
 
       {/* Main Footer Links */}
-      <div className="container mx-auto px-4 sm:px-6 py-14 lg:py-16">
+      <div className="container mx-auto px-4 sm:px-6 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
-          {/* Brand & Colophon */}
-          <div className="lg:col-span-4 flex flex-col space-y-4">
+          {/* Brand Info */}
+          <div className="lg:col-span-5 flex flex-col space-y-4">
             <Logo size="lg" showTagline />
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-sm pt-1">
-              StudioSpace is the peer-to-peer creative workspace rental marketplace engineered for photographers, commercial filmmakers, podcasters, and sound designers. Discover and secure professional stages with verified facilities and hourly booking.
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-sm pt-1">
+              StudioSpace is a peer-to-peer rental marketplace that connects photographers, filmmakers, podcasters, and musicians with creative workspaces available by the hour.
             </p>
 
             <div className="pt-2">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/80 block mb-2">
-                CREATIVE NETWORK CHANNELS
+              <span className="text-xs font-medium text-foreground block mb-2">
+                Connect with us
               </span>
-              {/* Social Channels with Authentic X Icon */}
               <div className="flex items-center gap-2.5">
                 <a
                   href="https://x.com"
@@ -160,13 +156,13 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-2 lg:col-start-6">
-            <h4 className="text-[11px] font-mono uppercase tracking-[0.22em] text-foreground font-semibold mb-4">
+          {/* Explore Links */}
+          <div className="lg:col-span-2 lg:col-start-7">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground mb-4">
               Explore
             </h4>
-            <ul className="space-y-2.5 text-xs">
-              {quickLinks.map((link) => (
+            <ul className="space-y-2.5 text-sm">
+              {exploreLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
@@ -179,12 +175,12 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Studio Disciplines */}
-          <div className="lg:col-span-3">
-            <h4 className="text-[11px] font-mono uppercase tracking-[0.22em] text-foreground font-semibold mb-4">
-              Disciplines
+          {/* Studio Categories */}
+          <div className="lg:col-span-2">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground mb-4">
+              Categories
             </h4>
-            <ul className="space-y-2.5 text-xs">
+            <ul className="space-y-2.5 text-sm">
               {categories.map((cat) => (
                 <li key={cat.label}>
                   <Link
@@ -198,48 +194,48 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Technical Charter */}
+          {/* Support & Legal */}
           <div className="lg:col-span-3">
-            <h4 className="text-[11px] font-mono uppercase tracking-[0.22em] text-foreground font-semibold mb-4">
-              Charter
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground mb-4">
+              Company &amp; Legal
             </h4>
-            <ul className="space-y-2.5 text-xs">
-              {standards.map((std) => (
-                <li key={std.label}>
-                  <Link
-                    href={std.href}
-                    className="text-muted-foreground hover:text-accent transition-colors block"
-                  >
-                    {std.label}
-                  </Link>
+            <ul className="space-y-2.5 text-sm">
+              {supportLinks.map((link) => (
+                <li key={link.label}>
+                  {link.href.startsWith("mailto:") ? (
+                    <a
+                      href={link.href}
+                      className="text-muted-foreground hover:text-accent transition-colors block"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-muted-foreground hover:text-accent transition-colors block"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        {/* Bottom Colophon and Security Row */}
-        <div className="pt-10 mt-12 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[11px]">
-              &copy; {new Date().getFullYear()} StudioSpace Platform.
-            </span>
-            <span className="hidden sm:inline text-border">|</span>
-            <span className="hidden sm:inline font-mono text-[10px] tracking-wider text-muted-foreground/80">
-              PROGRAMMING HERO ASSIGNMENT 8 (B14-A8)
-            </span>
-          </div>
+        {/* Bottom Copyright Row */}
+        <div className="pt-8 mt-12 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+          <p>&copy; {new Date().getFullYear()} StudioSpace. All rights reserved.</p>
 
-          <div className="flex items-center gap-4 text-[11px]">
-            <span className="inline-flex items-center gap-1.5 text-muted-foreground/90 font-mono text-[10px]">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-              <span>HTTPOnly JWT / ISO Encrypted</span>
-            </span>
-            <Link href="/about" className="hover:text-accent transition-colors">
-              Charter
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="hover:text-accent transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-accent transition-colors">
+              Terms of Service
             </Link>
             <Link href="/how-it-works" className="hover:text-accent transition-colors">
-              Workflow
+              How It Works
             </Link>
           </div>
         </div>

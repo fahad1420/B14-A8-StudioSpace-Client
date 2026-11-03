@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Studio } from "@/types";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, MapPin, Star, Users, ArrowUpRight } from "lucide-react";
+import { Heart, MapPin, Star, Users, ArrowRight } from "lucide-react";
 import { miscApi } from "@/lib/api";
 import { useAuth } from "@/context/auth-context";
 import { toast } from "sonner";
@@ -48,7 +47,7 @@ export function StudioCard({ studio, isWishlisted = false, onWishlistToggle }: S
 
   return (
     <div className="group relative rounded-2xl border border-border bg-card overflow-hidden shadow-subtle hover:shadow-card hover:border-accent/60 transition-all duration-300 flex flex-col h-full">
-      {/* Top Photography Frame with Architectural Crop Corners */}
+      {/* Top Photography Frame */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface-secondary">
         <Image
           src={studio.imageUrl}
@@ -58,17 +57,9 @@ export function StudioCard({ studio, isWishlisted = false, onWishlistToggle }: S
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
-        {/* Film Viewfinder Crop Mark Brackets (Subtle) */}
-        <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="font-mono text-[9px] text-accent tracking-widest">⌜ STAGE</span>
-        </div>
-        <div className="absolute bottom-2.5 right-2.5 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="font-mono text-[9px] text-accent tracking-widest">⌝</span>
-        </div>
-
         {/* Category Pill Tag */}
         <div className="absolute top-3 left-3 z-10">
-          <div className="px-3 py-1 rounded-full backdrop-blur-md bg-black/60 border border-white/20 text-white font-mono text-[10px] uppercase tracking-wider font-semibold shadow-sm">
+          <div className="px-3 py-1 rounded-full backdrop-blur-md bg-black/60 border border-white/20 text-white text-xs font-medium shadow-sm">
             {studio.category}
           </div>
         </div>
@@ -88,7 +79,7 @@ export function StudioCard({ studio, isWishlisted = false, onWishlistToggle }: S
         </button>
 
         {/* Rating Floating Tag */}
-        <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/15 text-xs font-mono font-semibold text-white shadow-sm">
+        <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/15 text-xs font-semibold text-white shadow-sm">
           <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
           <span>{studio.rating ? Number(studio.rating).toFixed(1) : "5.0"}</span>
         </div>
@@ -101,11 +92,11 @@ export function StudioCard({ studio, isWishlisted = false, onWishlistToggle }: S
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
             <div className="flex items-center gap-1.5 truncate max-w-[65%]">
               <MapPin className="w-3.5 h-3.5 text-accent shrink-0" />
-              <span className="truncate font-sans">{studio.location}</span>
+              <span className="truncate">{studio.location}</span>
             </div>
-            <div className="flex items-center gap-1 font-mono text-[11px] shrink-0">
+            <div className="flex items-center gap-1 text-xs shrink-0">
               <Users className="w-3.5 h-3.5 text-muted-foreground/80" />
-              <span>Max {studio.maxCapacity}</span>
+              <span>Up to {studio.maxCapacity} people</span>
             </div>
           </div>
 
@@ -116,20 +107,20 @@ export function StudioCard({ studio, isWishlisted = false, onWishlistToggle }: S
             </h3>
           </Link>
 
-          {/* Amenities Mini-Spec Preview */}
+          {/* Amenities Preview */}
           {studio.amenities && studio.amenities.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-4">
               {studio.amenities.slice(0, 2).map((amenity, idx) => (
                 <span
                   key={idx}
-                  className="px-2 py-0.5 rounded bg-surface-secondary text-[10px] font-mono text-muted-foreground tracking-tight truncate max-w-[170px]"
+                  className="px-2 py-0.5 rounded bg-surface-secondary text-[11px] text-muted-foreground truncate max-w-[170px]"
                 >
                   {amenity}
                 </span>
               ))}
               {studio.amenities.length > 2 && (
-                <span className="px-1.5 py-0.5 rounded bg-surface-secondary text-[10px] font-mono text-muted-foreground">
-                  +{studio.amenities.length - 2}
+                <span className="px-1.5 py-0.5 rounded bg-surface-secondary text-[11px] text-muted-foreground">
+                  +{studio.amenities.length - 2} more
                 </span>
               )}
             </div>
@@ -143,14 +134,14 @@ export function StudioCard({ studio, isWishlisted = false, onWishlistToggle }: S
               <span className="font-serif text-2xl font-bold text-foreground tracking-tight">
                 ${studio.hourlyRate}
               </span>
-              <span className="font-mono text-xs text-muted-foreground tracking-wider">/ hr</span>
+              <span className="text-xs text-muted-foreground">/ hour</span>
             </div>
             {studio.securityDeposit > 0 ? (
-              <span className="font-mono text-[10px] text-muted-foreground block -mt-0.5">
+              <span className="text-[11px] text-muted-foreground block -mt-0.5">
                 +${studio.securityDeposit} deposit
               </span>
             ) : (
-              <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400 block -mt-0.5">
+              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 block -mt-0.5">
                 No security deposit
               </span>
             )}
@@ -160,10 +151,10 @@ export function StudioCard({ studio, isWishlisted = false, onWishlistToggle }: S
             <Button
               variant="default"
               size="sm"
-              className="rounded-lg font-mono text-xs uppercase tracking-wider font-semibold gap-1.5 group-hover:bg-accent group-hover:text-accent-foreground transition-all"
+              className="rounded-lg text-xs font-semibold gap-1.5 group-hover:bg-accent group-hover:text-accent-foreground transition-all"
             >
-              <span>Stage Details</span>
-              <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <span>View Details</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
         </div>

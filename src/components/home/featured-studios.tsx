@@ -7,7 +7,7 @@ import { studioApi, miscApi } from "@/lib/api";
 import { StudioCard } from "@/components/studios/studio-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Building2 } from "lucide-react";
+import { ArrowRight, Building2 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 
 export function FeaturedStudios() {
@@ -26,7 +26,7 @@ export function FeaturedStudios() {
           setStudios(res.data);
         }
       } catch (err: any) {
-        setError("Could not load featured production workspaces from database.");
+        setError("Could not load featured workspaces from the database.");
       } finally {
         setIsLoading(false);
       }
@@ -47,26 +47,25 @@ export function FeaturedStudios() {
   }, [isAuthenticated]);
 
   return (
-    <section className="py-24 bg-background relative">
+    <section className="py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6">
-        {/* Editorial Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.24em] text-accent mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>HANDPICKED ARCHITECTURAL WORKSPACES</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
-              Featured Production Studios
+            <span className="text-xs font-semibold uppercase tracking-wider text-accent block mb-2">
+              Popular Spaces
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+              Featured Studios
             </h2>
           </div>
 
           <Link href="/studios" className="mt-4 md:mt-0">
             <Button
               variant="outline"
-              className="rounded-full px-6 py-2.5 gap-2 text-xs font-mono uppercase tracking-wider font-semibold border-border hover:border-accent"
+              className="rounded-full px-6 py-2.5 gap-2 text-xs font-semibold uppercase tracking-wider border-border hover:border-accent"
             >
-              <span>Explore All Spaces</span>
+              <span>Explore All Studios</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
@@ -103,10 +102,10 @@ export function FeaturedStudios() {
           </div>
         ) : studios.length === 0 ? (
           <div className="text-center py-16 border border-border rounded-2xl bg-surface-secondary/30 p-8 max-w-lg mx-auto">
-            <Building2 className="w-12 h-12 text-accent mx-auto mb-3" />
-            <h3 className="font-serif text-2xl font-semibold mb-2">No Featured Studios Yet</h3>
+            <Building2 className="w-12 h-12 text-muted-foreground/40 mx-auto mb-3" />
+            <h3 className="font-serif text-2xl font-semibold mb-2">No Studios Listed Yet</h3>
             <p className="text-sm text-muted-foreground mb-6">
-              Our hosts are currently onboarding daylight cycloramas and cinema soundstages. Be the first to list your creative stage!
+              New studios will appear here once published by hosts. Have a creative space? List your studio today!
             </p>
             <Link href="/add-studio">
               <Button variant="accent">List Your Studio Space</Button>

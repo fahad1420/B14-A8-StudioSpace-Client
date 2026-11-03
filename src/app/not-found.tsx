@@ -10,29 +10,24 @@ export default function NotFound() {
       <div className="max-w-md w-full text-center space-y-6">
         <Logo size="lg" className="justify-center" />
 
-        {/* Custom Studio Viewfinder / Camera 404 Graphic */}
-        <div className="relative w-36 h-36 mx-auto rounded-3xl border-2 border-dashed border-accent/40 bg-surface-secondary flex items-center justify-center">
-          <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-accent" />
-          <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-accent" />
-          <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-accent" />
-          <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-accent" />
-
+        {/* 404 Display */}
+        <div className="relative w-36 h-36 mx-auto rounded-3xl border border-border bg-surface-secondary flex items-center justify-center">
           <div className="text-center">
             <span className="font-serif text-5xl font-black text-accent tracking-tighter block">
               404
             </span>
-            <span className="text-[9.5px] uppercase font-mono tracking-widest text-muted-foreground block -mt-1">
-              FRAME NOT FOUND
+            <span className="text-[10px] uppercase font-mono tracking-widest text-muted-foreground block -mt-1">
+              Page Not Found
             </span>
           </div>
         </div>
 
         <div>
           <h1 className="font-serif text-3xl font-bold text-foreground">
-            Out of Frame
+            Page Not Found
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-relaxed font-sans">
-            The creative production stage, studio link, or workspace profile you are searching for does not exist or may have been unlisted by the host.
+            The page or studio you are looking for doesn&apos;t exist, has been removed, or is temporarily unavailable.
           </p>
         </div>
 

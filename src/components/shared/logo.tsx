@@ -94,13 +94,9 @@ export function Logo({ className = "", size = "md", showTagline = false }: LogoP
           <span>STUDIO</span>
           <span className="text-accent ml-1 font-sans font-light tracking-[0.24em] text-[0.88em]">SPACE</span>
         </div>
-        {showTagline ? (
-          <span className="text-[9.5px] uppercase tracking-[0.28em] text-muted-foreground font-mono mt-1">
+        {showTagline && (
+          <span className="text-[10px] tracking-wider text-muted-foreground mt-1">
             Find Your Space. Create Your Story.
-          </span>
-        ) : (
-          <span className="text-[8.5px] uppercase tracking-[0.24em] text-muted-foreground/70 font-mono mt-1 hidden sm:block">
-            CREATIVE STAGES // EST. 2026
           </span>
         )}
       </div>

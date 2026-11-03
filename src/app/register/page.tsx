@@ -73,18 +73,10 @@ export default function RegisterPage() {
         </div>
 
         <Card className="border-border shadow-modal rounded-2xl bg-card relative overflow-hidden">
-          {/* Viewfinder Crop Marks */}
-          <div className="absolute top-2.5 left-2.5 pointer-events-none text-muted-foreground/30 font-mono text-[9px]">
-            ⌜ CREATOR
-          </div>
-          <div className="absolute top-2.5 right-2.5 pointer-events-none text-muted-foreground/30 font-mono text-[9px]">
-            INTAKE ⌝
-          </div>
-
           <CardHeader className="text-center pb-4 pt-6">
-            <CardTitle className="font-serif text-2xl font-bold">Create Creator Account</CardTitle>
-            <CardDescription className="text-xs font-mono">
-              Join the peer-to-peer marketplace for creative studios &amp; production spaces
+            <CardTitle className="font-serif text-2xl font-bold">Create Your Account</CardTitle>
+            <CardDescription className="text-xs">
+              Join the creative community to discover, book, or host studio spaces
             </CardDescription>
           </CardHeader>
 

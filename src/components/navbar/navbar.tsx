@@ -16,7 +16,6 @@ import {
   CalendarCheck,
   LogOut,
   ChevronDown,
-  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -32,7 +31,6 @@ export function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Scroll detection for sticky header shadow and backdrop blur
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
@@ -41,7 +39,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -52,7 +49,6 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setDropdownOpen(false);
@@ -87,7 +83,7 @@ export function Navbar() {
         {/* Left: Brand Logo */}
         <Logo size="md" />
 
-        {/* Center: Desktop Navigation Links with Editorial Tracking */}
+        {/* Center: Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-1 lg:gap-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -95,7 +91,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-3.5 py-1.5 text-xs uppercase tracking-[0.14em] font-medium transition-colors rounded-md ${
+                className={`relative px-3.5 py-1.5 text-sm font-medium transition-colors rounded-md ${
                   isActive
                     ? "text-accent font-semibold"
                     : "text-foreground/80 hover:text-foreground hover:bg-surface-secondary"
@@ -115,13 +111,11 @@ export function Navbar() {
           <ThemeToggle />
 
           {isLoading ? (
-            // Skeleton while checking auth state to prevent layout shift
             <div className="flex items-center gap-2 animate-pulse">
               <div className="w-8 h-8 rounded-full bg-surface-secondary" />
               <div className="w-20 h-4 rounded bg-surface-secondary" />
             </div>
           ) : isAuthenticated && user ? (
-            // Authenticated User Dropdown
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -142,14 +136,9 @@ export function Navbar() {
                     <UserIcon className="w-3.5 h-3.5 text-accent" />
                   )}
                 </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-xs font-semibold text-foreground max-w-[110px] truncate leading-tight">
-                    {user.name}
-                  </span>
-                  <span className="text-[9px] font-mono tracking-wider text-muted-foreground uppercase leading-none">
-                    {user.role || "Creator"}
-                  </span>
-                </div>
+                <span className="text-sm font-medium text-foreground max-w-[120px] truncate">
+                  {user.name}
+                </span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 text-muted-foreground ml-0.5 transition-transform duration-200 ${
                     dropdownOpen ? "rotate-180" : ""
@@ -159,40 +148,40 @@ export function Navbar() {
 
               {/* Dropdown Menu */}
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-60 rounded-xl border border-border bg-card p-1.5 shadow-modal text-card-foreground animate-in zoom-in-95 fade-in duration-150 z-50">
+                <div className="absolute right-0 mt-2 w-56 rounded-xl border border-border bg-card p-1.5 shadow-modal text-card-foreground animate-in zoom-in-95 fade-in duration-150 z-50">
                   <div className="px-3 py-2 border-b border-border/70 mb-1">
-                    <p className="text-[10px] uppercase font-mono tracking-widest text-muted-foreground">Call Sheet Identity</p>
+                    <p className="text-xs text-muted-foreground">Signed in as</p>
                     <p className="text-sm font-semibold truncate text-foreground">{user.name}</p>
                     <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                   </div>
 
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
                   >
                     <LayoutDashboard className="w-4 h-4 text-accent" />
-                    <span>Dashboard Console</span>
+                    <span>Dashboard</span>
                   </Link>
 
                   <Link
                     href="/add-studio"
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
                   >
                     <PlusCircle className="w-4 h-4 text-accent" />
-                    <span>List New Studio</span>
+                    <span>List a Studio</span>
                   </Link>
 
                   <Link
                     href="/my-listings"
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
                   >
                     <Building className="w-4 h-4 text-accent" />
-                    <span>My Studio Listings</span>
+                    <span>My Studios</span>
                   </Link>
 
                   <Link
                     href="/my-bookings"
-                    className="flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg hover:bg-surface-secondary text-foreground transition-colors"
                   >
                     <CalendarCheck className="w-4 h-4 text-accent" />
                     <span>My Bookings</span>
@@ -202,7 +191,7 @@ export function Navbar() {
 
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs uppercase tracking-wider font-medium rounded-lg text-rose-600 hover:bg-rose-500/10 transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg text-rose-600 hover:bg-rose-500/10 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>Sign Out</span>
@@ -211,16 +200,15 @@ export function Navbar() {
               )}
             </div>
           ) : (
-            // Unauthenticated Buttons
             <div className="flex items-center gap-2">
               <Link href="/login">
-                <Button variant="ghost" size="sm" className="text-xs uppercase tracking-wider font-semibold">
-                  Login
+                <Button variant="ghost" size="sm" className="text-xs font-semibold uppercase tracking-wider">
+                  Log In
                 </Button>
               </Link>
               <Link href="/register">
-                <Button variant="accent" size="sm" className="text-xs uppercase tracking-wider font-semibold shadow-subtle">
-                  Register
+                <Button variant="accent" size="sm" className="text-xs font-semibold uppercase tracking-wider shadow-subtle">
+                  Sign Up
                 </Button>
               </Link>
             </div>
@@ -250,7 +238,7 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3 py-2.5 text-xs uppercase tracking-[0.14em] font-medium rounded-lg ${
+                  className={`px-3 py-2.5 text-sm font-medium rounded-lg ${
                     isActive
                       ? "bg-accent/10 text-accent font-semibold"
                       : "text-foreground hover:bg-surface-secondary"
@@ -266,30 +254,30 @@ export function Navbar() {
             {isAuthenticated && user ? (
               <>
                 <div className="px-3 py-2 rounded-lg bg-surface-secondary/70 mb-2">
-                  <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Signed in as</p>
+                  <p className="text-xs text-muted-foreground">Signed in as</p>
                   <p className="text-sm font-semibold text-foreground">{user.name}</p>
                   <p className="text-xs text-muted-foreground">{user.email}</p>
                 </div>
                 <Link href="/dashboard" className="w-full">
-                  <Button variant="outline" className="w-full justify-start gap-2 text-xs uppercase tracking-wider">
+                  <Button variant="outline" className="w-full justify-start gap-2 text-sm">
                     <LayoutDashboard className="w-4 h-4 text-accent" />
-                    <span>Dashboard Console</span>
+                    <span>Dashboard</span>
                   </Button>
                 </Link>
                 <Link href="/add-studio" className="w-full">
-                  <Button variant="outline" className="w-full justify-start gap-2 text-xs uppercase tracking-wider">
+                  <Button variant="outline" className="w-full justify-start gap-2 text-sm">
                     <PlusCircle className="w-4 h-4 text-accent" />
-                    <span>List New Studio</span>
+                    <span>List a Studio</span>
                   </Button>
                 </Link>
                 <Link href="/my-listings" className="w-full">
-                  <Button variant="outline" className="w-full justify-start gap-2 text-xs uppercase tracking-wider">
+                  <Button variant="outline" className="w-full justify-start gap-2 text-sm">
                     <Building className="w-4 h-4 text-accent" />
-                    <span>My Studio Listings</span>
+                    <span>My Studios</span>
                   </Button>
                 </Link>
                 <Link href="/my-bookings" className="w-full">
-                  <Button variant="outline" className="w-full justify-start gap-2 text-xs uppercase tracking-wider">
+                  <Button variant="outline" className="w-full justify-start gap-2 text-sm">
                     <CalendarCheck className="w-4 h-4 text-accent" />
                     <span>My Bookings</span>
                   </Button>
@@ -297,7 +285,7 @@ export function Navbar() {
                 <Button
                   onClick={handleLogout}
                   variant="destructive"
-                  className="w-full justify-start gap-2 text-xs uppercase tracking-wider mt-2"
+                  className="w-full justify-start gap-2 text-sm mt-2"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Sign Out</span>
@@ -307,12 +295,12 @@ export function Navbar() {
               <div className="grid grid-cols-2 gap-2 pt-2">
                 <Link href="/login">
                   <Button variant="outline" className="w-full text-xs uppercase tracking-wider font-semibold">
-                    Login
+                    Log In
                   </Button>
                 </Link>
                 <Link href="/register">
                   <Button variant="accent" className="w-full text-xs uppercase tracking-wider font-semibold">
-                    Register
+                    Sign Up
                   </Button>
                 </Link>
               </div>

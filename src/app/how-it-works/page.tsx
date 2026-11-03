@@ -23,30 +23,26 @@ export default function HowItWorksPage() {
   const creatorSteps = [
     {
       num: "01",
-      code: "DISCOVERY & SPECS",
-      title: "Discover & Filter Vetted Spaces",
-      desc: "Search by production discipline (Photo Studio, Sound Stage, Podcast Lounge, Music Suite, Workshop), target location, and hourly budget. Every profile showcases high-resolution photography, ceiling clear heights, and gear inventory.",
+      title: "Discover Creative Spaces",
+      desc: "Search by category (Photo Studio, Sound Stage, Podcast Lounge, Music Suite, Workshop), location, and hourly rate. View high-resolution photos, capacity, and included equipment.",
       icon: Search,
     },
     {
       num: "02",
-      code: "FACILITY AUDIT",
-      title: "Inspect Technical Inventories",
-      desc: "Verify camlock 3-phase power ratings, cyclorama dimensions, acoustic isolation coefficients (NC ratings), makeup vanity counts, and loading dock access before booking.",
+      title: "Check Amenities & Details",
+      desc: "Review room dimensions, lighting setups, power options, makeup stations, and parking access to ensure the space fits your project requirements.",
       icon: Sliders,
     },
     {
       num: "03",
-      code: "HOURLY CALCULATION",
-      title: "Select Exact Production Hours",
-      desc: "Specify your call date, load-in time, and wrap time. The reservation engine automatically computes exact duration, rental fees, and refundable security deposits.",
+      title: "Choose Date & Time",
+      desc: "Pick your reservation date and select start and end hours. Duration, hourly fees, and refundable security deposit are calculated automatically.",
       icon: Clock,
     },
     {
       num: "04",
-      code: "CALL SHEET DISPATCH",
-      title: "Submit Instant Request",
-      desc: "Your reservation is protected against double-booking conflicts. Studio hosts review and confirm your shoot, issuing an official booking confirmation and accounting invoice.",
+      title: "Request Reservation",
+      desc: "Submit your reservation request. Hosts review and confirm your session, and you receive an official confirmation and PDF invoice upon approval.",
       icon: ShieldCheck,
     },
   ];
@@ -54,23 +50,20 @@ export default function HowItWorksPage() {
   const hostSteps = [
     {
       num: "01",
-      code: "STAGE PROFILE",
-      title: "Create Your Studio Profile",
-      desc: "Publish your stage specifications, photo gallery, available strobe/lighting equipment, and amenities with custom hourly pricing and security deposit policies.",
+      title: "Create Your Listing",
+      desc: "Add your studio photos, write an overview, select available gear and amenities, and set your hourly rate and refundable security deposit.",
       icon: Building,
     },
     {
       num: "02",
-      code: "DISPATCH INTAKE",
-      title: "Receive & Approve Requests",
-      desc: "Review incoming production inquiries with full creator information, crew notes, and requested time slots right inside your Host Dashboard.",
+      title: "Review Booking Requests",
+      desc: "Receive incoming booking inquiries with creator information and project notes directly inside your dashboard. Confirm or decline with one click.",
       icon: Calendar,
     },
     {
       num: "03",
-      code: "WRAP & PAYOUT",
-      title: "Host & Inspect Load-Out",
-      desc: "Welcome verified creators to your facility. Mark sessions completed upon wrap inspection to release deposits and earn hourly rental payouts.",
+      title: "Host & Earn",
+      desc: "Welcome creators to your space. Mark sessions completed when the shoot wraps to release deposits and keep your calendar organized.",
       icon: CheckCircle2,
     },
   ];
@@ -80,15 +73,15 @@ export default function HowItWorksPage() {
       {/* Header */}
       <section className="bg-surface-secondary/70 border-b border-border py-20 text-center relative">
         <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-mono uppercase tracking-[0.24em] font-semibold mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-semibold uppercase tracking-wider mb-6">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>PLATFORM PROTOCOL &amp; DISPATCH</span>
+            <span>Simple &amp; Transparent</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.14] mb-6">
-            How StudioSpace Operates
+            How StudioSpace Works
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto font-sans">
-            From preliminary treatment to final wrap, explore how our peer-to-peer marketplace streamlines creative workspace bookings.
+            Whether you&apos;re booking a creative space for a photo shoot or hosting creative professionals, StudioSpace makes the process straightforward.
           </p>
         </div>
       </section>
@@ -97,11 +90,11 @@ export default function HowItWorksPage() {
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
           <div className="mb-14">
-            <div className="text-xs font-mono uppercase tracking-[0.24em] text-accent mb-2">
-              CREATOR WORKFLOW PROTOCOL
+            <div className="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
+              For Creators
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
-              For Directors, Photographers &amp; Crews
+              For Photographers, Filmmakers &amp; Creators
             </h2>
           </div>
 
@@ -119,7 +112,7 @@ export default function HowItWorksPage() {
                         <Icon className="w-5 h-5" />
                       </div>
                       <span className="font-mono text-xs font-bold text-accent tracking-widest">
-                        {step.num} // {step.code}
+                        {step.num}
                       </span>
                     </div>
                     <h3 className="font-serif text-xl font-bold text-foreground mb-2">
@@ -137,7 +130,7 @@ export default function HowItWorksPage() {
           <div className="mt-12 text-center">
             <Link href="/studios">
               <Button variant="accent" size="lg" className="rounded-full px-8 py-4 font-mono text-xs uppercase tracking-wider font-semibold gap-2 shadow-hover">
-                <span>Browse Production Stages</span>
+                <span>Explore Studios</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
@@ -149,11 +142,11 @@ export default function HowItWorksPage() {
       <section className="py-20 bg-surface-secondary/40 border-t border-border">
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
           <div className="mb-14">
-            <div className="text-xs font-mono uppercase tracking-[0.24em] text-accent mb-2">
-              HOST OPERATIONS PROTOCOL
+            <div className="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
+              For Hosts
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
-              For Studio Owners &amp; Stage Managers
+              For Studio Owners &amp; Space Hosts
             </h2>
           </div>
 
@@ -189,7 +182,7 @@ export default function HowItWorksPage() {
           <div className="mt-12 text-center">
             <Link href="/add-studio">
               <Button variant="outline" size="lg" className="rounded-full px-8 py-4 font-mono text-xs uppercase tracking-wider font-semibold gap-2">
-                <span>List Your Studio Facility</span>
+                <span>List Your Studio</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
