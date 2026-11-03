@@ -48,8 +48,8 @@ export default function RegisterPage() {
         photoUrl: photoUrl.trim() || undefined,
       });
       if (res.success) {
-        toast.success("Account created successfully! Welcome to StudioSpace.");
-        router.push("/dashboard");
+        toast.success("Account created successfully! Please log in with your credentials.");
+        router.push("/login");
       } else {
         setGeneralError(res.message || "Failed to register account.");
         toast.error(res.message || "Registration failed.");
