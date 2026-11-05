@@ -10,6 +10,7 @@ import { Booking, Studio } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { generateBookingInvoice } from "@/lib/invoice";
 import { toast } from "sonner";
 import {
   LayoutDashboard,
@@ -26,6 +27,7 @@ import {
   Shield,
   Layers,
   Sparkles,
+  Download,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -281,6 +283,18 @@ export default function DashboardPage() {
                           >
                             {b.status}
                           </Badge>
+                          {(b.status === "Confirmed" || b.status === "Completed") && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => generateBookingInvoice(b)}
+                              className="gap-1 text-[11px] h-7 px-2 font-mono text-accent border-accent/40 hover:bg-accent/10"
+                              title="Download official PDF invoice"
+                            >
+                              <Download className="w-3 h-3" />
+                              <span className="hidden sm:inline">Invoice</span>
+                            </Button>
+                          )}
                         </div>
                       </div>
                     ))}

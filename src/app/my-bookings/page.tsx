@@ -204,11 +204,11 @@ export default function MyBookingsPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => generateBookingInvoice(booking)}
-                          className="gap-1.5 text-xs rounded-lg font-mono"
+                          className="gap-1.5 text-xs rounded-lg font-mono text-accent border-accent/40 hover:bg-accent/10"
                           title="Download official PDF invoice"
                         >
                           <Download className="w-3.5 h-3.5 text-accent" />
-                          <span>PDF Invoice</span>
+                          <span>Download Invoice</span>
                         </Button>
                       )}
 
