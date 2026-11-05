@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const refreshUser = useCallback(async () => {
+  const refreshUser = useCallback(async (isRetry = false) => {
     try {
       const response = await apiClient<{ user: User }>("/api/auth/me", {
         method: "GET",
@@ -34,18 +34,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (response && response.user) {
         setUser(response.user);
+        setIsLoading(false);
+      } else if (!isRetry) {
+        // Quick retry after 500ms to catch newly redirected OAuth sessions
+        setTimeout(() => refreshUser(true), 500);
       } else {
         setUser(null);
+        setIsLoading(false);
       }
     } catch (error) {
-      setUser(null);
-    } finally {
-      setIsLoading(false);
+      if (!isRetry) {
+        setTimeout(() => refreshUser(true), 500);
+      } else {
+        setUser(null);
+        setIsLoading(false);
+      }
     }
   }, []);
 
   useEffect(() => {
     refreshUser();
+  }, [refreshUser]);
+
+  // Re-check authentication when the tab regains focus or visibility (e.g. returning from OAuth window)
+  useEffect(() => {
+    const handleFocus = () => {
+      refreshUser();
+    };
+    window.addEventListener("focus", handleFocus);
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        refreshUser();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, [refreshUser]);
 
   const login = async (email: string, password: string) => {
