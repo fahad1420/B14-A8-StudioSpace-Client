@@ -26,8 +26,10 @@ const nextConfig = {
     ],
   },
   async rewrites() {
-    const backendUrl = process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
-    if (!backendUrl) return [];
+    const backendUrl =
+      process.env.BACKEND_API_URL ||
+      process.env.NEXT_PUBLIC_API_URL ||
+      "https://studiospace-api-4vhn.onrender.com";
     return [
       {
         source: "/api/:path*",

@@ -69,15 +69,41 @@ export default function RegisterPage() {
       toast.info("Connecting to Google OAuth authentication...");
 
       const callbackURL = `${window.location.origin}/dashboard`;
-      const response = await fetch(`${API_BASE_URL}/api/auth/sign-in/social`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          provider: "google",
-          callbackURL,
-        }),
-        credentials: "include",
-      });
+      // In browser, initiate social sign-in via Vercel domain rewrite (/api/auth/sign-in/social) so that
+      // OAuth state cookies are first-party and Google redirect_uri is strictly https://thestudiospace.vercel.app/api/auth/callback/google
+      let response: Response;
+      try {
+        response = await fetch("/api/auth/sign-in/social", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            provider: "google",
+            callbackURL,
+          }),
+          credentials: "include",
+        });
+        if (!response.ok && API_BASE_URL && API_BASE_URL !== window.location.origin) {
+          response = await fetch(`${API_BASE_URL}/api/auth/sign-in/social`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              provider: "google",
+              callbackURL,
+            }),
+            credentials: "include",
+          });
+        }
+      } catch {
+        response = await fetch(`${API_BASE_URL}/api/auth/sign-in/social`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            provider: "google",
+            callbackURL,
+          }),
+          credentials: "include",
+        });
+      }
 
       const data = await response.json().catch(() => null);
 
