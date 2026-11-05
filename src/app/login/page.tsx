@@ -15,7 +15,7 @@ import { Mail, Lock, ArrowRight, Sparkles, Key } from "lucide-react";
 function LoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get("redirect") || "/";
+  const redirectUrl = searchParams.get("redirect") || "/dashboard";
 
   const { login, syncSocialLogin } = useAuth();
 

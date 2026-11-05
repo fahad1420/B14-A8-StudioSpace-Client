@@ -1,15 +1,16 @@
 import { ApiResponse, Booking, BookingStatus, Studio, User } from "@/types";
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL !== undefined
-    ? process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")
-    : "http://localhost:5000";
+  typeof window !== "undefined"
+    ? "" // Browser execution: strictly same-origin relative URLs (/api/...) to route via Next.js rewrites and preserve first-party cookies
+    : (process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL || "https://studiospace-api-4vhn.onrender.com").replace(/\/$/, "");
 
 export async function apiClient<T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
-  const url = `${API_BASE_URL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
+  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  const url = `${API_BASE_URL}${cleanEndpoint}`;
 
   const defaultHeaders: HeadersInit = {
     "Content-Type": "application/json",
